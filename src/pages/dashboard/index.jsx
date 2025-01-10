@@ -19,7 +19,7 @@ const Index = () => {
           </p>
         </div>
         <Button style={{ padding: 10 }} gradientMonochrome="failure">
-          Book a Guest
+          View Detailed Reports
           <HiOutlineArrowRight className="ml-2 h-5 w-5" />
         </Button>{" "}
       </div>
