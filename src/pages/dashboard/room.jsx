@@ -9,6 +9,18 @@ import CustomInput from "../../components/customInput";
 const Room = () => {
   const [addRoomModal, setAddRoomModal] = useState(false);
 
+  const [forms, setForms] = useState({
+    roomNumber: "",
+    pricePerNight: 0,
+    roomType: "",
+    description: "",
+  });
+
+  const handleChange = (event) => {
+    const { value, name } = event.target;
+    setForms({ ...forms, [name]: value });
+  };
+
   return (
     <DashboardLayout>
       {/* Header */}
@@ -40,7 +52,18 @@ const Room = () => {
         open={addRoomModal}
         handleClose={() => setAddRoomModal(false)}
       >
-        <CustomInput label={"Room Number"} value="test" onChange={() => {}} />
+        <CustomInput
+          label={"Room Number"}
+          value={forms.roomNumber}
+          onChange={handleChange}
+          name={"roomNumber"}
+        />
+        <CustomInput
+          label={"Price Per Night (₱)"}
+          value={forms.roomNumber}
+          onChange={handleChange}
+          name={"roomNumber"}
+        />
       </CustomModal>
     </DashboardLayout>
   );

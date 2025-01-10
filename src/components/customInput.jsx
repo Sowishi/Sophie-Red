@@ -1,12 +1,13 @@
 import { Label, TextInput } from "flowbite-react";
 
-const CustomInput = ({ label, placeholder, onChange, value, type }) => {
+const CustomInput = ({ label, placeholder, onChange, value, type, name }) => {
   return (
-    <div>
+    <div className="my-5">
       <div className="mb-2 block">
         <Label htmlFor="email2" value={label} />
       </div>
       <TextInput
+        name={name}
         value={value}
         onChange={onChange}
         type={type}
