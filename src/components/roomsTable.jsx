@@ -17,6 +17,8 @@ import loader from "../assets/lotties/loader.json";
 import { FaArrowRight } from "react-icons/fa6";
 import { BottomDrawer } from "./bottomDrawer";
 import { MdDelete } from "react-icons/md";
+import CustomGallery from "./gallery";
+import { AiOutlineCloudUpload } from "react-icons/ai";
 
 export function RoomsTable() {
   const { fetchCollection } = useFetchCollection();
@@ -83,6 +85,7 @@ export function RoomsTable() {
           <Table.HeadCell>Description</Table.HeadCell>
           <Table.HeadCell>Adult Count</Table.HeadCell>
           <Table.HeadCell>Child Count</Table.HeadCell>
+
           <Table.HeadCell></Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
@@ -99,6 +102,7 @@ export function RoomsTable() {
               <Table.Cell>{room.description}</Table.Cell>
               <Table.Cell>{room.adultCount}</Table.Cell>
               <Table.Cell>{room.childCount}</Table.Cell>
+
               <Table.Cell>
                 <Button onClick={() => setSelectedRoom(room)} color="failure">
                   View Room <FaArrowRight className="ml-2 h-5 w-5" />
@@ -114,7 +118,8 @@ export function RoomsTable() {
         open={selectedRoom}
         handleClose={() => setSelectedRoom(null)}
       >
-        <div className="container p-10 h-[600px]">
+        <div className="container p-10 mx-auto h-[600px]">
+          {/* Header of bottom drawer */}
           <div className="header flex justify-between items-center">
             <h1 className="text-3xl font-bold flex items-center justify-start">
               Room Number: #{selectedRoom?.roomNumber}{" "}
@@ -123,8 +128,12 @@ export function RoomsTable() {
               </Badge>
             </h1>
             <Button gradientMonochrome="failure">
-              Delete Room <MdDelete className="ml-2 h-5 w-5" />
+              Upload Photo <AiOutlineCloudUpload className="ml-2 h-5 w-5" />
             </Button>
+          </div>
+          <div className="wrapper p-20 w-full ">
+            <h1 className="text-2xl mb-10">Room Image Gallery</h1>
+            <CustomGallery />
           </div>
         </div>
       </BottomDrawer>
