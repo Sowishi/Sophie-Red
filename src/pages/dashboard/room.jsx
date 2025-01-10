@@ -2,17 +2,21 @@ import { HiOutlineArrowRight } from "react-icons/hi";
 import DashboardLayout from "./dashboardLayout";
 import { Button, TextInput } from "flowbite-react";
 import { RoomsTable } from "../../components/roomsTable";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CustomModal } from "../../components/customModal";
 import CustomInput from "../../components/customInput";
 import { CustomSelect } from "../../components/customSelect";
 import { roomTypeData } from "../../utils/roomType";
 import { CustomTextArea } from "../../components/customTextarea";
 import useCrudRooms from "../../hooks/useCrudRooms";
+import useFetchCollection from "../../hooks/useFetchCollection";
 
 const Room = () => {
   const [addRoomModal, setAddRoomModal] = useState(false);
+  const [rooms, setRooms] = useState([]);
   const { addRoom } = useCrudRooms();
+  const { fetchCollection } = useFetchCollection();
+
   const [forms, setForms] = useState({
     roomNumber: "",
     pricePerNight: "",
@@ -43,6 +47,10 @@ const Room = () => {
   const handleSubmit = async () => {
     await addRoom(forms);
   };
+
+  useEffect(() => {
+    fetchCollection("rooms", setRooms);
+  }, []);
 
   return (
     <DashboardLayout>
