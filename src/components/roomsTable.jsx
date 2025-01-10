@@ -1,81 +1,67 @@
 "use client";
 
-import { Checkbox, Table } from "flowbite-react";
-
+import { Button, Checkbox, Table, TextInput } from "flowbite-react";
+import { useEffect, useState } from "react";
+import useFetchCollection from "../hooks/useFetchCollection";
+import { CiSearch } from "react-icons/ci";
+import empty from "../assets/empty-box.png";
 export function RoomsTable() {
+  const { fetchCollection } = useFetchCollection();
+  const [rooms, setRooms] = useState([]);
+  const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    fetchCollection("rooms", setRooms);
+  }, []);
+
+  if (rooms.length <= 0) {
+    return (
+      <div className="container flex pt-28 h-full justify-center items-center flex-col">
+        <img className="w-[200px]" src={empty} />
+        <h1 className="text-3xl mt-5 opacity-50">There's no rooms yet</h1>
+      </div>
+    );
+  }
+
   return (
     <div className="overflow-x-auto">
-      <Table hoverable>
+      <div className="flex items-center justify-end mb-5">
+        <TextInput
+          onChange={(event) => setSearch(event.target.value)}
+          className="w-60"
+          placeholder="Search Here..."
+        />
+        <CiSearch className="ml-3" size={24} />
+      </div>
+      <Table hoverable striped>
         <Table.Head>
-          <Table.HeadCell className="p-4">
-            <Checkbox />
-          </Table.HeadCell>
-          <Table.HeadCell>Product name</Table.HeadCell>
-          <Table.HeadCell>Color</Table.HeadCell>
-          <Table.HeadCell>Category</Table.HeadCell>
-          <Table.HeadCell>Price</Table.HeadCell>
-          <Table.HeadCell>
-            <span className="sr-only">Edit</span>
-          </Table.HeadCell>
+          <Table.HeadCell>Room ID</Table.HeadCell>
+          <Table.HeadCell>Room Type</Table.HeadCell>
+          <Table.HeadCell>Price Per Night</Table.HeadCell>
+          <Table.HeadCell>Description</Table.HeadCell>
+          <Table.HeadCell>Adult Count</Table.HeadCell>
+          <Table.HeadCell>Child Count</Table.HeadCell>
+          <Table.HeadCell></Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
-          <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-            <Table.Cell className="p-4">
-              <Checkbox />
-            </Table.Cell>
-            <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-              {'Apple MacBook Pro 17"'}
-            </Table.Cell>
-            <Table.Cell>Sliver</Table.Cell>
-            <Table.Cell>Laptop</Table.Cell>
-            <Table.Cell>$2999</Table.Cell>
-            <Table.Cell>
-              <a
-                href="#"
-                className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
-              >
-                Edit
-              </a>
-            </Table.Cell>
-          </Table.Row>
-          <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-            <Table.Cell className="p-4">
-              <Checkbox />
-            </Table.Cell>
-            <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-              Microsoft Surface Pro
-            </Table.Cell>
-            <Table.Cell>White</Table.Cell>
-            <Table.Cell>Laptop PC</Table.Cell>
-            <Table.Cell>$1999</Table.Cell>
-            <Table.Cell>
-              <a
-                href="#"
-                className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
-              >
-                Edit
-              </a>
-            </Table.Cell>
-          </Table.Row>
-          <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-            <Table.Cell className="p-4">
-              <Checkbox />
-            </Table.Cell>
-            <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-              Magic Mouse 2
-            </Table.Cell>
-            <Table.Cell>Black</Table.Cell>
-            <Table.Cell>Accessories</Table.Cell>
-            <Table.Cell>$99</Table.Cell>
-            <Table.Cell>
-              <a
-                href="#"
-                className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
-              >
-                Edit
-              </a>
-            </Table.Cell>
-          </Table.Row>
+          {rooms.map((room, index) => (
+            <Table.Row
+              key={index}
+              className="bg-white dark:border-gray-700 dark:bg-gray-800"
+            >
+              <Table.Cell className="font-bold text-lg text-red-500">
+                {room.roomNumber}
+              </Table.Cell>
+              <Table.Cell>{room.roomType}</Table.Cell>
+              <Table.Cell>₱{room.pricePerNight}</Table.Cell>
+              <Table.Cell>{room.description}</Table.Cell>
+              <Table.Cell>{room.adultCount}</Table.Cell>
+              <Table.Cell>{room.childCount}</Table.Cell>
+              <Table.Cell>
+                <Button color="failure">View Room</Button>
+              </Table.Cell>
+            </Table.Row>
+          ))}
         </Table.Body>
       </Table>
     </div>

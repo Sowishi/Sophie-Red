@@ -18,11 +18,18 @@ export function CustomModal({
         <Modal.Body>{children}</Modal.Body>
         <Modal.Footer>
           <Button
-            className="w-full py-3"
+            className="w-full py-1"
+            gradientMonochrome="info"
+            onClick={handleClose}
+          >
+            <h1 className="text-lg font-bold">Cancel</h1>
+          </Button>
+          <Button
+            className="w-full py-1"
             gradientMonochrome="failure"
             onClick={onSubmit}
           >
-            <h1 className="text-2xl font-bold">Confirm</h1>
+            <h1 className="text-lg font-bold">Confirm</h1>
           </Button>
         </Modal.Footer>
       </Modal>

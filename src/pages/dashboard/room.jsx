@@ -9,13 +9,12 @@ import { CustomSelect } from "../../components/customSelect";
 import { roomTypeData } from "../../utils/roomType";
 import { CustomTextArea } from "../../components/customTextarea";
 import useCrudRooms from "../../hooks/useCrudRooms";
-import useFetchCollection from "../../hooks/useFetchCollection";
+import { FaPlus } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 const Room = () => {
   const [addRoomModal, setAddRoomModal] = useState(false);
-  const [rooms, setRooms] = useState([]);
   const { addRoom } = useCrudRooms();
-  const { fetchCollection } = useFetchCollection();
 
   const [forms, setForms] = useState({
     roomNumber: "",
@@ -45,12 +44,25 @@ const Room = () => {
   };
 
   const handleSubmit = async () => {
-    await addRoom(forms);
-  };
+    // Check for empty fields
+    const isFormValid = Object.values(forms).every(
+      (field) => field.trim() !== ""
+    );
 
-  useEffect(() => {
-    fetchCollection("rooms", setRooms);
-  }, []);
+    if (!isFormValid) {
+      toast.error(
+        "All fields are required. Please fill out the form completely."
+      );
+      return;
+    }
+    try {
+      await addRoom(forms);
+      setAddRoomModal(false);
+      toast.success("You successfully added a room.");
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   return (
     <DashboardLayout>
@@ -68,7 +80,7 @@ const Room = () => {
           gradientMonochrome="failure"
         >
           Add A room
-          <HiOutlineArrowRight className="ml-2 h-5 w-5" />
+          <FaPlus className="ml-2 h-5 w-5" />
         </Button>{" "}
       </div>
 
