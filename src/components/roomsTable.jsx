@@ -34,6 +34,16 @@ export function RoomsTable() {
     );
   }
 
+  const queryRooms = rooms.filter((room) => {
+    if (
+      room.roomType.includes(search) ||
+      room.description.includes(search) ||
+      room.roomNumber.includes(search)
+    ) {
+      return room;
+    }
+  });
+
   if (rooms.length <= 0) {
     return (
       <div className="container flex pt-28 h-full justify-center items-center flex-col">
@@ -64,7 +74,7 @@ export function RoomsTable() {
           <Table.HeadCell></Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
-          {rooms.map((room, index) => (
+          {queryRooms.map((room, index) => (
             <Table.Row
               key={index}
               className="bg-white dark:border-gray-700 dark:bg-gray-800"
