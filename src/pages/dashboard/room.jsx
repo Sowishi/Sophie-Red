@@ -5,20 +5,42 @@ import { RoomsTable } from "../../components/roomsTable";
 import { useState } from "react";
 import { CustomModal } from "../../components/customModal";
 import CustomInput from "../../components/customInput";
+import { CustomSelect } from "../../components/customSelect";
+import { roomTypeData } from "../../utils/roomType";
+import { CustomTextArea } from "../../components/customTextarea";
 
 const Room = () => {
   const [addRoomModal, setAddRoomModal] = useState(false);
 
   const [forms, setForms] = useState({
     roomNumber: "",
-    pricePerNight: 0,
+    pricePerNight: "",
     roomType: "",
     description: "",
+    adultCount: "",
+    childCount: "",
   });
 
   const handleChange = (event) => {
     const { value, name } = event.target;
+
+    // Validation: Only allow numbers for specific fields
+    if (
+      name === "roomNumber" ||
+      name === "pricePerNight" ||
+      name === "adultCount" ||
+      name === "childCount"
+    ) {
+      if (!/^\d*$/.test(value)) {
+        return; // Disallow non-numeric input
+      }
+    }
+
     setForms({ ...forms, [name]: value });
+  };
+
+  const handleSubmit = () => {
+    console.log(forms);
   };
 
   return (
@@ -51,19 +73,70 @@ const Room = () => {
         size={"5xl"}
         open={addRoomModal}
         handleClose={() => setAddRoomModal(false)}
+        onSubmit={handleSubmit}
       >
-        <CustomInput
-          label={"Room Number"}
-          value={forms.roomNumber}
-          onChange={handleChange}
-          name={"roomNumber"}
-        />
-        <CustomInput
-          label={"Price Per Night (₱)"}
-          value={forms.roomNumber}
-          onChange={handleChange}
-          name={"roomNumber"}
-        />
+        <div className="container">
+          <div className="flex">
+            <div className="basis-6/12">
+              <CustomInput
+                label={"Room Number"}
+                value={forms.roomNumber}
+                onChange={handleChange}
+                name={"roomNumber"}
+                placeholder={"Please enter the room number"}
+              />
+            </div>
+            <div className="basis-6/12">
+              <CustomInput
+                label={"Price Per Night (₱)"}
+                value={forms.pricePerNight}
+                onChange={handleChange}
+                name={"pricePerNight"}
+                placeholder={"Please enter the price per night"}
+              />
+            </div>
+          </div>
+          <div className="flex">
+            <div className="basis-6/12">
+              <CustomInput
+                label={"Adult Count Allowed"}
+                value={forms.adultCount}
+                onChange={handleChange}
+                name={"adultCount"}
+                placeholder={"Please enter number of adult allowed"}
+              />
+            </div>
+            <div className="basis-6/12">
+              <CustomInput
+                label={"Child Count Allowed"}
+                value={forms.childCount}
+                onChange={handleChange}
+                name={"childCount"}
+                placeholder={"Please enter number of child allowed"}
+              />
+            </div>
+          </div>
+          <div className="flex">
+            <div className="basis-6/12">
+              <CustomSelect
+                value={forms.roomType}
+                data={["Please select the room type", ...roomTypeData]}
+                label={"Room Type"}
+                name={"roomType"}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="basis-6/12">
+              <CustomTextArea
+                onChange={handleChange}
+                label={"Description"}
+                name={"description"}
+                value={forms.description}
+                placeholder={"Please enter the description"}
+              />
+            </div>
+          </div>
+        </div>
       </CustomModal>
     </DashboardLayout>
   );

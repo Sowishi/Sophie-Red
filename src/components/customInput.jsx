@@ -2,7 +2,7 @@ import { Label, TextInput } from "flowbite-react";
 
 const CustomInput = ({ label, placeholder, onChange, value, type, name }) => {
   return (
-    <div className="my-5">
+    <div className="my-5 mx-3">
       <div className="mb-2 block">
         <Label htmlFor="email2" value={label} />
       </div>

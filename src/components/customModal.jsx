@@ -3,9 +3,14 @@
 import { Button, Modal } from "flowbite-react";
 import { useState } from "react";
 
-export function CustomModal({ children, open, handleClose, size, title }) {
-  const [openModal, setOpenModal] = useState(true);
-
+export function CustomModal({
+  children,
+  open,
+  handleClose,
+  size,
+  title,
+  onSubmit,
+}) {
   return (
     <>
       <Modal size={size} dismissible show={open} onClose={handleClose}>
@@ -15,7 +20,7 @@ export function CustomModal({ children, open, handleClose, size, title }) {
           <Button
             className="w-full py-3"
             gradientMonochrome="failure"
-            onClick={() => setOpenModal(false)}
+            onClick={onSubmit}
           >
             <h1 className="text-2xl font-bold">Confirm</h1>
           </Button>
