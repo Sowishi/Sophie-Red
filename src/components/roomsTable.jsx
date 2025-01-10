@@ -16,16 +16,19 @@ import Lottie from "react-lottie";
 import loader from "../assets/lotties/loader.json";
 import { FaArrowRight } from "react-icons/fa6";
 import { BottomDrawer } from "./bottomDrawer";
-import { MdDelete } from "react-icons/md";
 import CustomGallery from "./gallery";
 import { AiOutlineCloudUpload } from "react-icons/ai";
-
+import { CustomModal } from "./customModal";
+import CustomInput from "./customInput";
+import { handleFileUpload } from "../utils/uploadPhoto";
 export function RoomsTable() {
   const { fetchCollection } = useFetchCollection();
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
   const [selectedRoom, setSelectedRoom] = useState(null);
+  const [uploadModal, setUploadModal] = useState(false);
+  const [photo, setPhoto] = useState();
 
   useEffect(() => {
     fetchCollection("rooms", setRooms, setLoading);
@@ -66,6 +69,11 @@ export function RoomsTable() {
       </div>
     );
   }
+
+  const handleImageUpload = async (file) => {
+    const output = await handleFileUpload(file);
+    setPhoto(output);
+  };
 
   return (
     <div className="overflow-x-auto">
@@ -127,7 +135,10 @@ export function RoomsTable() {
                 {selectedRoom?.status}
               </Badge>
             </h1>
-            <Button gradientMonochrome="failure">
+            <Button
+              onClick={() => setUploadModal(true)}
+              gradientMonochrome="failure"
+            >
               Upload Photo <AiOutlineCloudUpload className="ml-2 h-5 w-5" />
             </Button>
           </div>
@@ -137,6 +148,22 @@ export function RoomsTable() {
           </div>
         </div>
       </BottomDrawer>
+      <CustomModal
+        title={"Upload Photo"}
+        open={uploadModal}
+        handleClose={() => setUploadModal(false)}
+      >
+        <CustomInput
+          onChange={(event) => handleImageUpload(event.target.files[0])}
+          type={"file"}
+          label={"Upload Photo"}
+        />
+        {photo && (
+          <div className="flex justify-center items-center p-10">
+            <img style={{ width: 300, height: 300 }} src={photo} alt="" />
+          </div>
+        )}
+      </CustomModal>
     </div>
   );
 }

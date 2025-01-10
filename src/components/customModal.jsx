@@ -14,7 +14,7 @@ export function CustomModal({
 }) {
   return (
     <>
-      <Modal size={size} dismissible show={open} onClose={handleClose}>
+      <Modal size={size} show={open} onClose={handleClose}>
         <Modal.Header>
           {loading ? "Submitting, please wait..." : title}
         </Modal.Header>
