@@ -1,17 +1,29 @@
 "use client";
 
-import { Button, Checkbox, Spinner, Table, TextInput } from "flowbite-react";
+import {
+  Badge,
+  Button,
+  Checkbox,
+  Spinner,
+  Table,
+  TextInput,
+} from "flowbite-react";
 import { useEffect, useState } from "react";
 import useFetchCollection from "../hooks/useFetchCollection";
 import { CiSearch } from "react-icons/ci";
 import empty from "../assets/empty-box.png";
 import Lottie from "react-lottie";
 import loader from "../assets/lotties/loader.json";
+import { FaArrowRight } from "react-icons/fa6";
+import { BottomDrawer } from "./bottomDrawer";
+import { MdDelete } from "react-icons/md";
+
 export function RoomsTable() {
   const { fetchCollection } = useFetchCollection();
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
+  const [selectedRoom, setSelectedRoom] = useState(null);
 
   useEffect(() => {
     fetchCollection("rooms", setRooms, setLoading);
@@ -88,12 +100,34 @@ export function RoomsTable() {
               <Table.Cell>{room.adultCount}</Table.Cell>
               <Table.Cell>{room.childCount}</Table.Cell>
               <Table.Cell>
-                <Button color="failure">View Room</Button>
+                <Button onClick={() => setSelectedRoom(room)} color="failure">
+                  View Room <FaArrowRight className="ml-2 h-5 w-5" />
+                </Button>
               </Table.Cell>
             </Table.Row>
           ))}
         </Table.Body>
       </Table>
+
+      {/* Modals */}
+      <BottomDrawer
+        open={selectedRoom}
+        handleClose={() => setSelectedRoom(null)}
+      >
+        <div className="container p-10 h-[600px]">
+          <div className="header flex justify-between items-center">
+            <h1 className="text-3xl font-bold flex items-center justify-start">
+              Room Number: #{selectedRoom?.roomNumber}{" "}
+              <Badge size="lg" className="ml-3 p-1 px-4">
+                {selectedRoom?.status}
+              </Badge>
+            </h1>
+            <Button gradientMonochrome="failure">
+              Delete Room <MdDelete className="ml-2 h-5 w-5" />
+            </Button>
+          </div>
+        </div>
+      </BottomDrawer>
     </div>
   );
 }
