@@ -11,9 +11,12 @@ import { CustomTextArea } from "../../components/customTextarea";
 import useCrudRooms from "../../hooks/useCrudRooms";
 import { FaPlus } from "react-icons/fa";
 import { toast } from "react-toastify";
+import Lottie from "react-lottie";
+import loader from "../../assets/lotties/loader.json";
 
 const Room = () => {
   const [addRoomModal, setAddRoomModal] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { addRoom } = useCrudRooms();
 
   const [forms, setForms] = useState({
@@ -45,6 +48,7 @@ const Room = () => {
 
   const handleSubmit = async () => {
     // Check for empty fields
+    setLoading(true);
     const isFormValid = Object.values(forms).every(
       (field) => field.trim() !== ""
     );
@@ -53,12 +57,16 @@ const Room = () => {
       toast.error(
         "All fields are required. Please fill out the form completely."
       );
+      setLoading(false);
       return;
     }
     try {
       await addRoom(forms);
-      setAddRoomModal(false);
-      toast.success("You successfully added a room.");
+      setTimeout(() => {
+        setLoading(false);
+        setAddRoomModal(false);
+        toast.success("You successfully added a room.");
+      }, 1000);
     } catch (error) {
       console.log(error.message);
     }
@@ -69,7 +77,7 @@ const Room = () => {
       {/* Header */}
       <div className="flex justify-between items-center">
         <div className="div">
-          <h1 className="text-5xl font-bold">Room Management</h1>
+          <h1 className="text-4xl font-bold">Room Management</h1>
           <p className="mt-3 text-gray-500">
             You can manage the room and monitor the rooms in this section
           </p>
@@ -95,69 +103,86 @@ const Room = () => {
         open={addRoomModal}
         handleClose={() => setAddRoomModal(false)}
         onSubmit={handleSubmit}
+        loading={loading}
       >
-        <div className="container">
-          <div className="flex">
-            <div className="basis-6/12">
-              <CustomInput
-                label={"Room Number"}
-                value={forms.roomNumber}
-                onChange={handleChange}
-                name={"roomNumber"}
-                placeholder={"Please enter the room number"}
-              />
+        {!loading && (
+          <div className="container">
+            <div className="flex">
+              <div className="basis-6/12">
+                <CustomInput
+                  label={"Room Number"}
+                  value={forms.roomNumber}
+                  onChange={handleChange}
+                  name={"roomNumber"}
+                  placeholder={"Please enter the room number"}
+                />
+              </div>
+              <div className="basis-6/12">
+                <CustomInput
+                  label={"Price Per Night (₱)"}
+                  value={forms.pricePerNight}
+                  onChange={handleChange}
+                  name={"pricePerNight"}
+                  placeholder={"Please enter the price per night"}
+                />
+              </div>
             </div>
-            <div className="basis-6/12">
-              <CustomInput
-                label={"Price Per Night (₱)"}
-                value={forms.pricePerNight}
-                onChange={handleChange}
-                name={"pricePerNight"}
-                placeholder={"Please enter the price per night"}
-              />
+            <div className="flex">
+              <div className="basis-6/12">
+                <CustomInput
+                  label={"Number of adult allowed"}
+                  value={forms.adultCount}
+                  onChange={handleChange}
+                  name={"adultCount"}
+                  placeholder={"Please enter number of adult allowed"}
+                />
+              </div>
+              <div className="basis-6/12">
+                <CustomInput
+                  label={"Number of child allowed"}
+                  value={forms.childCount}
+                  onChange={handleChange}
+                  name={"childCount"}
+                  placeholder={"Please enter number of child allowed"}
+                />
+              </div>
+            </div>
+            <div className="flex">
+              <div className="basis-6/12">
+                <CustomSelect
+                  value={forms.roomType}
+                  data={["Please select the room type", ...roomTypeData]}
+                  label={"Room Type"}
+                  name={"roomType"}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="basis-6/12">
+                <CustomTextArea
+                  onChange={handleChange}
+                  label={"Description"}
+                  name={"description"}
+                  value={forms.description}
+                  placeholder={"Please enter the description"}
+                />
+              </div>
             </div>
           </div>
-          <div className="flex">
-            <div className="basis-6/12">
-              <CustomInput
-                label={"Adult Count Allowed"}
-                value={forms.adultCount}
-                onChange={handleChange}
-                name={"adultCount"}
-                placeholder={"Please enter number of adult allowed"}
+        )}
+
+        {loading && (
+          <>
+            <div className="container">
+              <Lottie
+                style={{ width: 150 }}
+                options={{
+                  animationData: loader,
+                  autoplay: true,
+                }}
               />
             </div>
-            <div className="basis-6/12">
-              <CustomInput
-                label={"Child Count Allowed"}
-                value={forms.childCount}
-                onChange={handleChange}
-                name={"childCount"}
-                placeholder={"Please enter number of child allowed"}
-              />
-            </div>
-          </div>
-          <div className="flex">
-            <div className="basis-6/12">
-              <CustomSelect
-                value={forms.roomType}
-                data={["Please select the room type", ...roomTypeData]}
-                label={"Room Type"}
-                name={"roomType"}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="basis-6/12">
-              <CustomTextArea
-                onChange={handleChange}
-                label={"Description"}
-                name={"description"}
-                value={forms.description}
-                placeholder={"Please enter the description"}
-              />
-            </div>
-          </div>
-        </div>
+          </>
+        )}
       </CustomModal>
     </DashboardLayout>
   );

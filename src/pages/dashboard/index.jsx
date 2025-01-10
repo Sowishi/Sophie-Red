@@ -10,7 +10,7 @@ const Index = () => {
       {/* Header */}
       <div className="flex justify-between items-center">
         <div className="div">
-          <h1 className="text-5xl font-bold">Dashboard</h1>
+          <h1 className="text-4xl font-bold">Dashboard</h1>
           <p className="mt-3 text-gray-500">
             Sophie Red Hotel Dashboard{" "}
             <span style={{ color: "#6251CB" }} className="cursor-pointer">
