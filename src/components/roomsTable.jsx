@@ -21,6 +21,7 @@ import { AiOutlineCloudUpload } from "react-icons/ai";
 import { CustomModal } from "./customModal";
 import CustomInput from "./customInput";
 import { handleFileUpload } from "../utils/uploadPhoto";
+import { toast } from "react-toastify";
 export function RoomsTable() {
   const { fetchCollection } = useFetchCollection();
   const [rooms, setRooms] = useState([]);
@@ -73,6 +74,14 @@ export function RoomsTable() {
   const handleImageUpload = async (file) => {
     const output = await handleFileUpload(file);
     setPhoto(output);
+  };
+
+  const handleSubmit = () => {
+    if (photo) {
+      console.log(photo);
+    } else {
+      toast.error("Please Upload a photo before uploading...");
+    }
   };
 
   return (
@@ -149,6 +158,7 @@ export function RoomsTable() {
         </div>
       </BottomDrawer>
       <CustomModal
+        onSubmit={handleSubmit}
         title={"Upload Photo"}
         open={uploadModal}
         handleClose={() => setUploadModal(false)}
