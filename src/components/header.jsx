@@ -1,21 +1,25 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
-import logo from "../assets/logo.png";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import logo from "../assets/logo2.png";
 import { HiHome, HiUsers, HiDocumentReport } from "react-icons/hi";
 import { RiComputerLine } from "react-icons/ri";
 import { MdHotel, MdOutlineCleaningServices } from "react-icons/md";
 import { FaAngleDown } from "react-icons/fa";
+import { Dropdown } from "flowbite-react";
 
 const Header = () => {
   const location = useLocation();
+  const navigation = useNavigate();
 
   const isCurrentPath = (path) => location.pathname === path;
 
   return (
     <div className="header bg-slate-900 px-20 p-5 flex items-center justify-between w-full">
       <div className="flex items-center justify-start">
-        <img src={logo} style={{ width: 200 }} alt="Logo" />
-        <h1 className="text-white ml-3 text-lg font-bold">Sophie Red Hotel</h1>
+        <img src={logo} style={{ width: 50 }} alt="Logo" />
+        <h1 className="text-white ml-3 text-sm font-medium text-nowrap italic">
+          Sophie Red Hotel
+        </h1>
       </div>
 
       <div className="navigation flex-1 flex mx-10 text-white px-5">
@@ -37,33 +41,7 @@ const Header = () => {
           <RiComputerLine color="white" className="mr-3" />
           <h1 className="text-sm font-extralight">Front Desk</h1>
         </Link>
-        <Link
-          to="/room"
-          className={`flex px-5 cursor-pointer mx-2 py-3 rounded-lg justify-start items-center ${
-            isCurrentPath("/room") ? "bg-red-800" : "bg-slate-700"
-          }`}
-        >
-          <MdHotel color="white" className="mr-3" />
-          <h1 className="text-sm font-extralight">Room</h1>
-        </Link>
-        <Link
-          to="/housekeeping"
-          className={`flex px-5 cursor-pointer mx-2 py-3 rounded-lg justify-start items-center ${
-            isCurrentPath("/housekeeping") ? "bg-red-800" : "bg-slate-700"
-          }`}
-        >
-          <MdOutlineCleaningServices color="white" className="mr-3" />
-          <h1 className="text-sm font-extralight">Housekeeping</h1>
-        </Link>
-        <Link
-          to="/users"
-          className={`flex px-5 cursor-pointer mx-2 py-3 rounded-lg justify-start items-center ${
-            isCurrentPath("/users") ? "bg-red-800" : "bg-slate-700"
-          }`}
-        >
-          <HiUsers color="white" className="mr-3" />
-          <h1 className="text-sm font-extralight">Users</h1>
-        </Link>
+
         <Link
           to="/report"
           className={`flex px-5 cursor-pointer mx-2 py-3 rounded-lg justify-start items-center ${
@@ -73,6 +51,18 @@ const Header = () => {
           <HiDocumentReport color="white" className="mr-3" />
           <h1 className="text-sm font-extralight">Report</h1>
         </Link>
+        <Dropdown gradientMonochrome="failure" label="Services">
+          <Dropdown.Header>
+            <span className="block text-sm">Sophie Red Hotel</span>
+          </Dropdown.Header>
+          <Dropdown.Item onClick={() => navigation("/room")} icon={MdHotel}>
+            Room Management
+          </Dropdown.Item>
+          <Dropdown.Item icon={MdOutlineCleaningServices}>
+            Housekeeper Management
+          </Dropdown.Item>
+          <Dropdown.Item icon={HiUsers}>Users Management</Dropdown.Item>
+        </Dropdown>
       </div>
 
       <div className="flex items-center justify-start cursor-pointer">
