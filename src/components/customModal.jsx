@@ -17,11 +17,7 @@ export function CustomModal({
         <Modal.Header>{title}</Modal.Header>
         <Modal.Body>{children}</Modal.Body>
         <Modal.Footer>
-          <Button
-            className="w-full py-1"
-            gradientMonochrome="info"
-            onClick={handleClose}
-          >
+          <Button className="w-full py-1" color="dark" onClick={handleClose}>
             <h1 className="text-lg font-bold">Cancel</h1>
           </Button>
           <Button
