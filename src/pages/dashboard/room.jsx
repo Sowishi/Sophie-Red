@@ -8,10 +8,11 @@ import CustomInput from "../../components/customInput";
 import { CustomSelect } from "../../components/customSelect";
 import { roomTypeData } from "../../utils/roomType";
 import { CustomTextArea } from "../../components/customTextarea";
+import useCrudRooms from "../../hooks/useCrudRooms";
 
 const Room = () => {
   const [addRoomModal, setAddRoomModal] = useState(false);
-
+  const { addRoom } = useCrudRooms();
   const [forms, setForms] = useState({
     roomNumber: "",
     pricePerNight: "",
@@ -39,8 +40,8 @@ const Room = () => {
     setForms({ ...forms, [name]: value });
   };
 
-  const handleSubmit = () => {
-    console.log(forms);
+  const handleSubmit = async () => {
+    await addRoom(forms);
   };
 
   return (
