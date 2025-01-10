@@ -92,7 +92,7 @@ const Room = () => {
         </Button>{" "}
       </div>
 
-      <div className="cotainer mt-10 bg-[#F6F6F6] p-10 rounded-lg min-h-[600px]">
+      <div className="cotainer mt-10 bg-[#F6F6F6] p-10 rounded-3xl min-h-[600px]">
         <RoomsTable />
       </div>
 
