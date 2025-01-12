@@ -25,17 +25,24 @@ import { toast } from "react-toastify";
 import useCrudRooms from "../hooks/useCrudRooms";
 export function RoomsTable() {
   const { fetchCollection } = useFetchCollection();
-  const { addRoomImage } = useCrudRooms();
+  const { addRoomImage, fetchRoomImages } = useCrudRooms();
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [uploadModal, setUploadModal] = useState(false);
   const [photo, setPhoto] = useState();
+  const [images, setImages] = useState([]);
 
   useEffect(() => {
     fetchCollection("rooms", setRooms, setLoading);
   }, []);
+
+  useEffect(() => {
+    if (selectedRoom) {
+      fetchRoomImages(selectedRoom?.id, setImages);
+    }
+  }, [selectedRoom]);
 
   if (loading) {
     return (
@@ -78,9 +85,12 @@ export function RoomsTable() {
     setPhoto(output);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (photo) {
-      addRoomImage(selectedRoom?.id, photo);
+      await addRoomImage(selectedRoom?.id, photo);
+      setUploadModal(false);
+      setPhoto(null);
+      toast.success("Successfully added a picture.");
     } else {
       toast.error("Please Upload a photo before uploading...");
     }
@@ -154,8 +164,7 @@ export function RoomsTable() {
             </Button>
           </div>
           <div className="wrapper p-20 w-full ">
-            <h1 className="text-2xl mb-10">Room Image Gallery</h1>
-            <CustomGallery />
+            <CustomGallery images={images} />
           </div>
         </div>
       </BottomDrawer>
