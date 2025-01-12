@@ -23,7 +23,7 @@ const Login = () => {
       <div className="container bg-white w-11/12 h-[90vh] rounded-lg shadow-lg overflow-hidden">
         <div className="flex h-full">
           {/* Left Side: Image Carousel */}
-          <div className="basis-6/12">
+          <div className="hidden md:flex basis-6/12">
             <Carousel className="h-full">
               <img
                 src={hotel1}
@@ -39,7 +39,7 @@ const Login = () => {
           </div>
 
           {/* Right Side: Login Form */}
-          <div className="basis-6/12 flex items-center justify-center p-10">
+          <div className="basis-full md:basis-6/12 flex items-center justify-center p-10">
             <div className="w-full max-w-md">
               <img src={logo} alt="" />
               <h1 className="text-2xl font-bold text-center mb-6 mt-5">

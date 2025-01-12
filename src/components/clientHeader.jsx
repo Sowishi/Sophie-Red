@@ -6,11 +6,12 @@ import { ImMenu } from "react-icons/im";
 import { BottomDrawer } from "./bottomDrawer";
 import { useRef, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const ClientHeader = () => {
   const [bookNowModal, setBookNowModal] = useState(false);
   const dropdownRef = useRef();
-
+  const navigation = useNavigate();
   const closeDropdown = () => {
     console.log("Fdkj");
     if (dropdownRef.current) {
@@ -24,7 +25,7 @@ const ClientHeader = () => {
         background:
           "linear-gradient(43deg, rgba(225,240,247,1) 1%, rgb(162,0,0) 45%)",
       }}
-      className="header bg-white p-5 px-10 flex items-center justify-between  w-full z-10"
+      className="header bg-white p-5 px-10 flex items-center justify-between fixed w-full z-10"
     >
       <img className="w-[130px] hidden xl:flex" src={logo} alt="Logo" />
       <ImMenu size={25} className="text-white font-bold xl:hidden" />
@@ -105,7 +106,11 @@ const ClientHeader = () => {
         </div>
       </div>
       <div className="wrapper hidden xl:flex items-center justify-center px-16">
-        <Button gradientMonochrome="info" className="mx-3 px-5">
+        <Button
+          onClick={() => navigation("/login")}
+          gradientMonochrome="info"
+          className="mx-3 px-5"
+        >
           Login <CiLogin color="white" className="ml-2 h-5 w-5" />
         </Button>
       </div>
