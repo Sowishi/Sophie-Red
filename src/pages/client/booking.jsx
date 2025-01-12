@@ -56,7 +56,7 @@ const Booking = () => {
 
   return (
     <>
-      <div className="container border border-red-500">
+      <div className="w-full min-h-screen">
         {/* Hero Section */}
         <motion.div
           style={{
@@ -64,22 +64,22 @@ const Booking = () => {
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
-          className="w-screen h-screen relative"
+          className="w-full h-screen relative"
           variants={fadeIn}
           initial="hidden"
           animate="visible"
         >
           <ClientHeader />
           <motion.div
-            className="content absolute bottom-20 left-10 text-white w-[600px]"
+            className="content absolute bottom-20 left-10 text-white md:w-[600px]"
             variants={slideInFromLeft}
             initial="hidden"
             animate="visible"
           >
-            <h1 className="text-3xl font-bold mb-3">
+            <h1 className="md:text-3xl font-bold mb-3">
               Welcome to Sophie Red Hotel
             </h1>
-            <p className="mb-5">
+            <p className="mb-5 text-xs md:text-sm">
               Welcome to Sophie Red Hotel – where Filipino warmth meets
               world-class comfort. Nestled in the heart of the Philippines, we
               offer a perfect blend of modern luxury and local hospitality.
@@ -123,147 +123,11 @@ const Booking = () => {
             </div>
           </motion.div>
           <div className="bg-[rgb(162,0,0)] w-full p-3 absolute bottom-0">
-            <p className="text-white">
+            <p className="text-white text-nowrap text-[5.5px]  lg:text-sm ">
               +639750479700 | MP7R+M68, Bobuntugan, Butuan - Cagayan de Oro -
               Iligan Rd, Bayan ng Jasaan, Lalawigan ng Misamis Oriental
             </p>
           </div>
-        </motion.div>
-        {/* Content Section */}
-        <div className="min-h-screen container mx-auto bg-white p-5">
-          <motion.div variants={fadeIn} initial="hidden" animate="visible">
-            <Button.Group>
-              <Button onClick={() => scrollToSection("overview")} color="gray">
-                <HiOutlineViewList className="mr-3 h-4 w-4" /> Overview
-              </Button>
-              <Button onClick={() => scrollToSection("about")} color="gray">
-                <HiOutlineLightBulb className="mr-3 h-4 w-4" /> About
-              </Button>
-              <Button onClick={() => scrollToSection("location")} color="gray">
-                <HiOutlineLocationMarker className="mr-3 h-4 w-4" /> Location
-              </Button>
-              <Button onClick={() => scrollToSection("policies")} color="gray">
-                <HiOutlineDocumentText className="mr-3 h-4 w-4" /> Policies
-              </Button>
-            </Button.Group>
-          </motion.div>
-
-          {/* Highlights Section */}
-          <motion.div
-            className="flex mt-10"
-            variants={slideInFromRight}
-            initial="hidden"
-            animate="visible"
-          >
-            <div className="basis-7/12">
-              <div className="wrapper mt-5 mx-10">
-                <h1 className="text-3xl font-semibold">
-                  Sophie Red Hotel and Onshore Restaurant
-                </h1>
-                <p className="text-sm">
-                  Butuan - Cagayan de Oro - Iligan Road, Jasaan, Jasaan,
-                  Philippines, 9003 - See map
-                </p>
-                <hr className="mt-5 mb-3" />
-                <p className="text-sm">
-                  The car parking and the Wi-Fi are always free, so you can stay
-                  in touch and come and go as you please. Conveniently situated
-                  in the Jasaan part of Jasaan, this property puts you close to
-                  attractions and interesting dining options. Rated with 4
-                  stars, this high-quality property provides guests with access
-                  to massage and outdoor pool on-site.
-                </p>
-              </div>
-              {/* Highlights */}
-              <div className="wrapper mt-5 mx-10 border p-5 shadow-sm rounded">
-                <h1 className="font-semibold text-2xl">Highlights</h1>
-                <div className="flex items-center justify-start mt-5">
-                  <div className="flex items-center mb-3 flex-col justify-center mx-3">
-                    <HiOutlineSparkles className="text-blue-500 mr-3 h-6 w-6" />
-                    <span className="text-sm">Great for activities</span>
-                  </div>
-                  <div className="flex items-center mb-3 flex-col justify-center mx-3">
-                    <HiOutlineTruck className="text-blue-500 mr-3 h-6 w-6" />
-                    <span className="text-sm">Airport transfer</span>
-                  </div>
-                  <div className="flex items-center mb-3 flex-col justify-center mx-3">
-                    <HiOutlineClock className="text-blue-500 mr-3 h-6 w-6" />
-                    <span className="text-sm">Check-in [24-hour]</span>
-                  </div>
-                  <div className="flex items-center mb-3 flex-col justify-center mx-3">
-                    <HiOutlineWifi className="text-blue-500 mr-3 h-6 w-6" />
-                    <span className="text-sm">Free Wi-Fi in all rooms!</span>
-                  </div>
-                  <div className="flex items-center mb-3 flex-col justify-center mx-3">
-                    <HiUser className="text-blue-500 mr-3 h-6 w-6" />
-                    <span className="text-sm">Room service [24-hour]</span>
-                  </div>
-                </div>
-              </div>
-              <Amenities />
-              <Facilities />
-            </div>
-            <div className="basis-5/12 flex flex-col items-center justify-center">
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3944.287762941997!2d124.73801817494206!3d8.664159191383336!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x32ffe45d368a3333%3A0xaae58833c816e934!2sSophie%20Red%20Hotel%20and%20Onshore%20Restaurant!5e0!3m2!1sen!2sph!4v1736693142618!5m2!1sen!2sph"
-                width="100%"
-                height="450"
-                style={{ border: 0 }}
-                allowFullScreen=""
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              ></iframe>
-              <hr />
-              <ParkingAndLandmarks />
-            </div>
-          </motion.div>
-
-          {/* More About Sophie */}
-          <motion.div
-            id="about"
-            className="mx-10 mt-10 p-10 shadow-lg border rounded-lg"
-            variants={fadeIn}
-            initial="hidden"
-            animate="visible"
-          >
-            <div className="wrapper w-full">
-              <h1 className="text-3xl font-semibold mb-3">
-                <span className="text-lg">More about </span>
-                <br /> Sophie Red Hotel and Onshore Restaurant
-              </h1>
-              <img
-                className="w-full h-[300px] object-center"
-                src={bg2}
-                alt=""
-              />
-            </div>
-            <div className="content mt-5">
-              <SophieAccord />
-            </div>
-            <div id="policies">
-              <Policies />
-            </div>
-          </motion.div>
-        </div>
-        <div className="mt-10">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3944.287762941997!2d124.73801817494206!3d8.664159191383336!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x32ffe45d368a3333%3A0xaae58833c816e934!2sSophie%20Red%20Hotel%20and%20Onshore%20Restaurant!5e0!3m2!1sen!2sph!4v1736693142618!5m2!1sen!2sph"
-            width="100%"
-            height="450"
-            style={{ border: 0 }}
-            allowFullScreen=""
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          ></iframe>
-        </div>
-        {/* Footer */}
-        <motion.div
-          className="footer mt-20"
-          variants={slideInFromLeft}
-          initial="hidden"
-          animate="visible"
-        >
-          <ClientFooter />
         </motion.div>
       </div>
     </>

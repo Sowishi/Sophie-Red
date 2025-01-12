@@ -11,10 +11,14 @@ const ClientHeader = () => {
         background:
           "linear-gradient(43deg, rgba(225,240,247,1) 1%, rgb(162,0,0) 45%)",
       }}
-      className="header bg-white p-5 px-10 flex items-center justify-between fixed w-full z-10"
+      className="header bg-white p-5 px-10 flex items-center justify-between  w-full z-10"
     >
-      <img className="w-[130px]" src={logo} alt="Logo" />
-      <div className="dates flex-1 flex items-center justify-center">
+      <img className="w-[130px] hidden xl:flex" src={logo} alt="Logo" />
+      <h1 className="text-white font-bold xl:hidden">Sophie Red Hotel</h1>
+      <Button className="xl:hidden" color="dark">
+        Book Now
+      </Button>
+      <div className="dates hidden flex-1 xl:flex items-center justify-center">
         <CustomDatePicker label={"Arrival Date"} />
         <CustomDatePicker label={"Departure Date"} />
         <div className="persons ml-3">
@@ -79,7 +83,7 @@ const ClientHeader = () => {
           <Button>Check Availability</Button>
         </div>
       </div>
-      <div className="wrapper flex items-center justify-center px-16">
+      <div className="wrapper hidden xl:flex items-center justify-center px-16">
         <Button gradientMonochrome="info" className="mx-3 px-5">
           Login <CiLogin color="white" className="ml-2 h-5 w-5" />
         </Button>
