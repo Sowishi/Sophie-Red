@@ -26,13 +26,16 @@ const Amenities = () => {
   ];
 
   return (
-    <div className="p-4 flex flex-col text-gray-800 md:mx-10 mt-5 border shadow-sm rounded">
+    <div className="p-4 flex flex-col text-gray-800 mx-5 md:mx-10 mt-5 border shadow-sm rounded">
       <h1 className="font-semibold text-2xl">Staycation Offers</h1>
       <p className="opacity-50 mb-5">Get special benefits for your stay</p>
-      <div className="flex">
+      <div className="flex flex-wrap -mx-4">
         {amenities.map((section) => (
-          <div key={section.category} className="mb-6 basis-4/12">
-            <h2 className="text-lg  mb-4">{section.category}</h2>
+          <div
+            key={section.category}
+            className="mb-6 px-4 w-full sm:w-6/12 lg:w-4/12"
+          >
+            <h2 className="text-lg mb-4">{section.category}</h2>
             <ul className="space-y-2">
               {section.items.map((item, index) => (
                 <li key={index} className="flex items-center space-x-2">

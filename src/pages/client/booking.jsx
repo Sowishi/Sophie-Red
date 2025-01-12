@@ -160,7 +160,7 @@ const Booking = () => {
             initial="hidden"
             animate="visible"
           >
-            <div className="basis-full border border-red-500 md:basis-7/12">
+            <div className="basis-full  md:basis-7/12">
               <div className="wrapper mt-5 p-3 md:mx-10">
                 <h1 className="text-2xl md:text-3xl font-semibold">
                   Sophie Red Hotel and Onshore Restaurant
