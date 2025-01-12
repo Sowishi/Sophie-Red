@@ -4,11 +4,19 @@ import logo from "../assets/logo.png";
 import { CiLogin } from "react-icons/ci";
 import { ImMenu } from "react-icons/im";
 import { BottomDrawer } from "./bottomDrawer";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { FaArrowLeft } from "react-icons/fa";
 
 const ClientHeader = () => {
   const [bookNowModal, setBookNowModal] = useState(false);
+  const dropdownRef = useRef();
 
+  const closeDropdown = () => {
+    console.log("Fdkj");
+    if (dropdownRef.current) {
+      dropdownRef.current.dispatchEvent(new Event("blur")); // Triggers the dropdown to close
+    }
+  };
   return (
     <div
       style={{
@@ -36,6 +44,7 @@ const ClientHeader = () => {
         <div className="persons ml-3">
           <h1 className="text-sm text-white">Persons</h1>
           <Dropdown
+            ref={dropdownRef}
             className="rounded-2xl text-nowrap"
             color="light"
             dismissOnClick={false}
@@ -106,15 +115,22 @@ const ClientHeader = () => {
         handleClose={() => setBookNowModal(false)}
       >
         <div className="container mx-auto min-h-[450px]">
-          <h1 className="text-2xl font-bold text-center mt-5">
-            Book Now at Sophie Red Hotel
-          </h1>
+          <div className="flex flex-col items-center justify-center mx-5 py-5">
+            <img className="w-[130px]" src={logo} alt="Logo" />
+          </div>
+
           <div className="dates flex-col">
             <CustomDatePicker label={"Arrival Date"} />
             <CustomDatePicker label={"Departure Date"} />
+
+            <div className="voucher my-3">
+              <h1 className="text-sm text-white">Voucher</h1>
+              <TextInput placeholder="Promo Code" />
+            </div>
             <div className="persons my-3">
               <h1 className="text-sm text-white">Persons</h1>
               <Dropdown
+                ref={dropdownRef}
                 className="rounded-2xl text-nowrap"
                 color="light"
                 dismissOnClick={false}
@@ -155,7 +171,7 @@ const ClientHeader = () => {
                     </div>
                   </div>
                   <div className="warpper flex items-center justify-center mt-6">
-                    <Button outline color="info">
+                    <Button onClick={closeDropdown} outline color="info">
                       Cancel
                     </Button>
 
@@ -163,10 +179,6 @@ const ClientHeader = () => {
                   </div>
                 </div>
               </Dropdown>
-            </div>
-            <div className="voucher my-3">
-              <h1 className="text-sm text-white">Voucher</h1>
-              <TextInput placeholder="Promo Code" />
             </div>
             <div className="wrapper mb-5">
               <h1 className="text-sm text-white">Availability</h1>
