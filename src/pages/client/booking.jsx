@@ -74,6 +74,7 @@ const Booking = () => {
             </p>
           </div>
         </div>
+        <div className="h-screen bg-white"></div>
       </div>
     </>
   );

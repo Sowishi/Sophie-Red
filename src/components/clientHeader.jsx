@@ -11,7 +11,7 @@ const ClientHeader = () => {
         background:
           "linear-gradient(43deg, rgba(225,240,247,1) 1%, rgb(162,0,0) 45%)",
       }}
-      className="header bg-white p-5 px-10 flex items-center justify-between"
+      className="header bg-white p-5 px-10 flex items-center justify-between fixed w-full z-10"
     >
       <img className="w-[130px]" src={logo} alt="Logo" />
       <div className="dates flex-1 flex items-center justify-center">
@@ -20,7 +20,7 @@ const ClientHeader = () => {
         <div className="persons ml-3">
           <h1 className="text-sm text-white">Persons</h1>
           <Dropdown
-            className="rounded-2xl"
+            className="rounded-2xl text-nowrap"
             color="light"
             dismissOnClick={false}
             label="2 Adults + 3 Kids"
