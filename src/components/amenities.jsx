@@ -26,7 +26,7 @@ const Amenities = () => {
   ];
 
   return (
-    <div className="p-4 flex flex-col text-gray-800 mx-10 mt-5 border shadow-sm rounded">
+    <div className="p-4 flex flex-col text-gray-800 md:mx-10 mt-5 border shadow-sm rounded">
       <h1 className="font-semibold text-2xl">Staycation Offers</h1>
       <p className="opacity-50 mb-5">Get special benefits for your stay</p>
       <div className="flex">

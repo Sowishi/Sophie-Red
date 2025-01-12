@@ -15,7 +15,7 @@ const ClientHeader = () => {
     >
       <img className="w-[130px] hidden xl:flex" src={logo} alt="Logo" />
       <h1 className="text-white font-bold xl:hidden">Sophie Red Hotel</h1>
-      <Button className="xl:hidden" color="dark">
+      <Button className="xl:hidden" gradientMonochrome="cyan">
         Book Now
       </Button>
       <div className="dates hidden flex-1 xl:flex items-center justify-center">

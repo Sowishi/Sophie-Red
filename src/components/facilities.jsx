@@ -13,7 +13,7 @@ export const Facilities = () => {
   ];
 
   return (
-    <div className="mx-10 mt-5 rounded-lg shadow-sm border p-5">
+    <div className="md:mx-10 mt-5 rounded-lg shadow-sm border p-5">
       <h1 className="font-semibold text-2xl">Facilities</h1>
       <div className="grid grid-cols-2 gap-4 bg-white p-6 ">
         {facilities.map((facility, index) => (
