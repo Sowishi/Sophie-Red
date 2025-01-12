@@ -22,8 +22,10 @@ import { CustomModal } from "./customModal";
 import CustomInput from "./customInput";
 import { handleFileUpload } from "../utils/uploadPhoto";
 import { toast } from "react-toastify";
+import useCrudRooms from "../hooks/useCrudRooms";
 export function RoomsTable() {
   const { fetchCollection } = useFetchCollection();
+  const { addRoomImage } = useCrudRooms();
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
@@ -78,7 +80,7 @@ export function RoomsTable() {
 
   const handleSubmit = () => {
     if (photo) {
-      console.log(photo);
+      addRoomImage(selectedRoom?.id, photo);
     } else {
       toast.error("Please Upload a photo before uploading...");
     }
