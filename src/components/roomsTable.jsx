@@ -14,7 +14,7 @@ import { CiSearch } from "react-icons/ci";
 import empty from "../assets/empty-box.png";
 import Lottie from "react-lottie";
 import loader from "../assets/lotties/loader.json";
-import { FaArrowRight } from "react-icons/fa6";
+import { FaArrowRight, FaTrash } from "react-icons/fa6";
 import { BottomDrawer } from "./bottomDrawer";
 import CustomGallery from "./gallery";
 import { AiOutlineCloudUpload } from "react-icons/ai";
@@ -25,9 +25,10 @@ import { toast } from "react-toastify";
 import useCrudRooms from "../hooks/useCrudRooms";
 export function RoomsTable() {
   const { fetchCollection } = useFetchCollection();
-  const { addRoomImage, fetchRoomImages } = useCrudRooms();
+  const { addRoomImage, fetchRoomImages, deleteRoom } = useCrudRooms();
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [fetchingImage, setFetchingImage] = useState(false);
   const [search, setSearch] = useState("");
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [uploadModal, setUploadModal] = useState(false);
@@ -38,9 +39,17 @@ export function RoomsTable() {
     fetchCollection("rooms", setRooms, setLoading);
   }, []);
 
+  const handleFetchImages = async () => {
+    if (selectedRoom) {
+      setFetchingImage(true);
+      await fetchRoomImages(selectedRoom?.id, setImages);
+      setFetchingImage(false);
+    }
+  };
+
   useEffect(() => {
     if (selectedRoom) {
-      fetchRoomImages(selectedRoom?.id, setImages);
+      handleFetchImages();
     }
   }, [selectedRoom]);
 
@@ -132,9 +141,16 @@ export function RoomsTable() {
               <Table.Cell>{room.adultCount}</Table.Cell>
               <Table.Cell>{room.childCount}</Table.Cell>
 
-              <Table.Cell>
-                <Button onClick={() => setSelectedRoom(room)} color="failure">
+              <Table.Cell className="flex items-center justify-center">
+                <Button onClick={() => setSelectedRoom(room)} color="info">
                   View Room <FaArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+                <Button
+                  className="ml-3"
+                  onClick={() => deleteRoom(room.id)}
+                  color="failure"
+                >
+                  Delete <FaTrash className="ml-2 h-5 w-5" />
                 </Button>
               </Table.Cell>
             </Table.Row>
@@ -164,7 +180,15 @@ export function RoomsTable() {
             </Button>
           </div>
           <div className="wrapper p-20 w-full ">
-            <CustomGallery images={images} />
+            {fetchingImage ? (
+              <>
+                <h1 className="text-3xl text-white text-center mt-5">
+                  Loading...
+                </h1>
+              </>
+            ) : (
+              <CustomGallery images={images} />
+            )}
           </div>
         </div>
       </BottomDrawer>

@@ -1,6 +1,9 @@
 import {
   addDoc,
   collection,
+  deleteDoc,
+  doc,
+  getDocs,
   onSnapshot,
   query,
   serverTimestamp,
@@ -31,19 +34,25 @@ const useCrudRooms = () => {
     }
   };
 
-  const fetchRoomImages = (roomID, setImages) => {
+  const fetchRoomImages = async (roomID, setImages) => {
     const colRef = collection(db, "room-images");
     const q = query(colRef, where("roomID", "==", roomID));
-    onSnapshot(q, (snapshot) => {
-      const output = [];
-      snapshot.docs.forEach((doc) => {
-        output.push({ ...doc.data(), id: doc.id });
-      });
-      setImages(output);
-    });
+    const snapshot = await getDocs(q);
+
+    const output = snapshot.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    }));
+
+    setImages(output);
   };
 
-  return { addRoom, addRoomImage, fetchRoomImages };
+  const deleteRoom = (roomID) => {
+    const docRef = doc(db, "rooms", roomID);
+    deleteDoc(docRef);
+  };
+
+  return { addRoom, addRoomImage, fetchRoomImages, deleteRoom };
 };
 
 export default useCrudRooms;
