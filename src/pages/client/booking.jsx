@@ -34,7 +34,7 @@ const Booking = () => {
             </p>
             <div className="social-icons flex space-x-4">
               <a
-                href="https://facebook.com"
+                href="https://www.facebook.com/SRHotelOfficialPage"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-white hover:text-blue-500 transition"
@@ -67,7 +67,7 @@ const Booking = () => {
               </a>
             </div>
           </div>
-          <div className="bg-red-500 w-full p-3 absolute bottom-0">
+          <div className="bg-[rgb(162,0,0)] w-full p-3 absolute bottom-0">
             <p className="text-white">
               cdo@sedahotels.com T +6388 323 8888 | +63 917 577 5886 C.M. Recto
               corner Corrales Avenue, Cagayan de Oro City 9000, Philippines

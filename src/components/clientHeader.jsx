@@ -9,7 +9,7 @@ const ClientHeader = () => {
       style={{
         background: "rgb(247,65,65)",
         background:
-          "linear-gradient(43deg, rgba(225,240,247,1) 1%, rgba(247,65,65,1) 45%)",
+          "linear-gradient(43deg, rgba(225,240,247,1) 1%, rgb(162,0,0) 45%)",
       }}
       className="header bg-white p-5 px-10 flex items-center justify-between"
     >
