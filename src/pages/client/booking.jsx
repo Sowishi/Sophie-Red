@@ -76,7 +76,7 @@ const Booking = () => {
             initial="hidden"
             animate="visible"
           >
-            <h1 className="md:text-3xl font-bold mb-3">
+            <h1 className="text-lg md:text-3xl font-bold mb-3">
               Welcome to Sophie Red Hotel
             </h1>
             <p className="mb-5 text-xs md:text-sm">

@@ -84,13 +84,13 @@ const ClientHeader = () => {
                   </Button>
                 </div>
               </div>
-              <div className="warpper flex items-center justify-center mt-6">
+              {/* <div className="warpper flex items-center justify-center mt-6">
                 <Button outline color="info">
                   Cancel
                 </Button>
 
                 <Button className="ml-5">Ok, Done</Button>
-              </div>
+              </div> */}
             </div>
           </Dropdown>
         </div>
@@ -170,13 +170,13 @@ const ClientHeader = () => {
                       </Button>
                     </div>
                   </div>
-                  <div className="warpper flex items-center justify-center mt-6">
+                  {/* <div className="warpper flex items-center justify-center mt-6">
                     <Button onClick={closeDropdown} outline color="info">
                       Cancel
                     </Button>
 
                     <Button className="ml-5">Ok, Done</Button>
-                  </div>
+                  </div> */}
                 </div>
               </Dropdown>
             </div>
