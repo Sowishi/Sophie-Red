@@ -1,3 +1,4 @@
+import { Button } from "flowbite-react";
 import bg from "../../assets/hotels/snapedit_1736691230278.jpeg";
 import ClientHeader from "../../components/clientHeader";
 import {
@@ -6,6 +7,21 @@ import {
   FaInstagram,
   FaLinkedinIn,
 } from "react-icons/fa";
+import {
+  HiOutlineViewList,
+  HiOutlineLocationMarker,
+  HiOutlineLightBulb,
+  HiOutlineDocumentText,
+  HiOutlineOfficeBuilding,
+  HiUser,
+} from "react-icons/hi";
+import {
+  HiOutlineSparkles,
+  HiOutlineTruck,
+  HiOutlineClock,
+  HiOutlineWifi,
+} from "react-icons/hi";
+import Amenities from "../../components/amenities";
 
 const Booking = () => {
   return (
@@ -74,7 +90,94 @@ const Booking = () => {
             </p>
           </div>
         </div>
-        <div className="h-screen bg-white"></div>
+        <div className="h-screen container mx-auto bg-white p-5">
+          <div>
+            <Button.Group>
+              <Button color="gray">
+                <HiOutlineViewList className="mr-3 h-4 w-4" />
+                Overview
+              </Button>
+              <Button color="gray">
+                <HiOutlineLightBulb className="mr-3 h-4 w-4" />
+                Trip Recommendation
+              </Button>
+              <Button color="gray">
+                <HiOutlineOfficeBuilding className="mr-3 h-4 w-4" />
+                Facilities
+              </Button>
+              <Button color="gray">
+                <HiOutlineLocationMarker className="mr-3 h-4 w-4" />
+                Location
+              </Button>
+              <Button color="gray">
+                <HiOutlineDocumentText className="mr-3 h-4 w-4" />
+                Policies
+              </Button>
+            </Button.Group>
+          </div>
+          {/* Overview Content */}
+          <div className="flex mt-10">
+            <div className="basis-7/12">
+              <div className="wrapper mt-5 mx-10">
+                <h1 className="text-3xl font-semibold">
+                  Sophie Red Hotel and Onshore Restaurant
+                </h1>
+                <p className="text-sm">
+                  Butuan - Cagayan de Oro - Iligan Road, Jasaan, Jasaan,
+                  Philippines, 9003 - See map
+                </p>
+                <hr className="mt-5 mb-3" />
+                <p className="text-sm">
+                  The car parking and the Wi-Fi are always free, so you can stay
+                  in touch and come and go as you please. Conveniently situated
+                  in the Jasaan part of Jasaan, this property puts you close to
+                  attractions and interesting dining options. Rated with 4
+                  stars, this high-quality property provides guests with access
+                  to massage and outdoor pool on-site.
+                </p>
+              </div>
+              {/* Highlights */}
+              <div className="wrapper mt-5 mx-10 border p-5 shadow-sm rounded">
+                <h1 className="font-semibold text-2xl">Highlights</h1>
+                <div className="flex items-center justify-start mt-5">
+                  <div className="flex items-center mb-3 flex-col justify-center mx-3">
+                    <HiOutlineSparkles className="text-blue-500 mr-3 h-6 w-6" />
+                    <span className="text-sm">Great for activities</span>
+                  </div>
+                  <div className="flex items-center mb-3 flex-col justify-center mx-3">
+                    <HiOutlineTruck className="text-blue-500 mr-3 h-6 w-6" />
+                    <span className="text-sm">Airport transfer</span>
+                  </div>
+                  <div className="flex items-center mb-3 flex-col justify-center mx-3">
+                    <HiOutlineClock className="text-blue-500 mr-3 h-6 w-6" />
+                    <span className="text-sm">Check-in [24-hour]</span>
+                  </div>
+                  <div className="flex items-center mb-3 flex-col justify-center mx-3">
+                    <HiOutlineWifi className="text-blue-500 mr-3 h-6 w-6" />
+                    <span className="text-sm">Free Wi-Fi in all rooms!</span>
+                  </div>
+                  <div className="flex items-center mb-3 flex-col justify-center mx-3">
+                    <HiUser className="text-blue-500 mr-3 h-6 w-6" />
+                    <span className="text-sm">Room service [24-hour]</span>
+                  </div>
+                </div>
+              </div>
+              <Amenities />
+            </div>
+            <div className="basis-5/12">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3944.287762941997!2d124.73801817494206!3d8.664159191383336!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x32ffe45d368a3333%3A0xaae58833c816e934!2sSophie%20Red%20Hotel%20and%20Onshore%20Restaurant!5e0!3m2!1sen!2sph!4v1736693142618!5m2!1sen!2sph"
+                width="100%"
+                height="450"
+                style={{ border: 0 }}
+                allowFullScreen=""
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              ></iframe>
+              <hr />
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );
