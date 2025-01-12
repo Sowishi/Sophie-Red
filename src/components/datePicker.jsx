@@ -14,7 +14,7 @@ export const CustomDatePicker = ({ label }) => {
   };
 
   return (
-    <div className="flex flex-col items-start justify-start mx-3">
+    <div className="flex flex-col items-start justify-start mx-1">
       <h1 className="text-sm text-white">{label}</h1>
       <DatePicker
         className="rounded-2xl border-0 text-gray-900"
