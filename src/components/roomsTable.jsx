@@ -99,6 +99,7 @@ export function RoomsTable() {
       await addRoomImage(selectedRoom?.id, photo);
       setUploadModal(false);
       setPhoto(null);
+      setSelectedRoom(null);
       toast.success("Successfully added a picture.");
     } else {
       toast.error("Please Upload a photo before uploading...");
@@ -187,7 +188,18 @@ export function RoomsTable() {
                 </h1>
               </>
             ) : (
-              <CustomGallery images={images} />
+              <>
+                {images.length >= 1 ? (
+                  <CustomGallery
+                    setSelectedRoom={setSelectedRoom}
+                    images={images}
+                  />
+                ) : (
+                  <h1 className="text-white text-3xl font-bold">
+                    There's no room images yet.
+                  </h1>
+                )}
+              </>
             )}
           </div>
         </div>

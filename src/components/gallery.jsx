@@ -1,4 +1,9 @@
-const CustomGallery = ({ images }) => {
+import { Button } from "flowbite-react";
+import useCrudRooms from "../hooks/useCrudRooms";
+
+const CustomGallery = ({ images, setSelectedRoom }) => {
+  const { deleteRoomImage } = useCrudRooms();
+
   return (
     <div className="container mx-auto ">
       <div
@@ -16,6 +21,16 @@ const CustomGallery = ({ images }) => {
               style={{ width: 300, height: 300 }}
               src={image.image}
             />
+            <Button
+              onClick={() => {
+                deleteRoomImage(image.id);
+                setSelectedRoom(null);
+              }}
+              color="failure"
+              className="w-full mt-3"
+            >
+              Delete
+            </Button>
           </div>
         ))}
       </div>

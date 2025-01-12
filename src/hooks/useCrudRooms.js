@@ -25,6 +25,11 @@ const useCrudRooms = () => {
     }
   };
 
+  const deleteRoom = (roomID) => {
+    const docRef = doc(db, "rooms", roomID);
+    deleteDoc(docRef);
+  };
+
   const addRoomImage = async (roomID, image) => {
     const colRef = collection(db, "room-images");
     try {
@@ -47,12 +52,21 @@ const useCrudRooms = () => {
     setImages(output);
   };
 
-  const deleteRoom = (roomID) => {
-    const docRef = doc(db, "rooms", roomID);
-    deleteDoc(docRef);
+  const deleteRoomImage = (id) => {
+    try {
+      const docRef = doc(db, "room-images", id);
+      deleteDoc(docRef);
+    } catch (error) {
+      console.log(error.message);
+    }
   };
-
-  return { addRoom, addRoomImage, fetchRoomImages, deleteRoom };
+  return {
+    addRoom,
+    addRoomImage,
+    fetchRoomImages,
+    deleteRoom,
+    deleteRoomImage,
+  };
 };
 
 export default useCrudRooms;
