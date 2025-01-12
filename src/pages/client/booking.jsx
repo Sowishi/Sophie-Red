@@ -132,7 +132,7 @@ const Booking = () => {
         {/* Content Section */}
         <div className="min-h-screen container mx-auto bg-white md:p-5">
           <motion.div
-            className="hidden md:show"
+            className="hidden md:flex"
             variants={fadeIn}
             initial="hidden"
             animate="visible"
