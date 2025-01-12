@@ -1,5 +1,7 @@
 import { Button } from "flowbite-react";
 import bg from "../../assets/hotels/snapedit_1736691230278.jpeg";
+import bg2 from "../../assets/hotels/hotel2.webp";
+
 import ClientHeader from "../../components/clientHeader";
 import {
   FaFacebookF,
@@ -24,6 +26,9 @@ import {
 import Amenities from "../../components/amenities";
 import Facilities from "../../components/facilities";
 import ParkingAndLandmarks from "../../components/parkingAndLandmarks";
+import { SophieAccord } from "../../components/sophieAccordition";
+import PropertyPolicies from "../../components/propertyPolicies";
+import Policies from "../../components/propertyPolicies";
 
 const Booking = () => {
   return (
@@ -182,6 +187,25 @@ const Booking = () => {
               <hr />
               <ParkingAndLandmarks />
             </div>
+          </div>
+
+          {/* More About Sophie */}
+          <div className="mx-10 mt-10 p-10 shadow-lg border rounded-lg">
+            <div className="wrapper w-full">
+              <h1 className="text-3xl font-semibold mb-3">
+                <span className="text-lg">More about </span>
+                <br /> Sophie Red Hotel and Onshore Restaurant{" "}
+              </h1>
+              <img
+                className="w-full h-[300px] object-center"
+                src={bg2}
+                alt=""
+              />
+            </div>
+            <div className="content mt-5">
+              <SophieAccord />
+            </div>
+            <Policies />
           </div>
         </div>
       </div>
