@@ -1,4 +1,4 @@
-import bg from "../../assets/hotels/hotel2.webp";
+import bg from "../../assets/hotels/snapedit_1736691230278.jpeg";
 import ClientHeader from "../../components/clientHeader";
 import {
   FaFacebookF,
@@ -13,14 +13,14 @@ const Booking = () => {
       <div className="w-full min-h-screen">
         <div
           style={{
-            backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${bg})`,
+            backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.5)), url(${bg})`,
             backgroundSize: "cover", // Ensures the image covers the entire container
             backgroundPosition: "center", // Centers the image
           }}
           className="w-full bg-slate-950 h-screen relative "
         >
           <ClientHeader />
-          <div className="content absolute bottom-10 left-10 text-white w-[600px]">
+          <div className="content absolute bottom-20 left-10 text-white w-[600px]">
             <h1 className="text-3xl font-bold mb-3">
               Welcome to Sophie Red Hotel
             </h1>
@@ -66,6 +66,12 @@ const Booking = () => {
                 <FaLinkedinIn size={24} />
               </a>
             </div>
+          </div>
+          <div className="bg-red-500 w-full p-3 absolute bottom-0">
+            <p className="text-white">
+              cdo@sedahotels.com T +6388 323 8888 | +63 917 577 5886 C.M. Recto
+              corner Corrales Avenue, Cagayan de Oro City 9000, Philippines
+            </p>
           </div>
         </div>
       </div>
