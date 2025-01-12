@@ -29,8 +29,20 @@ import ParkingAndLandmarks from "../../components/parkingAndLandmarks";
 import { SophieAccord } from "../../components/sophieAccordition";
 import PropertyPolicies from "../../components/propertyPolicies";
 import Policies from "../../components/propertyPolicies";
+import { ClientFooter } from "../../components/clientFooter";
 
 const Booking = () => {
+  const scrollToSection = (target) => {
+    // Get the element to scroll to
+    const section = document.getElementById(target);
+
+    if (section) {
+      // Scroll to the element with smooth behavior
+      section.scrollIntoView({ behavior: "smooth" });
+    } else {
+      console.log("Target section not found");
+    }
+  };
   return (
     <>
       <div className="w-full min-h-screen">
@@ -97,26 +109,23 @@ const Booking = () => {
             </p>
           </div>
         </div>
-        <div className="h-screen container mx-auto bg-white p-5">
+        <div className="min-h-screen container mx-auto bg-white p-5">
           <div>
             <Button.Group>
-              <Button color="gray">
+              <Button onClick={() => scrollToSection("overview")} color="gray">
                 <HiOutlineViewList className="mr-3 h-4 w-4" />
                 Overview
               </Button>
-              <Button color="gray">
+              <Button onClick={() => scrollToSection("about")} color="gray">
                 <HiOutlineLightBulb className="mr-3 h-4 w-4" />
-                Trip Recommendation
+                About
               </Button>
-              <Button color="gray">
-                <HiOutlineOfficeBuilding className="mr-3 h-4 w-4" />
-                Facilities
-              </Button>
-              <Button color="gray">
+
+              <Button onClick={() => scrollToSection("location")} color="gray">
                 <HiOutlineLocationMarker className="mr-3 h-4 w-4" />
                 Location
               </Button>
-              <Button color="gray">
+              <Button onClick={() => scrollToSection("policies")} color="gray">
                 <HiOutlineDocumentText className="mr-3 h-4 w-4" />
                 Policies
               </Button>
@@ -190,7 +199,10 @@ const Booking = () => {
           </div>
 
           {/* More About Sophie */}
-          <div className="mx-10 mt-10 p-10 shadow-lg border rounded-lg">
+          <div
+            id="about"
+            className="mx-10 mt-10 p-10 shadow-lg border rounded-lg"
+          >
             <div className="wrapper w-full">
               <h1 className="text-3xl font-semibold mb-3">
                 <span className="text-lg">More about </span>
@@ -205,21 +217,27 @@ const Booking = () => {
             <div className="content mt-5">
               <SophieAccord />
             </div>
-            <Policies />
+            <div id="policies">
+              <Policies />
+            </div>
           </div>
+        </div>
 
-          {/* Maps */}
-          <div className="w-full mt-10">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3944.287762941997!2d124.73801817494206!3d8.664159191383336!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x32ffe45d368a3333%3A0xaae58833c816e934!2sSophie%20Red%20Hotel%20and%20Onshore%20Restaurant!5e0!3m2!1sen!2sph!4v1736693142618!5m2!1sen!2sph"
-              width="100%"
-              height="450"
-              style={{ border: 0 }}
-              allowFullScreen=""
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            ></iframe>
-          </div>
+        {/* Maps */}
+        <div id="location" className="w-full mt-10">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3944.287762941997!2d124.73801817494206!3d8.664159191383336!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x32ffe45d368a3333%3A0xaae58833c816e934!2sSophie%20Red%20Hotel%20and%20Onshore%20Restaurant!5e0!3m2!1sen!2sph!4v1736693142618!5m2!1sen!2sph"
+            width="100%"
+            height="450"
+            style={{ border: 0 }}
+            allowFullScreen=""
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+
+        <div className="footer mt-20">
+          <ClientFooter />
         </div>
       </div>
     </>
