@@ -79,6 +79,15 @@ const Landing = () => {
                   <Dropdown.Item>
                     <p className="text-gray-500">{currentUser.email}</p>
                   </Dropdown.Item>
+                  <Dropdown.Item>
+                    <Button
+                      color="info"
+                      className="w-full text-left"
+                      onClick={() => navigation("/booking")}
+                    >
+                      Book Now
+                    </Button>
+                  </Dropdown.Item>
                   <Dropdown.Divider />
                   <Dropdown.Item>
                     <Button

@@ -5,6 +5,7 @@ import { ImMenu } from "react-icons/im";
 import { BottomDrawer } from "./bottomDrawer";
 import { useRef, useState } from "react";
 import useUserStore from "../utils/zustand";
+import { useNavigate } from "react-router-dom";
 
 const ClientHeader = () => {
   const [bookNowModal, setBookNowModal] = useState(false);
@@ -13,6 +14,7 @@ const ClientHeader = () => {
   const [voucher, setVoucher] = useState("");
   const [persons, setPersons] = useState({ adults: 2, kids: 3 });
   const dropdownRef = useRef();
+  const navigation = useNavigate();
 
   const handleSubmit = () => {
     console.log("Arrival Date:", arrivalDate);
@@ -29,7 +31,12 @@ const ClientHeader = () => {
       }}
       className="header bg-white p-5 px-10 flex items-center justify-between fixed w-full z-10"
     >
-      <img className="w-[130px] hidden xl:flex" src={logo} alt="Logo" />
+      <img
+        onClick={() => navigation("/")}
+        className="w-[130px] hidden xl:flex cursor-pointer"
+        src={logo}
+        alt="Logo"
+      />
       <ImMenu size={25} className="text-white font-bold xl:hidden" />
 
       <Button
