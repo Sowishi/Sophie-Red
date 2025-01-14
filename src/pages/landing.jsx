@@ -81,9 +81,13 @@ const Landing = () => {
                   </Dropdown.Item>
                   <Dropdown.Divider />
                   <Dropdown.Item>
-                    <button className="w-full text-left" onClick={logout}>
+                    <Button
+                      color="failure"
+                      className="w-full text-left"
+                      onClick={logout}
+                    >
                       Logout
-                    </button>
+                    </Button>
                   </Dropdown.Item>
                 </Dropdown>
               </div>
