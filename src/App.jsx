@@ -5,6 +5,7 @@ import Room from "./pages/dashboard/room";
 import FrontDesk from "./pages/dashboard/frontDesk";
 import { ToastContainer } from "react-toastify";
 import Booking from "./pages/client/booking";
+import Landing from "./pages/landing";
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
         <Route path="/room" element={<Room />} />
         <Route path="/front-desk" element={<FrontDesk />} />
         <Route path="/booking" element={<Booking />} />
+        <Route path="/" element={<Landing />} />
       </Routes>
       <ToastContainer position="top-right" theme="light" />
     </BrowserRouter>
