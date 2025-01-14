@@ -51,7 +51,10 @@ const Landing = () => {
               Sophie Red Hotel <br /> &{" "}
               <span className="text-yellow-200">Onshore Restaurant</span>
             </h1>
-            <Button className="mt-5 px-10">Book Now</Button>
+
+            <Button gradientMonochrome="info" className="mt-5 px-10 py-2">
+              <span className="text-sm font-bold">Book Now!</span>
+            </Button>
           </div>
         </div>
       </div>
