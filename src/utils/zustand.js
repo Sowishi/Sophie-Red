@@ -1,9 +1,63 @@
 // src/store/useUserStore.js
 import { create } from "zustand";
+import {
+  GoogleAuthProvider,
+  signInWithPopup,
+  onAuthStateChanged,
+  signOut,
+} from "firebase/auth";
 
-const useAppContext = create((set) => ({
-  currentUser: null, // Initial state is null
-  setCurrentUser: (user) => set({ currentUser: user }), // Set the current user
+import { auth } from "../utils/firebase";
+
+const useUserStore = create((set) => ({
+  currentUser: null,
+
+  // Login with Google
+  loginWithGoogle: async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      set({
+        currentUser: {
+          uid: user.uid,
+          name: user.displayName,
+          email: user.email,
+          photoURL: user.photoURL,
+        },
+      });
+    } catch (error) {
+      console.error("Google Login Error:", error.message);
+    }
+  },
+
+  // Logout
+  logout: async () => {
+    try {
+      await signOut(auth);
+      set({ currentUser: null });
+    } catch (error) {
+      console.error("Logout Error:", error.message);
+    }
+  },
+
+  // Persist login state
+  initializeUser: () => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        set({
+          currentUser: {
+            uid: user.uid,
+            name: user.displayName,
+            email: user.email,
+            photoURL: user.photoURL,
+          },
+        });
+      } else {
+        set({ currentUser: null });
+      }
+    });
+  },
 }));
 
-export default useAppContext;
+export default useUserStore;

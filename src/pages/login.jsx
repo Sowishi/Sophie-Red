@@ -7,9 +7,10 @@ import google from "../assets/google (1).png";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../utils/firebase";
 import useAppContext from "../utils/zustand";
+import useUserStore from "../utils/zustand";
 const Login = () => {
   const router = useNavigate();
-  const { setCurrentUser } = useAppContext();
+  const { currentUser, loginWithGoogle, logout } = useUserStore();
 
   const handleSubmit = () => {
     console.log("Fdkj");
@@ -17,23 +18,8 @@ const Login = () => {
   };
 
   const handleGoogleLogin = async () => {
-    const provider = new GoogleAuthProvider();
-
-    try {
-      const result = await signInWithPopup(auth, provider);
-
-      // Access user details
-      const user = result.user;
-      setCurrentUser(user);
-      router("/");
-
-      // Access token
-      const credential = GoogleAuthProvider.credentialFromResult(result);
-      const token = credential.accessToken;
-      console.log("Token:", token);
-    } catch (error) {
-      console.error("Google Login Error:", error.message);
-    }
+    await loginWithGoogle();
+    router("/");
   };
 
   return (

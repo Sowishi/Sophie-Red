@@ -6,8 +6,14 @@ import FrontDesk from "./pages/dashboard/frontDesk";
 import { ToastContainer } from "react-toastify";
 import Booking from "./pages/client/booking";
 import Landing from "./pages/landing";
+import useUserStore from "./utils/zustand";
+import { useEffect } from "react";
 
 const App = () => {
+  const initializeUser = useUserStore((state) => state.initializeUser);
+  useEffect(() => {
+    initializeUser(); // Restore user state
+  }, [initializeUser]);
   return (
     <BrowserRouter>
       <Routes>
