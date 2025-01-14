@@ -1,15 +1,14 @@
-import { Button, Navbar } from "flowbite-react";
+import { Button, Dropdown, Navbar } from "flowbite-react";
 import bg from "../assets/hotels/snapedit_1736691230278.jpeg";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { Link, useNavigate } from "react-router-dom";
 import Testimonials from "../components/testimonial";
 import { ClientFooter } from "../components/clientFooter";
-import useAppContext from "../utils/zustand";
+import useUserStore from "../utils/zustand";
 
 const Landing = () => {
   const navigation = useNavigate();
-  const currentUser = useAppContext((state) => state.currentUser);
-  console.log(currentUser);
+  const { currentUser, logout } = useUserStore();
 
   return (
     <>
@@ -60,10 +59,34 @@ const Landing = () => {
             </Navbar.Collapse>
 
             {currentUser && (
-              <img
-                className="w-[60px] h-[60px] rounded-full"
-                src={currentUser?.photoURL}
-              />
+              <div className="relative flex items-center justify-center">
+                <p className="font-medium text-white mr-5 text-lg">
+                  {currentUser.name}
+                </p>
+                <Dropdown
+                  inline
+                  label={
+                    <img
+                      className="w-[50px] h-[50px] rounded-full cursor-pointer"
+                      src={currentUser.photoURL}
+                      alt="User Avatar"
+                    />
+                  }
+                >
+                  <Dropdown.Item>
+                    <p className="font-medium">{currentUser.name}</p>
+                  </Dropdown.Item>
+                  <Dropdown.Item>
+                    <p className="text-gray-500">{currentUser.email}</p>
+                  </Dropdown.Item>
+                  <Dropdown.Divider />
+                  <Dropdown.Item>
+                    <button className="w-full text-left" onClick={logout}>
+                      Logout
+                    </button>
+                  </Dropdown.Item>
+                </Dropdown>
+              </div>
             )}
           </Navbar>
           <div className="content h-full flex justify-center items-center">

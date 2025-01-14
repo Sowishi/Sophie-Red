@@ -14,6 +14,8 @@ const App = () => {
   useEffect(() => {
     initializeUser(); // Restore user state
   }, [initializeUser]);
+  const { currentUser } = useUserStore();
+
   return (
     <BrowserRouter>
       <Routes>
@@ -21,7 +23,10 @@ const App = () => {
         <Route path="/dashboard" element={<Index />} />
         <Route path="/room" element={<Room />} />
         <Route path="/front-desk" element={<FrontDesk />} />
-        <Route path="/booking" element={<Booking />} />
+        <Route
+          path="/booking"
+          element={currentUser ? <Booking /> : <Landing />}
+        />
         <Route path="/" element={<Landing />} />
       </Routes>
       <ToastContainer position="top-right" theme="light" />
