@@ -8,7 +8,7 @@ const Landing = () => {
     <>
       <div
         style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.5)), url(${bg})`,
+          backgroundImage: `linear-gradient(rgba(70, 0, 0, 0.3), rgba(70, 0, 0, 0.5)), url(${bg})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
@@ -23,19 +23,19 @@ const Landing = () => {
           <Navbar.Toggle />
           <Navbar.Collapse>
             <Navbar.Link
-              className="text-white text-2xl opacity-80 hover:bg-red-500"
+              className="text-white text-lg opacity-80 hover:bg-red-500"
               href="#"
             >
               <span className="hover:text-red-500">Services</span>
             </Navbar.Link>
             <Navbar.Link
-              className="text-white text-2xl opacity-80 hover:bg-red-500"
+              className="text-white text-lg opacity-80 hover:bg-red-500"
               href="#"
             >
               Pricing
             </Navbar.Link>
             <Navbar.Link
-              className="text-white text-2xl opacity-80 hover:bg-red-500"
+              className="text-white text-lg opacity-80 hover:bg-red-500"
               href="#"
             >
               Contact
@@ -45,6 +45,15 @@ const Landing = () => {
             </Button>
           </Navbar.Collapse>
         </Navbar>
+        <div className="content h-full flex justify-center items-center">
+          <div className="wrapper flex justify-center items-center flex-col">
+            <h1 className="text-white text-4xl md:text-7xl text-center">
+              Sophie Red Hotel <br /> &{" "}
+              <span className="text-yellow-200">Onshore Restaurant</span>
+            </h1>
+            <Button className="mt-5 px-10">Book Now</Button>
+          </div>
+        </div>
       </div>
     </>
   );
