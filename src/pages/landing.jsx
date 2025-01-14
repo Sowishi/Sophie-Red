@@ -4,9 +4,12 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import { Link, useNavigate } from "react-router-dom";
 import Testimonials from "../components/testimonial";
 import { ClientFooter } from "../components/clientFooter";
+import useAppContext from "../utils/zustand";
 
 const Landing = () => {
   const navigation = useNavigate();
+  const currentUser = useAppContext((state) => state.currentUser);
+  console.log(currentUser);
 
   return (
     <>
@@ -45,14 +48,23 @@ const Landing = () => {
               >
                 Testimonials
               </Navbar.Link>
-              <Button
-                onClick={() => navigation("/login")}
-                className="px-5"
-                gradientMonochrome="info"
-              >
-                Login
-              </Button>
+              {!currentUser && (
+                <Button
+                  onClick={() => navigation("/login")}
+                  className="px-5"
+                  gradientMonochrome="info"
+                >
+                  Login
+                </Button>
+              )}
             </Navbar.Collapse>
+
+            {currentUser && (
+              <img
+                className="w-[60px] h-[60px] rounded-full"
+                src={currentUser?.photoURL}
+              />
+            )}
           </Navbar>
           <div className="content h-full flex justify-center items-center">
             <div className="wrapper flex justify-center items-center flex-col">
@@ -61,7 +73,17 @@ const Landing = () => {
                 <span className="text-yellow-200">Onshore Restaurant</span>
               </h1>
 
-              <Button gradientMonochrome="info" className="mt-5 px-10 py-2">
+              <Button
+                onClick={() => {
+                  if (currentUser) {
+                    navigation("/booking");
+                  } else {
+                    navigation("/login");
+                  }
+                }}
+                gradientMonochrome="info"
+                className="mt-5 px-10 py-2"
+              >
                 <span className="text-sm font-bold">Book Now!</span>
               </Button>
             </div>

@@ -6,8 +6,10 @@ import { useNavigate } from "react-router-dom";
 import google from "../assets/google (1).png";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../utils/firebase";
+import useAppContext from "../utils/zustand";
 const Login = () => {
   const router = useNavigate();
+  const { setCurrentUser } = useAppContext();
 
   const handleSubmit = () => {
     console.log("Fdkj");
@@ -22,7 +24,8 @@ const Login = () => {
 
       // Access user details
       const user = result.user;
-      console.log("User info:", user);
+      setCurrentUser(user);
+      router("/");
 
       // Access token
       const credential = GoogleAuthProvider.credentialFromResult(result);
