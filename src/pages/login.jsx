@@ -4,6 +4,8 @@ import hotel2 from "../assets/hotels/hotel2.webp";
 import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import google from "../assets/google (1).png";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { auth } from "../utils/firebase";
 const Login = () => {
   const router = useNavigate();
 
@@ -11,6 +13,26 @@ const Login = () => {
     console.log("Fdkj");
     router("/dashboard");
   };
+
+  const handleGoogleLogin = async () => {
+    const provider = new GoogleAuthProvider();
+
+    try {
+      const result = await signInWithPopup(auth, provider);
+
+      // Access user details
+      const user = result.user;
+      console.log("User info:", user);
+
+      // Access token
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const token = credential.accessToken;
+      console.log("Token:", token);
+    } catch (error) {
+      console.error("Google Login Error:", error.message);
+    }
+  };
+
   return (
     <div
       className="w-full h-screen flex justify-center items-center"
@@ -73,6 +95,7 @@ const Login = () => {
                 </Button>
               </form>
               <Button
+                onClick={handleGoogleLogin}
                 color="white"
                 className="w-full mt-3 shadow-sm py-2 border flex item-center justify-center"
               >
