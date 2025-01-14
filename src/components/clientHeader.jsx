@@ -146,7 +146,110 @@ const ClientHeader = () => {
         open={bookNowModal}
         handleClose={() => setBookNowModal(false)}
       >
-        {/* Drawer Content */}
+        <div className="container mx-auto min-h-[450px]">
+          <div className="flex flex-col items-center justify-center mx-5 py-5">
+            <img className="w-[130px]" src={logo} alt="Logo" />
+          </div>
+
+          <div className="dates flex-col">
+            <CustomDatePicker
+              label={"Arrival Date"}
+              onChange={(date) => setArrivalDate(date)}
+              value={arrivalDate}
+            />
+            <CustomDatePicker
+              label={"Departure Date"}
+              onChange={(date) => setDepartureDate(date)}
+              value={departureDate}
+            />
+
+            <div className="voucher my-3">
+              <h1 className="text-sm text-white">Voucher</h1>
+              <TextInput placeholder="Promo Code" />
+            </div>
+            <div className="persons mb-3">
+              <h1 className="text-sm text-white">Persons</h1>
+              <Dropdown
+                ref={dropdownRef}
+                className="rounded-2xl text-nowrap"
+                color="light"
+                dismissOnClick={false}
+                label={`${persons.adults} Adults + ${persons.kids} Kids`}
+              >
+                <Dropdown.Header>
+                  <span className="block text-lg">Guest for room</span>
+                </Dropdown.Header>
+                <div className="p-5">
+                  <div className="wrapper flex items-center justify-between">
+                    <h1>Adults</h1>
+                    <div className="wrapper flex items-center">
+                      <Button
+                        gradientMonochrome="failure"
+                        size="xs"
+                        onClick={() =>
+                          setPersons((prev) => ({
+                            ...prev,
+                            adults: Math.max(1, prev.adults - 1),
+                          }))
+                        }
+                      >
+                        -
+                      </Button>
+                      <Button
+                        gradientMonochrome="success"
+                        className="mx-2"
+                        size="xs"
+                        onClick={() =>
+                          setPersons((prev) => ({
+                            ...prev,
+                            adults: prev.adults + 1,
+                          }))
+                        }
+                      >
+                        +
+                      </Button>
+                    </div>
+                  </div>
+                  <div className="wrapper mt-5 flex items-center justify-between">
+                    <h1>Kids</h1>
+                    <div className="wrapper flex items-center">
+                      <Button
+                        gradientMonochrome="failure"
+                        size="xs"
+                        onClick={() =>
+                          setPersons((prev) => ({
+                            ...prev,
+                            kids: Math.max(0, prev.kids - 1),
+                          }))
+                        }
+                      >
+                        -
+                      </Button>
+                      <Button
+                        gradientMonochrome="success"
+                        className="mx-2"
+                        size="xs"
+                        onClick={() =>
+                          setPersons((prev) => ({
+                            ...prev,
+                            kids: prev.kids + 1,
+                          }))
+                        }
+                      >
+                        +
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </Dropdown>
+            </div>
+            <div className="wrapper mb-5">
+              <h1 className="text-sm text-white">Availability</h1>
+
+              <Button className="w-full py-2">Check Availability</Button>
+            </div>
+          </div>
+        </div>
       </BottomDrawer>
     </div>
   );
