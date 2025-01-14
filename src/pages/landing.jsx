@@ -1,11 +1,13 @@
 import { Button, Navbar } from "flowbite-react";
 import bg from "../assets/hotels/snapedit_1736691230278.jpeg";
 import { RxHamburgerMenu } from "react-icons/rx";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Testimonials from "../components/testimonial";
 import { ClientFooter } from "../components/clientFooter";
 
 const Landing = () => {
+  const navigation = useNavigate();
+
   return (
     <>
       <div className="w-full min-h-screen">
@@ -35,15 +37,19 @@ const Landing = () => {
                 className="text-white text-lg opacity-80 hover:bg-red-500"
                 href="#"
               >
-                Pricing
+                About
               </Navbar.Link>
               <Navbar.Link
                 className="text-white text-lg opacity-80 hover:bg-red-500"
                 href="#"
               >
-                Contact
+                Testimonials
               </Navbar.Link>
-              <Button className="px-5" gradientMonochrome="info">
+              <Button
+                onClick={() => navigation("/login")}
+                className="px-5"
+                gradientMonochrome="info"
+              >
                 Login
               </Button>
             </Navbar.Collapse>

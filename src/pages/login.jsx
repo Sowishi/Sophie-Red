@@ -3,7 +3,7 @@ import hotel1 from "../assets/hotels/hotel.jpg";
 import hotel2 from "../assets/hotels/hotel2.webp";
 import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
-
+import google from "../assets/google (1).png";
 const Login = () => {
   const router = useNavigate();
 
@@ -67,11 +67,19 @@ const Login = () => {
                 <Button
                   onClick={handleSubmit}
                   color="failure"
-                  className="w-full"
+                  className="w-full py-2"
                 >
                   Login
                 </Button>
               </form>
+              <Button
+                color="white"
+                className="w-full mt-3 shadow-sm py-2 border flex item-center justify-center"
+              >
+                <h1>Login With Google</h1>
+                <img className="ml-3" width={20} src={google} alt="" />
+              </Button>
+
               <p className="text-center mt-4 text-sm">
                 Don't have an account?{" "}
                 <a href="#" className="text-blue-600 hover:underline">
