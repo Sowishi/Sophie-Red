@@ -1,4 +1,4 @@
-import { Button, Dropdown, TextInput } from "flowbite-react";
+import { Button, Dropdown, Table, TextInput } from "flowbite-react";
 import { CustomDatePicker } from "./datePicker";
 import logo from "../assets/logo.png";
 import { ImMenu } from "react-icons/im";
@@ -11,6 +11,7 @@ import loader from "../assets/lotties/loader.json";
 import Lottie from "react-lottie";
 import { toast } from "react-toastify";
 import useCrudBooking from "../hooks/useCrudBooking";
+import { FaArrowRight } from "react-icons/fa6";
 
 const ClientHeader = () => {
   const [bookNowModal, setBookNowModal] = useState(false);
@@ -275,6 +276,7 @@ const ClientHeader = () => {
         </div>
       </BottomDrawer>
 
+      {/* Booking Modal */}
       <CustomModal
         size={"5xl"}
         title={`Booking for ${persons.adults} Adults & ${persons.kids} Kids `}
@@ -282,13 +284,43 @@ const ClientHeader = () => {
         handleClose={() => setBookingModal(false)}
         hideFooter={true}
       >
-        <Lottie
-          style={{ width: 150 }}
-          options={{
-            animationData: loader,
-            autoplay: true,
-          }}
-        />
+        {rooms && (
+          <Table hoverable striped>
+            <Table.Head>
+              <Table.HeadCell>Room ID</Table.HeadCell>
+              <Table.HeadCell>Room Type</Table.HeadCell>
+              <Table.HeadCell>Price Per Night</Table.HeadCell>
+              <Table.HeadCell>Description</Table.HeadCell>
+              <Table.HeadCell>Adult Count</Table.HeadCell>
+              <Table.HeadCell>Child Count</Table.HeadCell>
+
+              <Table.HeadCell></Table.HeadCell>
+            </Table.Head>
+            <Table.Body className="divide-y">
+              {rooms.map((room, index) => (
+                <Table.Row
+                  key={index}
+                  className="bg-white dark:border-gray-700 dark:bg-gray-800"
+                >
+                  <Table.Cell className="font-bold text-lg text-red-500">
+                    {room.roomNumber}
+                  </Table.Cell>
+                  <Table.Cell>{room.roomType}</Table.Cell>
+                  <Table.Cell>₱{room.pricePerNight}</Table.Cell>
+                  <Table.Cell>{room.description}</Table.Cell>
+                  <Table.Cell>{room.adultCount}</Table.Cell>
+                  <Table.Cell>{room.childCount}</Table.Cell>
+
+                  <Table.Cell className="flex items-center justify-center">
+                    <Button onClick={() => setSelectedRoom(room)} color="info">
+                      View Room <FaArrowRight className="ml-2 h-5 w-5" />
+                    </Button>
+                  </Table.Cell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+          </Table>
+        )}
       </CustomModal>
     </div>
   );
