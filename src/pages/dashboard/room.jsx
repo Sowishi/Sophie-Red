@@ -24,8 +24,8 @@ const Room = () => {
     pricePerNight: "",
     roomType: "",
     description: "",
-    adultCount: "",
-    childCount: "",
+    adultCount: 0,
+    childCount: 0,
   });
 
   const handleChange = (event) => {
@@ -61,6 +61,9 @@ const Room = () => {
       return;
     }
     try {
+      forms.adultCount = parseInt(forms.adultCount);
+      forms.childCount = parseInt(forms.childCount);
+
       await addRoom(forms);
       setTimeout(() => {
         setLoading(false);

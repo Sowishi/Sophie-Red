@@ -11,6 +11,7 @@ export function CustomModal({
   title,
   onSubmit,
   loading,
+  hideFooter,
 }) {
   return (
     <>
@@ -19,7 +20,7 @@ export function CustomModal({
           {loading ? "Submitting, please wait..." : title}
         </Modal.Header>
         <Modal.Body>{children}</Modal.Body>
-        {!loading && (
+        {!loading && !hideFooter && (
           <Modal.Footer>
             <Button className="w-full py-1" color="dark" onClick={handleClose}>
               <h1 className="text-lg font-bold">Cancel</h1>

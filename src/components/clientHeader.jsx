@@ -6,22 +6,37 @@ import { BottomDrawer } from "./bottomDrawer";
 import { useRef, useState } from "react";
 import useUserStore from "../utils/zustand";
 import { useNavigate } from "react-router-dom";
+import { CustomModal } from "./customModal";
+import loader from "../assets/lotties/loader.json";
+import Lottie from "react-lottie";
+import { toast } from "react-toastify";
+import useCrudBooking from "../hooks/useCrudBooking";
 
 const ClientHeader = () => {
   const [bookNowModal, setBookNowModal] = useState(false);
+  const [bookingModal, setBookingModal] = useState(false);
   const [arrivalDate, setArrivalDate] = useState("");
   const [departureDate, setDepartureDate] = useState("");
   const [voucher, setVoucher] = useState("");
-  const [persons, setPersons] = useState({ adults: 2, kids: 3 });
+  const [persons, setPersons] = useState({ adults: 1, kids: 0 });
+
+  const [rooms, setRooms] = useState(null);
+
   const dropdownRef = useRef();
   const navigation = useNavigate();
 
+  const { fetchAvailableRoom } = useCrudBooking();
+
   const handleSubmit = () => {
-    console.log("Arrival Date:", arrivalDate);
-    console.log("Departure Date:", departureDate);
-    console.log("Persons:", `${persons.adults} Adults + ${persons.kids} Kids`);
-    console.log("Voucher:", voucher);
+    if (!arrivalDate || !departureDate) {
+      toast.error("Please select your check in date");
+      return;
+    }
+    setBookingModal(true);
+    fetchAvailableRoom(persons, setRooms);
   };
+
+  console.log(rooms);
 
   return (
     <div
@@ -41,13 +56,13 @@ const ClientHeader = () => {
 
       <Button
         onClick={() => setBookNowModal(true)}
-        className="xl:hidden"
+        className="lg:hidden"
         gradientMonochrome="cyan"
       >
         Book Now
       </Button>
 
-      <div className="dates hidden flex-1 xl:flex items-center justify-center">
+      <div className="dates hidden flex-1 lg:flex items-center justify-center">
         <CustomDatePicker
           label={"Arrival Date"}
           onChange={(date) => setArrivalDate(date)}
@@ -148,6 +163,7 @@ const ClientHeader = () => {
         </div>
       </div>
 
+      {/* Modals */}
       <BottomDrawer
         red={true}
         open={bookNowModal}
@@ -258,6 +274,22 @@ const ClientHeader = () => {
           </div>
         </div>
       </BottomDrawer>
+
+      <CustomModal
+        size={"5xl"}
+        title={`Booking for ${persons.adults} Adults & ${persons.kids} Kids `}
+        open={bookingModal}
+        handleClose={() => setBookingModal(false)}
+        hideFooter={true}
+      >
+        <Lottie
+          style={{ width: 150 }}
+          options={{
+            animationData: loader,
+            autoplay: true,
+          }}
+        />
+      </CustomModal>
     </div>
   );
 };
