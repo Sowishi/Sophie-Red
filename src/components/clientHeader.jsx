@@ -22,22 +22,23 @@ const ClientHeader = () => {
   const [persons, setPersons] = useState({ adults: 1, kids: 0 });
 
   const [rooms, setRooms] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const dropdownRef = useRef();
   const navigation = useNavigate();
 
   const { fetchAvailableRoom } = useCrudBooking();
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    setLoading(true);
     if (!arrivalDate || !departureDate) {
       toast.error("Please select your check in date");
       return;
     }
     setBookingModal(true);
-    fetchAvailableRoom(persons, setRooms);
+    await fetchAvailableRoom(persons, setRooms);
+    setLoading(false);
   };
-
-  console.log(rooms);
 
   return (
     <div
@@ -281,10 +282,22 @@ const ClientHeader = () => {
         size={"5xl"}
         title={`Booking for ${persons.adults} Adults & ${persons.kids} Kids `}
         open={bookingModal}
-        handleClose={() => setBookingModal(false)}
+        handleClose={() => {
+          setBookingModal(false);
+          setRooms(null);
+        }}
         hideFooter={true}
       >
-        {rooms && (
+        {loading && (
+          <Lottie
+            style={{ width: 150 }}
+            options={{
+              animationData: loader,
+              autoplay: true,
+            }}
+          />
+        )}
+        {rooms !== null && rooms.length >= 1 && (
           <Table hoverable striped>
             <Table.Head>
               <Table.HeadCell>Room ID</Table.HeadCell>
