@@ -11,7 +11,7 @@ import loader from "../assets/lotties/loader.json";
 import Lottie from "react-lottie";
 import { toast } from "react-toastify";
 import useCrudBooking from "../hooks/useCrudBooking";
-import { FaArrowRight } from "react-icons/fa6";
+import { FaArrowRight, FaCheck } from "react-icons/fa6";
 
 const ClientHeader = () => {
   const [bookNowModal, setBookNowModal] = useState(false);
@@ -23,6 +23,7 @@ const ClientHeader = () => {
 
   const [rooms, setRooms] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [selectedRoom, setSelectedRoom] = useState(null); // State for selected room
 
   const dropdownRef = useRef();
   const navigation = useNavigate();
@@ -38,6 +39,14 @@ const ClientHeader = () => {
     setBookingModal(true);
     await fetchAvailableRoom(persons, setRooms);
     setLoading(false);
+  };
+
+  const handleRoomSelection = (room) => {
+    if (selectedRoom?.roomNumber === room.roomNumber) {
+      setSelectedRoom(null); // Deselect if the same room is clicked again
+    } else {
+      setSelectedRoom(room); // Select the clicked room
+    }
   };
 
   return (
@@ -280,7 +289,9 @@ const ClientHeader = () => {
       {/* Booking Modal */}
       <CustomModal
         size={"5xl"}
-        title={`Booking for ${persons.adults} Adults & ${persons.kids} Kids `}
+        title={`Booking for ${persons.adults} Adults & ${
+          persons.kids
+        } Kids | Promo Code: ${voucher ? voucher : "---"}`}
         open={bookingModal}
         handleClose={() => {
           setBookingModal(false);
@@ -304,16 +315,17 @@ const ClientHeader = () => {
               <Table.HeadCell>Room Type</Table.HeadCell>
               <Table.HeadCell>Price Per Night</Table.HeadCell>
               <Table.HeadCell>Description</Table.HeadCell>
-              <Table.HeadCell>Adult Count</Table.HeadCell>
-              <Table.HeadCell>Child Count</Table.HeadCell>
-
               <Table.HeadCell></Table.HeadCell>
             </Table.Head>
             <Table.Body className="divide-y">
               {rooms.map((room, index) => (
                 <Table.Row
                   key={index}
-                  className="bg-white dark:border-gray-700 dark:bg-gray-800"
+                  className={`${
+                    selectedRoom?.roomNumber === room.roomNumber
+                      ? "bg-green-100 dark:bg-green-800"
+                      : "bg-white dark:border-gray-700 dark:bg-gray-800"
+                  }`}
                 >
                   <Table.Cell className="font-bold text-lg text-red-500">
                     {room.roomNumber}
@@ -321,12 +333,26 @@ const ClientHeader = () => {
                   <Table.Cell>{room.roomType}</Table.Cell>
                   <Table.Cell>₱{room.pricePerNight}</Table.Cell>
                   <Table.Cell>{room.description}</Table.Cell>
-                  <Table.Cell>{room.adultCount}</Table.Cell>
-                  <Table.Cell>{room.childCount}</Table.Cell>
 
                   <Table.Cell className="flex items-center justify-center">
-                    <Button onClick={() => setSelectedRoom(room)} color="info">
-                      View Room <FaArrowRight className="ml-2 h-5 w-5" />
+                    <Button
+                      className="flex items-center justify-center"
+                      onClick={() => handleRoomSelection(room)}
+                      color={
+                        selectedRoom?.roomNumber === room.roomNumber
+                          ? "success"
+                          : "light"
+                      }
+                    >
+                      {selectedRoom?.roomNumber === room.roomNumber
+                        ? "Selected"
+                        : "Select Room"}
+
+                      {selectedRoom?.roomNumber === room.roomNumber ? (
+                        <FaCheck className="ml-2 h-5 w-5" />
+                      ) : (
+                        ""
+                      )}
                     </Button>
                   </Table.Cell>
                 </Table.Row>
