@@ -1,5 +1,6 @@
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../utils/firebase";
+import moment from "moment/moment";
 
 const useCrudBooking = () => {
   const fetchAvailableRoom = async (persons, setRooms) => {
@@ -39,7 +40,67 @@ const useCrudBooking = () => {
     }
   };
 
-  return { fetchAvailableRoom };
+  const checkRoomAvailability = async (
+    roomId,
+    desiredCheckIn,
+    desiredCheckOut
+  ) => {
+    const bookingsRef = collection(db, "bookings");
+    const q = query(
+      bookingsRef,
+      where("roomId", "==", roomId),
+      where("status", "==", "Booked")
+    );
+
+    const querySnapshot = await getDocs(q);
+
+    for (const doc of querySnapshot.docs) {
+      const booking = doc.data();
+      const existingCheckIn = moment(booking.checkInDate.toDate());
+      const existingCheckOut = moment(booking.checkOutDate.toDate());
+
+      // Check for overlap
+      if (
+        moment(desiredCheckIn).isBefore(existingCheckOut) &&
+        moment(desiredCheckOut).isAfter(existingCheckIn)
+      ) {
+        return false; // Room is not available
+      }
+    }
+
+    return true; // Room is available
+  };
+
+  const bookRoom = async (roomId, currentUser, checkInDate, checkOutDate) => {
+    // Convert input dates to Moment.js objects
+    const desiredCheckIn = moment(checkInDate);
+    const desiredCheckOut = moment(checkOutDate);
+
+    const roomAvailable = await checkRoomAvailability(
+      roomId,
+      desiredCheckIn,
+      desiredCheckOut
+    );
+
+    if (!roomAvailable) {
+      throw new Error("Room is not available for the selected dates.");
+    }
+
+    const bookingsRef = collection(db, "bookings");
+
+    const newBooking = {
+      roomId,
+      currentUser,
+      checkInDate: desiredCheckIn.toDate(), // Save as Firebase-compatible Date object
+      checkOutDate: desiredCheckOut.toDate(),
+      status: "Booked",
+    };
+
+    const docRef = await addDoc(bookingsRef, newBooking);
+    return docRef.id; // Return the booking ID
+  };
+
+  return { fetchAvailableRoom, checkRoomAvailability, bookRoom };
 };
 
 export default useCrudBooking;

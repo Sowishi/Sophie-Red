@@ -28,7 +28,8 @@ const ClientHeader = () => {
   const dropdownRef = useRef();
   const navigation = useNavigate();
 
-  const { fetchAvailableRoom } = useCrudBooking();
+  const { fetchAvailableRoom, bookRoom } = useCrudBooking();
+  const { currentUser } = useUserStore();
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -46,6 +47,14 @@ const ClientHeader = () => {
       setSelectedRoom(null); // Deselect if the same room is clicked again
     } else {
       setSelectedRoom(room); // Select the clicked room
+    }
+  };
+
+  const handleBook = async () => {
+    try {
+      await bookRoom(selectedRoom?.id, currentUser, arrivalDate, departureDate);
+    } catch (error) {
+      toast.error(error.message);
     }
   };
 
@@ -380,6 +389,7 @@ const ClientHeader = () => {
             Cancel
           </Button>
           <Button
+            onClick={handleBook}
             disabled={!selectedRoom}
             gradientMonochrome="failure"
             className="w-full mt-2 py-1"
