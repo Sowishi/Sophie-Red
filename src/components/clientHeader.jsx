@@ -27,6 +27,8 @@ const ClientHeader = () => {
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [checkingLoading, setCheckingLoading] = useState(false);
   const [checkout, setCheckout] = useState(false);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [downpayment, setDownpayment] = useState(0);
   const dropdownRef = useRef();
   const navigation = useNavigate();
 
@@ -67,6 +69,11 @@ const ClientHeader = () => {
   };
 
   const handleBook = async () => {
+    if (checkout) {
+      toast.success("Fkdjf");
+      return;
+    }
+
     setCheckingLoading(true);
     try {
       const output = await checkRoomAvailability(
@@ -81,6 +88,11 @@ const ClientHeader = () => {
         toast.success("Room is available");
         setCheckingLoading(false);
         setCheckout(true);
+        const totalPrice =
+          parseInt(selectedRoom?.pricePerNight) *
+          parseInt(calculateStayDuration(arrivalDate, departureDate).days);
+        setTotalPrice(totalPrice);
+        setDownpayment(totalPrice * 0.2);
       }
     } catch (error) {
       toast.error(error.message);
@@ -427,6 +439,9 @@ const ClientHeader = () => {
                 Room Details
               </h1>
               <div className="mb-4">
+                <h1>Total Price: {totalPrice}</h1>
+                <h1>Downpayment: {downpayment}</h1>
+
                 <p className="text-gray-600 dark:text-gray-400">
                   <strong>Room Number:</strong> {selectedRoom.roomNumber}
                 </p>
@@ -481,7 +496,7 @@ const ClientHeader = () => {
             gradientMonochrome="failure"
             className="w-full mt-2 py-1"
           >
-            Check Availability
+            {checkout ? "Pay Now" : "Check Availability"}
           </Button>
         </div>
       </CustomModal>
