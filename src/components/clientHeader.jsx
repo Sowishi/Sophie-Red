@@ -14,6 +14,7 @@ import useCrudBooking from "../hooks/useCrudBooking";
 import { FaArrowRight, FaCheck } from "react-icons/fa6";
 import moment from "moment";
 import { calculateStayDuration } from "../utils/calculateStay";
+import { createPaymongoCheckout } from "../utils/paymongoCheckout";
 
 const ClientHeader = () => {
   const [bookNowModal, setBookNowModal] = useState(false);
@@ -70,7 +71,7 @@ const ClientHeader = () => {
 
   const handleBook = async () => {
     if (checkout) {
-      toast.success("Fkdjf");
+      createPaymongoCheckout(downpayment);
       return;
     }
 
@@ -92,7 +93,7 @@ const ClientHeader = () => {
           parseInt(selectedRoom?.pricePerNight) *
           parseInt(calculateStayDuration(arrivalDate, departureDate).days);
         setTotalPrice(totalPrice);
-        setDownpayment(totalPrice * 0.2);
+        setDownpayment(totalPrice * 0.5);
       }
     } catch (error) {
       toast.error(error.message);
