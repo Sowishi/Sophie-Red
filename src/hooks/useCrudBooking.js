@@ -71,7 +71,14 @@ const useCrudBooking = () => {
     return true; // Room is available
   };
 
-  const bookRoom = async (roomId, currentUser, checkInDate, checkOutDate) => {
+  const bookRoom = async (
+    roomId,
+    currentUser,
+    checkInDate,
+    checkOutDate,
+    totalPrice,
+    downpayment
+  ) => {
     // Convert input dates to Moment.js objects
     const desiredCheckIn = moment(checkInDate);
     const desiredCheckOut = moment(checkOutDate);
@@ -94,6 +101,8 @@ const useCrudBooking = () => {
       checkInDate: desiredCheckIn.toDate(), // Save as Firebase-compatible Date object
       checkOutDate: desiredCheckOut.toDate(),
       status: "Booked",
+      totalPrice,
+      downpayment,
     };
 
     const docRef = await addDoc(bookingsRef, newBooking);

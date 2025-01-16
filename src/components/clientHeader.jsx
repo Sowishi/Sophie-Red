@@ -34,6 +34,7 @@ const ClientHeader = () => {
   const [downpayment, setDownpayment] = useState(0);
   const [checkoutID, setCheckoutID] = useState();
   const [paymentStatus, setPaymentStatus] = useState("Pending");
+  const [paymentTerm, setPaymentTerm] = useState("down");
   const dropdownRef = useRef();
   const navigation = useNavigate();
 
@@ -107,12 +108,21 @@ const ClientHeader = () => {
   };
 
   const getCheckout = async () => {
-    const res = await getCheckoutPaymongo(checkoutID);
-    setPaymentStatus(res);
+    if (checkoutID) {
+      const res = await getCheckoutPaymongo(checkoutID);
+      setPaymentStatus(res);
+    }
   };
 
   const handleConfirmBook = async () => {
-    await bookRoom(selectedRoom?.id, currentUser, arrivalDate, departureDate);
+    await bookRoom(
+      selectedRoom?.id,
+      currentUser,
+      arrivalDate,
+      departureDate,
+      totalPrice,
+      downpayment
+    );
     toast.success("Successfully Booked!");
   };
 
@@ -564,6 +574,34 @@ const ClientHeader = () => {
                           <Button className="ml-3">
                             <IoReload onClick={getCheckout} />
                           </Button>
+                        </td>
+                      </tr>
+                      <tr className="border-b">
+                        <td className="px-4 py-2 text-sm text-gray-600">
+                          Payment Term
+                        </td>
+                        <td className="px-4 py-2 text-sm text-gray-800 flex items-center justify-start">
+                          <Button
+                            onClick={() => setPaymentTerm("down")}
+                            color={paymentTerm == "down" ? "success" : "light"}
+                          >
+                            Downpayment
+                          </Button>
+                          <Button
+                            onClick={() => setPaymentTerm("full")}
+                            className="ml-3"
+                            color={paymentTerm == "full" ? "success" : "light"}
+                          >
+                            Full Payment
+                          </Button>
+                        </td>
+                      </tr>
+                      <tr className="border-b">
+                        <td className="px-4 py-2 text-sm text-gray-600">
+                          Make payment for:
+                        </td>
+                        <td className="px-4 py-2  font-bold text-3xl text-green-800 flex items-center justify-start">
+                          ₱{paymentTerm == "down" ? downpayment : totalPrice}
                         </td>
                       </tr>
                     </tbody>
