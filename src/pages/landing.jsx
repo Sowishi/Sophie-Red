@@ -86,7 +86,7 @@ const Landing = () => {
                       className="w-full text-left"
                       onClick={() => navigation("/booking")}
                     >
-                      Book Now
+                      Dashboard
                     </Button>
                   </Dropdown.Item>
                   <Dropdown.Divider />
