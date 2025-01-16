@@ -10,6 +10,7 @@ const Landing = () => {
   const navigation = useNavigate();
   const { currentUser, logout } = useUserStore();
 
+  console.log(currentUser);
   return (
     <>
       <div className="w-full min-h-screen">

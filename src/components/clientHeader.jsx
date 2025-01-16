@@ -1,4 +1,4 @@
-import { Button, Dropdown, Table, TextInput } from "flowbite-react";
+import { Alert, Button, Dropdown, Table, TextInput } from "flowbite-react";
 import { CustomDatePicker } from "./datePicker";
 import logo from "../assets/logo.png";
 import { ImMenu } from "react-icons/im";
@@ -360,6 +360,33 @@ const ClientHeader = () => {
             </Table.Body>
           </Table>
         )}
+
+        {rooms && rooms.length <= 0 && (
+          <>
+            <Alert className="m-5" color="failure">
+              There's no availabe room
+            </Alert>
+          </>
+        )}
+        <div className="buttons flex items-center justify-center w-full mt-10">
+          <Button
+            onClick={() => {
+              setBookingModal(false);
+              setRooms(null);
+            }}
+            gradientMonochrome="info"
+            className="mx-3 w-full mt-2 py-1"
+          >
+            Cancel
+          </Button>
+          <Button
+            disabled={!selectedRoom}
+            gradientMonochrome="failure"
+            className="w-full mt-2 py-1"
+          >
+            Check Availability
+          </Button>
+        </div>
       </CustomModal>
     </div>
   );
