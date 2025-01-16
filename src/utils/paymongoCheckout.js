@@ -1,4 +1,4 @@
-export const createPaymongoCheckout = async (amount) => {
+export const createPaymongoCheckout = async (amount, paymentTerm) => {
   try {
     const response = await fetch(
       "https://api.paymongo.com/v1/checkout_sessions",
@@ -19,8 +19,11 @@ export const createPaymongoCheckout = async (amount) => {
                 {
                   currency: "PHP",
                   amount: amount * 100, // Convert to centavos
-                  description: "Sophie Red Hotel",
-                  name: "Sophie Red Hotel",
+
+                  name:
+                    "Sophie Red Hotel" + paymentTerm == "down"
+                      ? "Downpayment for room booking"
+                      : "Fullpayment for room booking",
                   quantity: 1,
                 },
               ],

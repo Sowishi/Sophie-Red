@@ -77,7 +77,8 @@ const useCrudBooking = () => {
     checkInDate,
     checkOutDate,
     totalPrice,
-    downpayment
+    downpayment,
+    paymentTerm
   ) => {
     // Convert input dates to Moment.js objects
     const desiredCheckIn = moment(checkInDate);
@@ -103,6 +104,7 @@ const useCrudBooking = () => {
       status: "Booked",
       totalPrice,
       downpayment,
+      paymentStatus: paymentTerm,
     };
 
     const docRef = await addDoc(bookingsRef, newBooking);

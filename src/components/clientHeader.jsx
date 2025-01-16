@@ -77,7 +77,10 @@ const ClientHeader = () => {
 
   const handleBook = async () => {
     if (checkout) {
-      const sessionID = await createPaymongoCheckout(downpayment);
+      const sessionID = await createPaymongoCheckout(
+        paymentTerm == "down" ? downpayment : totalPrice,
+        paymentTerm
+      );
       setCheckoutID(sessionID);
       return;
     }
@@ -121,7 +124,8 @@ const ClientHeader = () => {
       arrivalDate,
       departureDate,
       totalPrice,
-      downpayment
+      downpayment,
+      paymentTerm
     );
     toast.success("Successfully Booked!");
   };
