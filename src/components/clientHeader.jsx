@@ -26,7 +26,7 @@ const ClientHeader = () => {
   const [loading, setLoading] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [checkingLoading, setCheckingLoading] = useState(false);
-
+  const [checkout, setCheckout] = useState(false);
   const dropdownRef = useRef();
   const navigation = useNavigate();
 
@@ -79,6 +79,8 @@ const ClientHeader = () => {
         setCheckingLoading(false);
       } else {
         toast.success("Room is available");
+        setCheckingLoading(false);
+        setCheckout(true);
       }
     } catch (error) {
       toast.error(error.message);
@@ -210,7 +212,7 @@ const ClientHeader = () => {
         </div>
       </div>
 
-      {/* Modals */}
+      {/*Bottom Modal */}
       <BottomDrawer
         red={true}
         open={bookNowModal}
@@ -340,83 +342,133 @@ const ClientHeader = () => {
         handleClose={() => {
           setBookingModal(false);
           setRooms(null);
+          setCheckout(null);
         }}
         hideFooter={true}
       >
-        {(loading || checkingLoading) && (
-          <Lottie
-            style={{ width: 150 }}
-            options={{
-              animationData: loader,
-              autoplay: true,
-            }}
-          />
-        )}
-        {rooms !== null && rooms.length >= 1 && !checkingLoading && (
-          <Table hoverable striped>
-            <Table.Head>
-              <Table.HeadCell>Room ID</Table.HeadCell>
-              <Table.HeadCell>Room Type</Table.HeadCell>
-              <Table.HeadCell>Price Per Night</Table.HeadCell>
-              <Table.HeadCell>Description</Table.HeadCell>
-              <Table.HeadCell></Table.HeadCell>
-            </Table.Head>
-            <Table.Body className="divide-y">
-              {rooms.map((room, index) => (
-                <Table.Row
-                  key={index}
-                  className={`${
-                    selectedRoom?.roomNumber === room.roomNumber
-                      ? "bg-green-100 dark:bg-green-800"
-                      : "bg-white dark:border-gray-700 dark:bg-gray-800"
-                  }`}
-                >
-                  <Table.Cell className="font-bold text-lg text-red-500">
-                    {room.roomNumber}
-                  </Table.Cell>
-                  <Table.Cell>{room.roomType}</Table.Cell>
-                  <Table.Cell>₱{room.pricePerNight}</Table.Cell>
-                  <Table.Cell>{room.description}</Table.Cell>
-
-                  <Table.Cell className="flex items-center justify-center">
-                    <Button
-                      className="flex items-center justify-center"
-                      onClick={() => handleRoomSelection(room)}
-                      color={
-                        selectedRoom?.roomNumber === room.roomNumber
-                          ? "success"
-                          : "light"
-                      }
-                    >
-                      {selectedRoom?.roomNumber === room.roomNumber
-                        ? "Selected"
-                        : "Select Room"}
-
-                      {selectedRoom?.roomNumber === room.roomNumber ? (
-                        <FaCheck className="ml-2 h-5 w-5" />
-                      ) : (
-                        ""
-                      )}
-                    </Button>
-                  </Table.Cell>
-                </Table.Row>
-              ))}
-            </Table.Body>
-          </Table>
-        )}
-
-        {rooms && rooms.length <= 0 && (
+        {!checkout && (
           <>
-            <Alert className="m-5" color="failure">
-              There's no availabe room
-            </Alert>
+            {(loading || checkingLoading) && (
+              <Lottie
+                style={{ width: 150 }}
+                options={{
+                  animationData: loader,
+                  autoplay: true,
+                }}
+              />
+            )}
+            {rooms !== null && rooms.length >= 1 && !checkingLoading && (
+              <Table hoverable striped>
+                <Table.Head>
+                  <Table.HeadCell>Room ID</Table.HeadCell>
+                  <Table.HeadCell>Room Type</Table.HeadCell>
+                  <Table.HeadCell>Price Per Night</Table.HeadCell>
+                  <Table.HeadCell>Description</Table.HeadCell>
+                  <Table.HeadCell></Table.HeadCell>
+                </Table.Head>
+                <Table.Body className="divide-y">
+                  {rooms.map((room, index) => (
+                    <Table.Row
+                      key={index}
+                      className={`${
+                        selectedRoom?.roomNumber === room.roomNumber
+                          ? "bg-green-100 dark:bg-green-800"
+                          : "bg-white dark:border-gray-700 dark:bg-gray-800"
+                      }`}
+                    >
+                      <Table.Cell className="font-bold text-lg text-red-500">
+                        {room.roomNumber}
+                      </Table.Cell>
+                      <Table.Cell>{room.roomType}</Table.Cell>
+                      <Table.Cell>₱{room.pricePerNight}</Table.Cell>
+                      <Table.Cell>{room.description}</Table.Cell>
+
+                      <Table.Cell className="flex items-center justify-center">
+                        <Button
+                          className="flex items-center justify-center"
+                          onClick={() => handleRoomSelection(room)}
+                          color={
+                            selectedRoom?.roomNumber === room.roomNumber
+                              ? "success"
+                              : "light"
+                          }
+                        >
+                          {selectedRoom?.roomNumber === room.roomNumber
+                            ? "Selected"
+                            : "Select Room"}
+
+                          {selectedRoom?.roomNumber === room.roomNumber ? (
+                            <FaCheck className="ml-2 h-5 w-5" />
+                          ) : (
+                            ""
+                          )}
+                        </Button>
+                      </Table.Cell>
+                    </Table.Row>
+                  ))}
+                </Table.Body>
+              </Table>
+            )}
+
+            {rooms && rooms.length <= 0 && (
+              <>
+                <Alert className="m-5" color="failure">
+                  There's no availabe room
+                </Alert>
+              </>
+            )}
           </>
         )}
+
+        {checkout && selectedRoom && (
+          <div className="flex justify-center mt-8">
+            <div className="w-full max-w-lg bg-white shadow-md rounded-lg p-6 dark:bg-gray-800">
+              <h1 className="text-2xl font-semibold text-gray-800 dark:text-white mb-4">
+                Room Details
+              </h1>
+              <div className="mb-4">
+                <p className="text-gray-600 dark:text-gray-400">
+                  <strong>Room Number:</strong> {selectedRoom.roomNumber}
+                </p>
+                <p className="text-gray-600 dark:text-gray-400">
+                  <strong>Price per Night:</strong> ₱
+                  {selectedRoom.pricePerNight}
+                </p>
+                <p className="text-gray-600 dark:text-gray-400">
+                  <strong>Downpayment Required:</strong> ₱100
+                </p>
+                <p className="text-gray-600 dark:text-gray-400">
+                  <strong>Total Guests:</strong> {persons.adults} Adults,{" "}
+                  {persons.kids} Kids
+                </p>
+                <p className="text-gray-600 dark:text-gray-400">
+                  <strong>Stay Duration:</strong>{" "}
+                  {(() => {
+                    try {
+                      return `${
+                        calculateStayDuration(arrivalDate, departureDate).days
+                      } Day(s)`;
+                    } catch {
+                      return "Invalid Dates";
+                    }
+                  })()}
+                </p>
+                {voucher && (
+                  <p className="text-gray-600 dark:text-gray-400">
+                    <strong>Promo Code Applied:</strong> {voucher}
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="buttons flex items-center justify-center w-full mt-10">
           <Button
             onClick={() => {
               setBookingModal(false);
               setRooms(null);
+              setCheckout(null);
             }}
             gradientMonochrome="info"
             className="mx-3 w-full mt-2 py-1"
