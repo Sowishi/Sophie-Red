@@ -434,47 +434,95 @@ const ClientHeader = () => {
         )}
 
         {checkout && selectedRoom && (
-          <div className="flex justify-center mt-8">
-            <div className="w-full max-w-lg bg-white shadow-md rounded-lg p-6 dark:bg-gray-800">
-              <h1 className="text-2xl font-semibold text-gray-800 dark:text-white mb-4">
-                Room Details
-              </h1>
-              <div className="mb-4">
-                <h1>Total Price: {totalPrice}</h1>
-                <h1>Downpayment: {downpayment}</h1>
+          <div className="w-full  bg-white rounded-lg px-5  dark:bg-gray-800">
+            <Alert className="text-center flex justify-center items-center">
+              To secure your reservation, a 50% deposit of the total price is
+              required.
+            </Alert>
 
-                <p className="text-gray-600 dark:text-gray-400">
-                  <strong>Room Number:</strong> {selectedRoom.roomNumber}
-                </p>
-                <p className="text-gray-600 dark:text-gray-400">
-                  <strong>Price per Night:</strong> ₱
-                  {selectedRoom.pricePerNight}
-                </p>
-                <p className="text-gray-600 dark:text-gray-400">
-                  <strong>Downpayment Required:</strong> ₱100
-                </p>
-                <p className="text-gray-600 dark:text-gray-400">
-                  <strong>Total Guests:</strong> {persons.adults} Adults,{" "}
-                  {persons.kids} Kids
-                </p>
-                <p className="text-gray-600 dark:text-gray-400">
-                  <strong>Stay Duration:</strong>{" "}
-                  {(() => {
-                    try {
-                      return `${
-                        calculateStayDuration(arrivalDate, departureDate).days
-                      } Day(s)`;
-                    } catch {
-                      return "Invalid Dates";
-                    }
-                  })()}
-                </p>
-                {voucher && (
-                  <p className="text-gray-600 dark:text-gray-400">
-                    <strong>Promo Code Applied:</strong> {voucher}
-                  </p>
-                )}
-              </div>
+            <div className="flex justify-between items-center mt-3">
+              <h1 className="text-2xl font-semibold text-gray-800 dark:text-white mb-4">
+                Room Number
+              </h1>
+              <h1 className="text-2xl font-bold text-red-500 dark:text-white mb-4">
+                {selectedRoom?.roomNumber}
+              </h1>
+            </div>
+            <div className="mb-4 overflow-x-auto">
+              <table className="min-w-full table-auto border-collapse">
+                <thead>
+                  <tr className="border-b bg-gray-100">
+                    <th className="px-4 py-2 text-left text-sm font-medium text-gray-600">
+                      Service
+                    </th>
+                    <th className="px-4 py-2 text-left text-sm font-medium text-gray-600">
+                      Details
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b">
+                    <td className="px-4 py-2 text-sm text-gray-600">
+                      Price per Night
+                    </td>
+                    <td className="px-4 py-2 text-sm text-gray-800">
+                      ₱{selectedRoom.pricePerNight}
+                    </td>
+                  </tr>
+                  <tr className="border-b">
+                    <td className="px-4 py-2 text-sm text-gray-600">
+                      Total Price
+                    </td>
+                    <td className="px-4 py-2 text-sm text-gray-800">
+                      ₱{totalPrice}
+                    </td>
+                  </tr>
+                  <tr className="border-b">
+                    <td className="px-4 py-2 text-sm text-gray-600">
+                      Downpayment
+                    </td>
+                    <td className="px-4 py-2 text-sm text-gray-800">
+                      ₱{downpayment}
+                    </td>
+                  </tr>
+
+                  <tr className="border-b">
+                    <td className="px-4 py-2 text-sm text-gray-600">
+                      Total Guests
+                    </td>
+                    <td className="px-4 py-2 text-sm text-gray-800">
+                      {persons.adults} Adults, {persons.kids} Kids
+                    </td>
+                  </tr>
+                  <tr className="border-b">
+                    <td className="px-4 py-2 text-sm text-gray-600">
+                      Stay Duration
+                    </td>
+                    <td className="px-4 py-2 text-sm text-gray-800">
+                      {(() => {
+                        try {
+                          return `${
+                            calculateStayDuration(arrivalDate, departureDate)
+                              .days
+                          } Day(s)`;
+                        } catch {
+                          return "Invalid Dates";
+                        }
+                      })()}
+                    </td>
+                  </tr>
+                  {voucher && (
+                    <tr className="border-b">
+                      <td className="px-4 py-2 text-sm text-gray-600">
+                        Promo Code Applied
+                      </td>
+                      <td className="px-4 py-2 text-sm text-gray-800">
+                        {voucher}
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
             </div>
           </div>
         )}
