@@ -15,6 +15,8 @@ import { FaArrowRight, FaCheck } from "react-icons/fa6";
 import moment from "moment";
 import { calculateStayDuration } from "../utils/calculateStay";
 import { createPaymongoCheckout } from "../utils/paymongoCheckout";
+import { IoReload } from "react-icons/io5";
+import { getCheckoutPaymongo } from "../utils/getCheckout";
 
 const ClientHeader = () => {
   const [bookNowModal, setBookNowModal] = useState(false);
@@ -30,6 +32,7 @@ const ClientHeader = () => {
   const [checkout, setCheckout] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
   const [downpayment, setDownpayment] = useState(0);
+  const [checkoutID, setCheckoutID] = useState();
   const dropdownRef = useRef();
   const navigation = useNavigate();
 
@@ -71,7 +74,8 @@ const ClientHeader = () => {
 
   const handleBook = async () => {
     if (checkout) {
-      createPaymongoCheckout(downpayment);
+      const sessionID = await createPaymongoCheckout(downpayment);
+      setCheckoutID(sessionID);
       return;
     }
 
@@ -98,6 +102,11 @@ const ClientHeader = () => {
     } catch (error) {
       toast.error(error.message);
     }
+  };
+
+  const getCheckout = async () => {
+    const res = await getCheckoutPaymongo(checkoutID);
+    console.log(res);
   };
 
   return (
@@ -463,31 +472,6 @@ const ClientHeader = () => {
                 <tbody>
                   <tr className="border-b">
                     <td className="px-4 py-2 text-sm text-gray-600">
-                      Price per Night
-                    </td>
-                    <td className="px-4 py-2 text-sm text-gray-800">
-                      ₱{selectedRoom.pricePerNight}
-                    </td>
-                  </tr>
-                  <tr className="border-b">
-                    <td className="px-4 py-2 text-sm text-gray-600">
-                      Total Price
-                    </td>
-                    <td className="px-4 py-2 text-sm text-gray-800">
-                      ₱{totalPrice}
-                    </td>
-                  </tr>
-                  <tr className="border-b">
-                    <td className="px-4 py-2 text-sm text-gray-600">
-                      Downpayment
-                    </td>
-                    <td className="px-4 py-2 text-sm text-gray-800">
-                      ₱{downpayment}
-                    </td>
-                  </tr>
-
-                  <tr className="border-b">
-                    <td className="px-4 py-2 text-sm text-gray-600">
                       Total Guests
                     </td>
                     <td className="px-4 py-2 text-sm text-gray-800">
@@ -511,16 +495,47 @@ const ClientHeader = () => {
                       })()}
                     </td>
                   </tr>
-                  {voucher && (
-                    <tr className="border-b">
-                      <td className="px-4 py-2 text-sm text-gray-600">
-                        Promo Code Applied
-                      </td>
-                      <td className="px-4 py-2 text-sm text-gray-800">
-                        {voucher}
-                      </td>
-                    </tr>
-                  )}
+                  <tr className="border-b">
+                    <td className="px-4 py-2 text-sm text-gray-600">
+                      Promo Code Applied
+                    </td>
+                    <td className="px-4 py-2 text-sm text-gray-800">
+                      {voucher ? voucher : "None"}
+                    </td>
+                  </tr>
+                  <tr className="border-b">
+                    <td className="px-4 py-2 text-sm text-gray-600">
+                      Price per Night
+                    </td>
+                    <td className="px-4 py-2 text-sm text-gray-800">
+                      ₱{selectedRoom.pricePerNight}
+                    </td>
+                  </tr>
+                  <tr className="border-b">
+                    <td className="px-4 py-2 text-sm text-gray-600">
+                      Total Price
+                    </td>
+                    <td className="px-4 py-2 text-sm text-gray-800">
+                      ₱{totalPrice}
+                    </td>
+                  </tr>
+                  <tr className="border-b">
+                    <td className="px-4 py-2 text-sm text-gray-600">
+                      Downpayment
+                    </td>
+                    <td className="px-4 py-2 text-sm text-gray-800">
+                      ₱{downpayment}
+                    </td>
+                  </tr>
+                  <tr className="border-b">
+                    <td className="px-4 py-2 text-sm text-gray-600">Status</td>
+                    <td className="px-4 py-2 text-sm text-gray-800 flex items-center justify-start">
+                      Pending{" "}
+                      <Button className="ml-3">
+                        <IoReload onClick={getCheckout} />
+                      </Button>
+                    </td>
+                  </tr>
                 </tbody>
               </table>
             </div>
