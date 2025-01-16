@@ -12,6 +12,8 @@ import Lottie from "react-lottie";
 import { toast } from "react-toastify";
 import useCrudBooking from "../hooks/useCrudBooking";
 import { FaArrowRight, FaCheck } from "react-icons/fa6";
+import moment from "moment";
+import { calculateStayDuration } from "../utils/calculateStay";
 
 const ClientHeader = () => {
   const [bookNowModal, setBookNowModal] = useState(false);
@@ -20,25 +22,39 @@ const ClientHeader = () => {
   const [departureDate, setDepartureDate] = useState("");
   const [voucher, setVoucher] = useState("");
   const [persons, setPersons] = useState({ adults: 1, kids: 0 });
-
   const [rooms, setRooms] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [selectedRoom, setSelectedRoom] = useState(null); // State for selected room
+  const [selectedRoom, setSelectedRoom] = useState(null);
+  const [checkingLoading, setCheckingLoading] = useState(false);
 
   const dropdownRef = useRef();
   const navigation = useNavigate();
 
-  const { fetchAvailableRoom, bookRoom } = useCrudBooking();
+  const { fetchAvailableRoom, checkRoomAvailability } = useCrudBooking();
   const { currentUser } = useUserStore();
 
   const handleSubmit = async () => {
     setLoading(true);
+
+    // Validate date inputs
     if (!arrivalDate || !departureDate) {
-      toast.error("Please select your check in date");
+      toast.error("Please select your check-in and check-out dates");
+      setLoading(false);
       return;
     }
+
+    // Check if arrivalDate is after or equal to departureDate using moment.js
+    if (moment(arrivalDate).isSameOrAfter(moment(departureDate))) {
+      toast.error("Check-out date must be after the check-in date");
+      setLoading(false);
+      return;
+    }
+
     setBookingModal(true);
+
+    // Fetch available rooms
     await fetchAvailableRoom(persons, setRooms);
+
     setLoading(false);
   };
 
@@ -51,8 +67,19 @@ const ClientHeader = () => {
   };
 
   const handleBook = async () => {
+    setCheckingLoading(true);
     try {
-      await bookRoom(selectedRoom?.id, currentUser, arrivalDate, departureDate);
+      const output = await checkRoomAvailability(
+        selectedRoom?.id,
+        arrivalDate,
+        departureDate
+      );
+      if (!output) {
+        toast.error("Room not available for the selected dates.");
+        setCheckingLoading(false);
+      } else {
+        toast.success("Room is available");
+      }
     } catch (error) {
       toast.error(error.message);
     }
@@ -300,7 +327,15 @@ const ClientHeader = () => {
         size={"5xl"}
         title={`Booking for ${persons.adults} Adults & ${
           persons.kids
-        } Kids | Promo Code: ${voucher ? voucher : "---"}`}
+        } Kids | ${(() => {
+          try {
+            return `${
+              calculateStayDuration(arrivalDate, departureDate).days
+            } Day(s)`;
+          } catch (error) {
+            return "Invalid Dates";
+          }
+        })()} | Promo Code: ${voucher ? voucher : "None"}`}
         open={bookingModal}
         handleClose={() => {
           setBookingModal(false);
@@ -308,7 +343,7 @@ const ClientHeader = () => {
         }}
         hideFooter={true}
       >
-        {loading && (
+        {(loading || checkingLoading) && (
           <Lottie
             style={{ width: 150 }}
             options={{
@@ -317,7 +352,7 @@ const ClientHeader = () => {
             }}
           />
         )}
-        {rooms !== null && rooms.length >= 1 && (
+        {rooms !== null && rooms.length >= 1 && !checkingLoading && (
           <Table hoverable striped>
             <Table.Head>
               <Table.HeadCell>Room ID</Table.HeadCell>
