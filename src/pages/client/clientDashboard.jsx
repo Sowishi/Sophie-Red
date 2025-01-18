@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import Loader from "../../components/loader";
 import moment from "moment";
 import { calculateStayDuration } from "../../utils/calculateStay";
+import { FcCancel } from "react-icons/fc";
 
 const ClientDashboard = () => {
   const { currentUser } = useUserStore();
@@ -99,6 +100,46 @@ const ClientDashboard = () => {
                       </h1>
                     </div>
                   </div>
+                </div>
+              </div>
+              <div className="bg-white mt-5 shadow-sm  p-5 lg:p-10 rounded-lg">
+                <h1 className="text-2xl font-semibold">
+                  Check In & Check Out Dates
+                </h1>
+
+                <div className="flex flex-wrap mx-10 mt-5">
+                  <div className="basis-full my-2 lg:basis-4/12">
+                    <div className="flex flex-col">
+                      <h1>Check In </h1>
+                      <h1 className="text-lg font-bold">
+                        {moment(booking?.checkInDate.toDate()).format("LL")}
+                      </h1>
+                    </div>
+                  </div>
+                  <div className="basis-full my-2 lg:basis-4/12">
+                    <div className="flex flex-col">
+                      <h1>Check Out </h1>
+                      <h1 className="text-lg font-bold">
+                        {moment(booking?.checkOutDate.toDate()).format("LL")}
+                      </h1>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-white mt-5 shadow-sm p-5 lg:p-10 rounded-lg flex items-center">
+                <FcCancel size={50} />
+                <div className="ml-8 flex flex-col justify-center items-start">
+                  <h1 className="text-2xl font-semibold">
+                    Cancellation Policy
+                  </h1>
+                  <p>
+                    Please note that this booking is{" "}
+                    <span className="font-bold">non-refundable</span>. Once
+                    booked, cancellations will not be eligible for a refund.
+                  </p>
+                  <Button gradientMonochrome="failure" className="mt-3">
+                    Cancel Booking
+                  </Button>
                 </div>
               </div>
             </div>
