@@ -78,7 +78,8 @@ const useCrudBooking = () => {
     checkOutDate,
     totalPrice,
     downpayment,
-    paymentTerm
+    paymentTerm,
+    roomDetails
   ) => {
     // Convert input dates to Moment.js objects
     const desiredCheckIn = moment(checkInDate);
@@ -105,13 +106,31 @@ const useCrudBooking = () => {
       totalPrice,
       downpayment,
       paymentStatus: paymentTerm,
+      roomDetails,
     };
 
     const docRef = await addDoc(bookingsRef, newBooking);
     return docRef.id; // Return the booking ID
   };
 
-  return { fetchAvailableRoom, checkRoomAvailability, bookRoom };
+  const fetchUserBooking = async (user, setBooking) => {
+    const colRef = collection(db, "bookings");
+    const q = query(colRef, where("currentUser.uid", "==", user.uid));
+    const snapshot = await getDocs(q);
+    const output = [];
+    snapshot.docs.map((doc) => {
+      output.push({ ...doc.data(), id: doc.id });
+    });
+
+    setBooking(output[0]);
+  };
+
+  return {
+    fetchAvailableRoom,
+    checkRoomAvailability,
+    bookRoom,
+    fetchUserBooking,
+  };
 };
 
 export default useCrudBooking;

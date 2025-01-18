@@ -90,7 +90,8 @@ const ClientHeader = () => {
       const output = await checkRoomAvailability(
         selectedRoom?.id,
         arrivalDate,
-        departureDate
+        departureDate,
+        currentUser.uid
       );
       if (!output) {
         toast.error("Room not available for the selected dates.");
@@ -125,7 +126,8 @@ const ClientHeader = () => {
       departureDate,
       totalPrice,
       downpayment,
-      paymentTerm
+      paymentTerm,
+      selectedRoom
     );
     toast.success("Successfully Booked!");
   };

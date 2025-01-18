@@ -15,7 +15,10 @@ const ClientDashboardHeader = () => {
 
   return (
     <div className="header bg-slate-900 px-20 p-5 flex items-center justify-between w-full">
-      <div className="flex items-center justify-start">
+      <div
+        onClick={() => navigation("/")}
+        className="flex items-center justify-start cursor-pointer"
+      >
         <img src={logo} style={{ width: 50 }} alt="Logo" />
         <h1 className="text-white ml-3 text-sm font-medium text-nowrap italic">
           Sophie Red Hotel
