@@ -84,7 +84,7 @@ const Landing = () => {
                     <Button
                       color="info"
                       className="w-full text-left"
-                      onClick={() => navigation("/booking")}
+                      onClick={() => navigation("/client-dashboard")}
                     >
                       Dashboard
                     </Button>

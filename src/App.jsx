@@ -8,6 +8,7 @@ import Booking from "./pages/client/booking";
 import Landing from "./pages/landing";
 import useUserStore from "./utils/zustand";
 import { useEffect } from "react";
+import ClientDashboard from "./pages/client/clientDashboard";
 
 const App = () => {
   const initializeUser = useUserStore((state) => state.initializeUser);
@@ -23,6 +24,8 @@ const App = () => {
         <Route path="/dashboard" element={<Index />} />
         <Route path="/room" element={<Room />} />
         <Route path="/front-desk" element={<FrontDesk />} />
+        <Route path="/client-dashboard" element={<ClientDashboard />} />
+
         <Route
           path="/booking"
           element={currentUser ? <Booking /> : <Landing />}
