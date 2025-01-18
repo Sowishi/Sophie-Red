@@ -1,24 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../assets/logo2.png";
 import { HiHome, HiUsers, HiDocumentReport } from "react-icons/hi";
 import { RiComputerLine } from "react-icons/ri";
 import { MdHotel, MdOutlineCleaningServices } from "react-icons/md";
-import { FaAngleDown } from "react-icons/fa";
+import { FaAngleDown, FaBed } from "react-icons/fa";
 import { Button, Dropdown } from "flowbite-react";
 import useUserStore from "../utils/zustand";
 import { CiMenuBurger } from "react-icons/ci";
+import { ClientSidebar } from "./clientSidebar";
 
 const ClientDashboardHeader = () => {
   const location = useLocation();
   const navigation = useNavigate();
 
   const isCurrentPath = (path) => location.pathname === path;
+  const [isOpen, setIsOpen] = useState(false);
 
   const { currentUser } = useUserStore();
 
   return (
     <div className="header bg-slate-900 px-10 lg:px-20 p-5 flex items-center justify-between w-full">
+      <ClientSidebar isOpen={isOpen} handleClose={() => setIsOpen(false)} />
       <div
         onClick={() => navigation("/")}
         className="flex items-center justify-start cursor-pointer"
@@ -28,7 +31,6 @@ const ClientDashboardHeader = () => {
           Sophie Red Hotel
         </h1>
       </div>
-
       <div className="navigation hidden lg:flex flex-1  mx-10 text-white px-5">
         <Link
           to="/dashboard"
@@ -45,7 +47,7 @@ const ClientDashboardHeader = () => {
             isCurrentPath("/front-desk") ? "bg-red-800" : "bg-slate-700"
           }`}
         >
-          <RiComputerLine color="white" className="mr-3" />
+          <FaBed color="white" className="mr-3" />
           <h1 className="text-sm font-extralight">Room</h1>
         </Link>
         <Link
@@ -58,7 +60,6 @@ const ClientDashboardHeader = () => {
           <h1 className="text-sm font-extralight">Accomodation</h1>
         </Link>
       </div>
-
       <div className="hidden lg:flex items-center justify-start cursor-pointer">
         <img
           src={currentUser?.photoURL}
@@ -72,6 +73,7 @@ const ClientDashboardHeader = () => {
         <FaAngleDown style={{ marginLeft: 10 }} color="white" size={25} />
       </div>
       <CiMenuBurger
+        onClick={() => setIsOpen(true)}
         className="cursor-pointer flex lg:hidden"
         size={25}
         color="white"

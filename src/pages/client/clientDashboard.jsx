@@ -59,14 +59,14 @@ const ClientDashboard = () => {
           <div className="flex flex-wrap">
             <div className="basis-full lg:basis-8/12">
               {booking.paymentStatus == "down" && (
-                <div className="flex items-center space-x-3">
+                <div className="flex flex-col lg:flex-row items-center justify-start space-x-2">
                   <Alert color="warning">
-                    <h1>
+                    <h1 className="text-sm">
                       Thank you for booking with us! You can always pay the full
                       price here.
                     </h1>
                   </Alert>
-                  <Button gradientMonochrome="failure" className="px-5">
+                  <Button gradientMonochrome="failure" className="px-5 mt-3">
                     Pay Now
                   </Button>
                 </div>
