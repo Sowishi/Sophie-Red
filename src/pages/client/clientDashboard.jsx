@@ -5,6 +5,7 @@ import useCrudBooking from "../../hooks/useCrudBooking";
 import { useEffect, useState } from "react";
 import Loader from "../../components/loader";
 import moment from "moment";
+import { calculateStayDuration } from "../../utils/calculateStay";
 
 const ClientDashboard = () => {
   const { currentUser } = useUserStore();
@@ -66,7 +67,7 @@ const ClientDashboard = () => {
                 </div>
               )}
 
-              <div className="bg-white mt-5 shadow-sm p-5 rounded-lg">
+              <div className="bg-white mt-5 shadow-sm  p-5 lg:p-10 rounded-lg">
                 <h1 className="text-2xl font-semibold">Book Information</h1>
                 <Alert color="success" className="my-3">
                   You successfully booked a room! Here’s your booking
@@ -77,29 +78,108 @@ const ClientDashboard = () => {
                   <div className="basis-full my-2 lg:basis-4/12">
                     <div className="flex flex-col">
                       <h1>Full Name</h1>
-                      <h1 className="text-lg font-bold">{currentUser?.name}</h1>
+                      <h1 className="text-lg font-bold">
+                        {booking.currentUser?.name}
+                      </h1>
                     </div>
                   </div>
                   <div className="basis-full my-2 lg:basis-4/12">
                     <div className="flex flex-col">
                       <h1>Email</h1>
                       <h1 className="text-lg font-bold">
-                        {currentUser?.email}
+                        {booking.currentUser?.email}
                       </h1>
                     </div>
                   </div>
                   <div className="basis-full my-2 lg:basis-4/12">
                     <div className="flex flex-col">
                       <h1>Guest ID</h1>
-                      <h1 className="text-lg font-bold">{currentUser?.uid}</h1>
+                      <h1 className="text-lg font-bold">
+                        {booking.currentUser?.uid}
+                      </h1>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
             <div className="basis-full lg:basis-4/12">
-              <div className="rounded-lg bg-white mt-5 lg:mt-0 mx-0 lg:mx-5 p-5">
-                <h1 className="text-2xl font-semibold">Summary</h1>
+              <div className="rounded-lg bg-white mt-5 lg:mt-0 mx-0 lg:mx-5 py-8  px-5 lg:px-10">
+                <h1 className="text-2xl font-semibold mb-10">Summary</h1>
+                <hr />
+                <div className="p-5">
+                  <div className="flex justify-between items-center mt-3">
+                    <h1>Customer Name</h1>
+                    <h1 className="font-bold">{booking.currentUser.name}</h1>
+                  </div>
+                  <div className="flex justify-between items-center mt-3">
+                    <h1>Room Number</h1>
+                    <h1 className="font-bold">
+                      {booking.roomDetails.roomNumber}
+                    </h1>
+                  </div>
+                  <div className="flex justify-between items-center mt-3">
+                    <h1>Room Type</h1>
+                    <h1 className="font-bold">
+                      {booking.roomDetails.roomType}
+                    </h1>
+                  </div>
+                  <div className="flex justify-between items-center mt-3">
+                    <h1>Room Description</h1>
+                    <h1 className="font-bold">
+                      {booking.roomDetails.description}
+                    </h1>
+                  </div>
+                  <div className="flex justify-between items-center mt-3">
+                    <h1>Total Guest Allowed</h1>
+                    <h1 className="font-bold">
+                      {booking.roomDetails.adultCount} Adult and{" "}
+                      {booking.roomDetails.adultCount} Kids
+                    </h1>
+                  </div>
+                </div>
+                <hr />
+                <h1 className="text-2xl font-semibold  my-10">Price Details</h1>
+                <hr />
+                <div className="p-5">
+                  <div className="flex justify-between items-center mt-3">
+                    <h1>Price Per Night</h1>
+                    <h1 className="font-bold">
+                      ₱{booking.roomDetails.pricePerNight}
+                    </h1>
+                  </div>
+                  <div className="flex justify-between items-center mt-3">
+                    <h1>Stay Duration</h1>
+                    <h1 className="font-bold">
+                      {
+                        calculateStayDuration(
+                          booking?.checkInDate,
+                          booking?.checkOutDate,
+                          true
+                        ).days
+                      }{" "}
+                      day(s)
+                    </h1>
+                  </div>
+                  <div className="flex justify-between items-center mt-3">
+                    <h1>Payment Status</h1>
+                    <h1 className="font-bold">
+                      {booking.paymentStatus == "down"
+                        ? "Downpayment"
+                        : "Fully Paid"}
+                    </h1>
+                  </div>
+
+                  {booking?.paymentStatus == "down" && (
+                    <div className="flex justify-between items-center mt-3">
+                      <h1>Downpayment</h1>
+                      <h1 className="font-bold">₱{booking.downpayment}</h1>
+                    </div>
+                  )}
+                  <div className="flex justify-between items-center mt-3">
+                    <h1>Total Cost</h1>
+                    <h1 className="font-bold">₱{booking.totalPrice}</h1>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
