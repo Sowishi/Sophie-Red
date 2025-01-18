@@ -5,7 +5,7 @@ const ClientDashboardLayout = ({ children }) => {
     <div className="w-full bg-slate-900 h-screen">
       <ClientDashboardHeader />
       <div
-        className="w-full h-full bg-white p-20"
+        className="w-full h-full bg-white p-10 lg:p-20"
         style={{ borderTopLeftRadius: 60, borderTopRightRadius: 60 }}
       >
         {children}

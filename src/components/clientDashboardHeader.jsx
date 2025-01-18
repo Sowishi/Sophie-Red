@@ -18,7 +18,7 @@ const ClientDashboardHeader = () => {
       <div className="flex items-center justify-start">
         <img src={logo} style={{ width: 50 }} alt="Logo" />
         <h1 className="text-white ml-3 text-sm font-medium text-nowrap italic">
-          Sophie Red Hotel s
+          Sophie Red Hotel
         </h1>
       </div>
 
