@@ -5,7 +5,9 @@ import { HiHome, HiUsers, HiDocumentReport } from "react-icons/hi";
 import { RiComputerLine } from "react-icons/ri";
 import { MdHotel, MdOutlineCleaningServices } from "react-icons/md";
 import { FaAngleDown } from "react-icons/fa";
-import { Dropdown } from "flowbite-react";
+import { Button, Dropdown } from "flowbite-react";
+import useUserStore from "../utils/zustand";
+import { CiMenuBurger } from "react-icons/ci";
 
 const ClientDashboardHeader = () => {
   const location = useLocation();
@@ -13,8 +15,10 @@ const ClientDashboardHeader = () => {
 
   const isCurrentPath = (path) => location.pathname === path;
 
+  const { currentUser } = useUserStore();
+
   return (
-    <div className="header bg-slate-900 px-20 p-5 flex items-center justify-between w-full">
+    <div className="header bg-slate-900 px-10 lg:px-20 p-5 flex items-center justify-between w-full">
       <div
         onClick={() => navigation("/")}
         className="flex items-center justify-start cursor-pointer"
@@ -25,7 +29,7 @@ const ClientDashboardHeader = () => {
         </h1>
       </div>
 
-      <div className="navigation flex-1 flex mx-10 text-white px-5">
+      <div className="navigation hidden lg:flex flex-1  mx-10 text-white px-5">
         <Link
           to="/dashboard"
           className={`flex px-5 cursor-pointer mx-2 py-3 rounded-lg justify-start items-center ${
@@ -42,24 +46,36 @@ const ClientDashboardHeader = () => {
           }`}
         >
           <RiComputerLine color="white" className="mr-3" />
-          <h1 className="text-sm font-extralight">Front Desk</h1>
+          <h1 className="text-sm font-extralight">Room</h1>
+        </Link>
+        <Link
+          to="/front-desk"
+          className={`flex px-5 cursor-pointer mx-2 py-3 rounded-lg justify-start items-center ${
+            isCurrentPath("/front-desk") ? "bg-red-800" : "bg-slate-700"
+          }`}
+        >
+          <RiComputerLine color="white" className="mr-3" />
+          <h1 className="text-sm font-extralight">Accomodation</h1>
         </Link>
       </div>
 
-      <div className="flex items-center justify-start cursor-pointer">
+      <div className="hidden lg:flex items-center justify-start cursor-pointer">
         <img
-          src={"https://avatar.iran.liara.run/public/boy?username=Sowishi69"}
+          src={currentUser?.photoURL}
           style={{ width: 50 }}
           alt="User Avatar"
         />
         <div className="div text-white ml-5">
-          <h1>Jhon Michael Molina</h1>
-          <h1 className="font-extralight opacity-70">
-            jmmmolinathebest@gmail.com
-          </h1>
+          <h1>{currentUser?.name}</h1>
+          <h1 className="font-extralight opacity-70">{currentUser?.email}</h1>
         </div>
         <FaAngleDown style={{ marginLeft: 10 }} color="white" size={25} />
       </div>
+      <CiMenuBurger
+        className="cursor-pointer flex lg:hidden"
+        size={25}
+        color="white"
+      />
     </div>
   );
 };
