@@ -1,4 +1,4 @@
-import { Alert, Button } from "flowbite-react";
+import { Alert, Button, Modal } from "flowbite-react";
 import useUserStore from "../../utils/zustand";
 import ClientDashboardLayout from "./clientDashboardLayout";
 import useCrudBooking from "../../hooks/useCrudBooking";
@@ -10,9 +10,10 @@ import { FcCancel } from "react-icons/fc";
 
 const ClientDashboard = () => {
   const { currentUser } = useUserStore();
-  const { fetchUserBooking } = useCrudBooking();
+  const { fetchUserBooking, cancelBooking } = useCrudBooking();
   const [booking, setBooking] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
 
   useEffect(() => {
     const getBooking = async () => {
@@ -35,7 +36,10 @@ const ClientDashboard = () => {
       </>
     );
 
-  console.log(booking);
+  const handleCancelBooking = async () => {
+    await cancelBooking(booking.id);
+    window.location.reload();
+  };
 
   return (
     <ClientDashboardLayout>
@@ -137,7 +141,11 @@ const ClientDashboard = () => {
                     <span className="font-bold">non-refundable</span>. Once
                     booked, cancellations will not be eligible for a refund.
                   </p>
-                  <Button gradientMonochrome="failure" className="mt-3">
+                  <Button
+                    onClick={() => setIsCancelModalOpen(true)}
+                    gradientMonochrome="failure"
+                    className="mt-3"
+                  >
                     Cancel Booking
                   </Button>
                 </div>
@@ -230,6 +238,27 @@ const ClientDashboard = () => {
           No active bookings found.
         </p>
       )}
+      {/* Confirmation Modal */}
+      <Modal
+        show={isCancelModalOpen}
+        onClose={() => setIsCancelModalOpen(false)}
+      >
+        <Modal.Header>Confirm Cancellation</Modal.Header>
+        <Modal.Body>
+          <p>
+            Are you sure you want to cancel your booking? This action cannot be
+            undone.
+          </p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button color="gray" onClick={() => setIsCancelModalOpen(false)}>
+            No, Keep Booking
+          </Button>
+          <Button gradientMonochrome="failure" onClick={handleCancelBooking}>
+            Yes, Cancel Booking
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </ClientDashboardLayout>
   );
 };

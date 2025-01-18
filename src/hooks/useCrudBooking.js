@@ -1,4 +1,12 @@
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 import { db } from "../utils/firebase";
 import moment from "moment/moment";
 
@@ -125,11 +133,22 @@ const useCrudBooking = () => {
     setBooking(output[0]);
   };
 
+  const cancelBooking = async (id) => {
+    try {
+      const docRef = doc(db, "bookings", id);
+      await deleteDoc(docRef);
+      console.log("Fdkj");
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   return {
     fetchAvailableRoom,
     checkRoomAvailability,
     bookRoom,
     fetchUserBooking,
+    cancelBooking,
   };
 };
 
