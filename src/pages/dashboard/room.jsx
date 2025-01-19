@@ -78,9 +78,9 @@ const Room = () => {
   return (
     <DashboardLayout>
       {/* Header */}
-      <div className="flex justify-between items-center">
-        <div className="div">
-          <h1 className="text-4xl font-bold">Room Management</h1>
+      <div className="flex flex-col lg:flex-row justify-between items-center">
+        <div className="div p-5">
+          <h1 className="text-2xl lg:text-4xl font-bold">Room Management</h1>
           <p className="mt-3 text-gray-500">
             You can manage the room and monitor the rooms in this section
           </p>
@@ -95,7 +95,7 @@ const Room = () => {
         </Button>{" "}
       </div>
 
-      <div className="w-full mt-10 bg-[#F6F6F6] p-10 rounded-3xl min-h-[600px]">
+      <div className="w-full mt-10 bg-[#F6F6F6] lg:p-10 rounded-3xl min-h-[600px]">
         <RoomsTable />
       </div>
 
