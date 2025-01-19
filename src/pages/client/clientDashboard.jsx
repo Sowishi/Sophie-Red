@@ -83,7 +83,12 @@ const ClientDashboard = () => {
     );
 
     if (res) {
-      await reschedBooking(booking?.id, arrivalDate, departureDate);
+      await reschedBooking(
+        booking?.id,
+        arrivalDate,
+        departureDate,
+        booking.roomDetails
+      );
       await fetchUserBooking(currentUser, setBooking);
 
       toast.success("Successfully Update Booking Schedule");

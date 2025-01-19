@@ -10,6 +10,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../utils/firebase";
 import moment from "moment/moment";
+import { calculateStayDuration } from "../utils/calculateStay";
 
 const useCrudBooking = () => {
   const fetchAvailableRoom = async (persons, setRooms) => {
@@ -145,15 +146,20 @@ const useCrudBooking = () => {
     }
   };
 
-  const reschedBooking = async (id, checkInDate, checkOutDate) => {
+  const reschedBooking = async (id, checkInDate, checkOutDate, roomDetails) => {
     console.log(id);
     try {
       const docRef = doc(db, "bookings", id);
       const desiredCheckIn = moment(checkInDate);
       const desiredCheckOut = moment(checkOutDate);
+
+      const days = calculateStayDuration(desiredCheckIn, desiredCheckOut).days;
+      const totalPrice = parseInt(days) * parseInt(roomDetails?.pricePerNight);
+
       updateDoc(docRef, {
         checkInDate: desiredCheckIn.toDate(), // Save as Firebase-compatible Date object
         checkOutDate: desiredCheckOut.toDate(),
+        totalPrice,
       });
     } catch (error) {
       console.log(error.message);
