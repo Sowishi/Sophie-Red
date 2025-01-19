@@ -33,9 +33,9 @@ const ClientDashboardHeader = () => {
       </div>
       <div className="navigation hidden lg:flex flex-1  mx-10 text-white px-5">
         <Link
-          to="/dashboard"
+          to="/client-dashboard"
           className={`flex px-5 cursor-pointer mx-2 py-3 rounded-lg justify-start items-center ${
-            isCurrentPath("/dashboard") ? "bg-red-800" : "bg-slate-700"
+            isCurrentPath("/-client-dashboard") ? "bg-red-800" : "bg-slate-700"
           }`}
         >
           <HiHome color="white" className="mr-3" />

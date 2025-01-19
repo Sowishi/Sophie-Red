@@ -52,8 +52,19 @@ const ClientHeader = () => {
       return;
     }
 
-    // Check if arrivalDate is after or equal to departureDate using moment.js
-    if (moment(arrivalDate).isSameOrAfter(moment(departureDate))) {
+    const today = moment().startOf("day"); // Get today's date without time
+    const checkInDate = moment(arrivalDate).startOf("day");
+    const checkOutDate = moment(departureDate).startOf("day");
+
+    // Check if check-in date is in the past
+    if (checkInDate.isBefore(today)) {
+      toast.error("Check-in date cannot be in the past");
+      setLoading(false);
+      return;
+    }
+
+    // Check if arrivalDate is after or equal to departureDate
+    if (checkInDate.isSameOrAfter(checkOutDate)) {
       toast.error("Check-out date must be after the check-in date");
       setLoading(false);
       return;

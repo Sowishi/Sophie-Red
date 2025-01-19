@@ -1,19 +1,30 @@
-import { Alert, Button, Modal } from "flowbite-react";
+import { Alert, Button, Datepicker, Modal } from "flowbite-react";
 import useUserStore from "../../utils/zustand";
 import ClientDashboardLayout from "./clientDashboardLayout";
 import useCrudBooking from "../../hooks/useCrudBooking";
 import { useEffect, useState } from "react";
 import Loader from "../../components/loader";
+import { CustomModal } from "../../components/customModal";
+
 import moment from "moment";
 import { calculateStayDuration } from "../../utils/calculateStay";
 import { FcCancel } from "react-icons/fc";
+import { toast } from "react-toastify";
 
 const ClientDashboard = () => {
   const { currentUser } = useUserStore();
-  const { fetchUserBooking, cancelBooking } = useCrudBooking();
+  const {
+    fetchUserBooking,
+    cancelBooking,
+    checkRoomAvailability,
+    reschedBooking,
+  } = useCrudBooking();
   const [booking, setBooking] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
+  const [dateModal, setDateModal] = useState(false);
+  const [arrivalDate, setArrivalDate] = useState();
+  const [departureDate, setDepartureDate] = useState();
 
   useEffect(() => {
     const getBooking = async () => {
@@ -41,6 +52,45 @@ const ClientDashboard = () => {
     window.location.reload();
   };
 
+  const handleSubmit = async () => {
+    // Validate date inputs
+    if (!arrivalDate || !departureDate) {
+      toast.error("Please select your check-in and check-out dates");
+      return;
+    }
+
+    const today = moment().startOf("day"); // Get today's date without time
+    const checkInDate = moment(arrivalDate).startOf("day");
+    const checkOutDate = moment(departureDate).startOf("day");
+
+    // Check if check-in date is in the past
+    if (checkInDate.isBefore(today)) {
+      toast.error("Check-in date cannot be in the past");
+      return;
+    }
+
+    // Check if arrivalDate is after or equal to departureDate
+    if (checkInDate.isSameOrAfter(checkOutDate)) {
+      toast.error("Check-out date must be after the check-in date");
+
+      return;
+    }
+
+    const res = await checkRoomAvailability(
+      booking.roomDetails?.id,
+      arrivalDate,
+      departureDate
+    );
+
+    if (res) {
+      await reschedBooking(booking?.id, arrivalDate, departureDate);
+      await fetchUserBooking(currentUser, setBooking);
+
+      toast.success("Successfully Update Booking Schedule");
+    } else {
+      toast.error("Selected Dates is not available");
+    }
+  };
   return (
     <ClientDashboardLayout>
       <div className="flex items-center justify-between">
@@ -125,6 +175,16 @@ const ClientDashboard = () => {
                       <h1>Check Out </h1>
                       <h1 className="text-lg font-bold">
                         {moment(booking?.checkOutDate.toDate()).format("LL")}
+                      </h1>
+                    </div>
+                  </div>
+                  <div className="basis-full my-2 lg:basis-4/12">
+                    <div className="flex flex-col">
+                      <h1>Re-Schedule </h1>
+                      <h1 className="text-lg font-bold">
+                        <Button onClick={() => setDateModal(true)}>
+                          Reschedule Booking
+                        </Button>
                       </h1>
                     </div>
                   </div>
@@ -259,6 +319,31 @@ const ClientDashboard = () => {
           </Button>
         </Modal.Footer>
       </Modal>
+      <CustomModal
+        title={"Reschedule Booking"}
+        hideFooter={true}
+        open={dateModal}
+        size={"5xl"}
+        handleClose={() => setDateModal(false)}
+      >
+        <div className="container mx-auto min-h-[3  00px]">
+          <div className="wrapper">
+            <h1>Arrival Date</h1>
+            <Datepicker onChange={(event) => setArrivalDate(event)} />
+          </div>
+          <div className="wrapper mt-5">
+            <h1>Departure Date</h1>
+            <Datepicker onChange={(event) => setDepartureDate(event)} />
+          </div>
+          <Button
+            onClick={handleSubmit}
+            gradientMonochrome="failure"
+            className="mt-5"
+          >
+            Reschedule Booking
+          </Button>
+        </div>
+      </CustomModal>
     </ClientDashboardLayout>
   );
 };

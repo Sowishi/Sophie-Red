@@ -5,6 +5,7 @@ import {
   doc,
   getDocs,
   query,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import { db } from "../utils/firebase";
@@ -53,6 +54,7 @@ const useCrudBooking = () => {
     desiredCheckIn,
     desiredCheckOut
   ) => {
+    console.log(desiredCheckIn, desiredCheckOut);
     const bookingsRef = collection(db, "bookings");
     const q = query(
       bookingsRef,
@@ -143,12 +145,28 @@ const useCrudBooking = () => {
     }
   };
 
+  const reschedBooking = async (id, checkInDate, checkOutDate) => {
+    console.log(id);
+    try {
+      const docRef = doc(db, "bookings", id);
+      const desiredCheckIn = moment(checkInDate);
+      const desiredCheckOut = moment(checkOutDate);
+      updateDoc(docRef, {
+        checkInDate: desiredCheckIn.toDate(), // Save as Firebase-compatible Date object
+        checkOutDate: desiredCheckOut.toDate(),
+      });
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   return {
     fetchAvailableRoom,
     checkRoomAvailability,
     bookRoom,
     fetchUserBooking,
     cancelBooking,
+    reschedBooking,
   };
 };
 
