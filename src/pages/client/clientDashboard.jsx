@@ -90,6 +90,7 @@ const ClientDashboard = () => {
         booking.roomDetails
       );
       await fetchUserBooking(currentUser, setBooking);
+      setDateModal(false);
 
       toast.success("Successfully Update Booking Schedule");
     } else {
