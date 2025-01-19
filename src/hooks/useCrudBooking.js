@@ -147,7 +147,6 @@ const useCrudBooking = () => {
   };
 
   const reschedBooking = async (id, checkInDate, checkOutDate, roomDetails) => {
-    console.log(id);
     try {
       const docRef = doc(db, "bookings", id);
       const desiredCheckIn = moment(checkInDate);
@@ -166,6 +165,17 @@ const useCrudBooking = () => {
     }
   };
 
+  const fetchAllBookings = async (setBooking) => {
+    const colRef = collection(db, "bookings");
+    const snapshot = await getDocs(colRef);
+    const output = [];
+    snapshot.docs.map((doc) => {
+      output.push({ ...doc.data(), id: doc.id });
+    });
+
+    setBooking(output);
+  };
+
   return {
     fetchAvailableRoom,
     checkRoomAvailability,
@@ -173,6 +183,7 @@ const useCrudBooking = () => {
     fetchUserBooking,
     cancelBooking,
     reschedBooking,
+    fetchAllBookings,
   };
 };
 

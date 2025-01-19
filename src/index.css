@@ -4,3 +4,36 @@
 html {
   scroll-behavior: smooth;
 }
+.custom-calendar {
+  background-color: #fee2e2; /* Light Red Background */
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.rbc-event {
+  background-color: #ef4444 !important; /* Bright Red Events */
+  border: none;
+}
+
+.rbc-day-bg {
+  background: #fef2f2 !important; /* Soft Pinkish Red */
+}
+
+.rbc-today {
+  background: #fecaca !important; /* Lighter Red for Today */
+}
+
+.rbc-header {
+  background: #b91c1c; /* Darker Red Headers */
+  color: white !important;
+  padding: 8px;
+  border-radius: 6px;
+}
+
+.rbc-event:hover {
+  background-color: #b91c1c !important; /* Darker red on hover */
+}
+
+.rbc-selected {
+  background-color: #7f1d1d !important; /* Deep red for selected events */
+}
