@@ -16,16 +16,23 @@ const App = () => {
   useEffect(() => {
     initializeUser(); // Restore user state
   }, [initializeUser]);
-  const { currentUser } = useUserStore();
+
+  const { currentUser, currentAdmin } = useUserStore();
 
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<Login />} />
-        <Route path="/dashboard" element={<Index />} />
-        <Route path="/room" element={<Room />} />
-        <Route path="/users" element={<Users />} />
-        <Route path="/front-desk" element={<FrontDesk />} />
+        <Route
+          path="/dashboard"
+          element={currentAdmin ? <Index /> : <Landing />}
+        />
+        <Route path="/room" element={currentAdmin ? <Room /> : <Landing />} />
+        <Route path="/users" element={currentAdmin ? <Users /> : <Landing />} />
+        <Route
+          path="/front-desk"
+          element={currentAdmin ? <FrontDesk /> : <Landing />}
+        />
         <Route path="/client-dashboard" element={<ClientDashboard />} />
         <Route
           path="/booking"

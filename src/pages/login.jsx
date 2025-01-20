@@ -23,7 +23,12 @@ const Login = () => {
   const handleSubmit = async () => {
     const user = await login(email, password);
     setCurrentAdmin(user);
-    router("/dashboard");
+
+    if (user.role !== "user") {
+      router("/dashboard");
+    } else {
+      console.log("do something here");
+    }
 
     // Navigate to the dashboard
   };
