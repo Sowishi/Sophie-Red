@@ -18,10 +18,10 @@ const DisplayRoomsSelection = ({
         try {
           const images = await fetchRoomImagesCarousel(room.id);
           imagesMap[room.id] =
-            images.length > 0 ? images : ["https://via.placeholder.com/300"];
+            images.length > 0 ? images : ["https://placehold.co/600x400"];
         } catch (error) {
           console.error(`Error fetching images for Room ${room.id}:`, error);
-          imagesMap[room.id] = ["https://via.placeholder.com/300"];
+          imagesMap[room.id] = ["https://placehold.co/600x400"];
         }
       }
       setRoomImages(imagesMap);
