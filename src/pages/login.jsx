@@ -13,7 +13,7 @@ import useAuth from "../hooks/useAuth";
 
 const Login = () => {
   const router = useNavigate();
-  const { setCurrentAdmin } = useUserStore();
+  const { setCurrentAdmin, loginWithGoogle } = useUserStore();
   const { login } = useAuth();
 
   // State for email and password

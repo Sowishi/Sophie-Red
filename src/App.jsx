@@ -10,6 +10,7 @@ import useUserStore from "./utils/zustand";
 import { useEffect } from "react";
 import ClientDashboard from "./pages/client/clientDashboard";
 import Users from "./pages/dashboard/users";
+import Payments from "./pages/dashboard/payments";
 
 const App = () => {
   const initializeUser = useUserStore((state) => state.initializeUser);
@@ -37,6 +38,10 @@ const App = () => {
         <Route
           path="/booking"
           element={currentUser ? <Booking /> : <Landing />}
+        />
+        <Route
+          path="/payments"
+          element={currentAdmin ? <Payments /> : <Landing />}
         />
         <Route path="/" element={<Landing />} />
       </Routes>
