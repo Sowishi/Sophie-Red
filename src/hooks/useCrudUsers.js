@@ -1,8 +1,11 @@
 import {
   addDoc,
   collection,
+  deleteDoc,
+  doc,
   onSnapshot,
   serverTimestamp,
+  updateDoc,
 } from "firebase/firestore";
 import { db } from "../utils/firebase";
 
@@ -16,7 +19,25 @@ const useCrudUsers = () => {
     }
   };
 
-  return { addUser };
+  const updateUser = async (id, data) => {
+    try {
+      const docRef = doc(db, "users", id);
+      updateDoc(docRef, data);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  const deleteUser = async (id) => {
+    try {
+      const docRef = doc(db, "users", id);
+      deleteDoc(docRef, data);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  return { addUser, updateUser, deleteUser };
 };
 
 export default useCrudUsers;
