@@ -60,6 +60,7 @@ const useCrudRooms = () => {
       console.log(error.message);
     }
   };
+
   return {
     addRoom,
     addRoomImage,

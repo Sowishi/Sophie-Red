@@ -8,7 +8,7 @@ import { Modal } from "flowbite-react"; // Import Flowbite modal
 
 const localizer = momentLocalizer(moment);
 
-export const BookingCalendar = () => {
+export const BookingCalendar = ({ selectedRoom }) => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedEvent, setSelectedEvent] = useState(null); // Store selected event
@@ -65,11 +65,15 @@ export const BookingCalendar = () => {
     setSelectedEvent(null);
   };
 
+  const filterEvents = events.filter((item) =>
+    item.title.includes(selectedRoom)
+  );
+
   return (
     <div className="bg-red-100 p-4 rounded-lg shadow-lg">
       <Calendar
         localizer={localizer}
-        events={events}
+        events={selectedRoom == null ? events : filterEvents}
         startAccessor="start"
         endAccessor="end"
         style={{ minHeight: 600 }}
