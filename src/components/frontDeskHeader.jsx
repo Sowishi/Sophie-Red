@@ -692,7 +692,7 @@ const FrontDeskHeader = () => {
               gradientMonochrome="failure"
               className="w-full mt-2 py-1"
             >
-              {checkout ? "Pay Now" : "Check Availability"}
+              {checkout ? "Confirm Payment" : "Check Availability"}
             </Button>
           </div>
         )}
