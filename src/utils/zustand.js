@@ -11,6 +11,7 @@ import { auth } from "../utils/firebase";
 
 const useUserStore = create((set) => ({
   currentUser: null,
+  currentAdmin: null,
 
   // Login with Google
   loginWithGoogle: async () => {
@@ -57,6 +58,10 @@ const useUserStore = create((set) => ({
         set({ currentUser: null });
       }
     });
+  },
+
+  setCurrentAdmin: (user) => {
+    set({ currentAdmin: user });
   },
 }));
 

@@ -8,13 +8,24 @@ import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../utils/firebase";
 import useAppContext from "../utils/zustand";
 import useUserStore from "../utils/zustand";
+import { useState } from "react";
+import useAuth from "../hooks/useAuth";
+
 const Login = () => {
   const router = useNavigate();
-  const { currentUser, loginWithGoogle, logout } = useUserStore();
+  const { setCurrentAdmin } = useUserStore();
+  const { login } = useAuth();
 
-  const handleSubmit = () => {
-    console.log("Fdkj");
+  // State for email and password
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = async () => {
+    const user = await login(email, password);
+    setCurrentAdmin(user);
     router("/dashboard");
+
+    // Navigate to the dashboard
   };
 
   const handleGoogleLogin = async () => {
@@ -63,6 +74,8 @@ const Login = () => {
                     id="email"
                     type="email"
                     placeholder="Enter your email"
+                    value={email} // Bind state
+                    onChange={(e) => setEmail(e.target.value)} // Update state
                     required={true}
                   />
                 </div>
@@ -72,11 +85,16 @@ const Login = () => {
                     id="password"
                     type="password"
                     placeholder="Enter your password"
+                    value={password} // Bind state
+                    onChange={(e) => setPassword(e.target.value)} // Update state
                     required={true}
                   />
                 </div>
                 <Button
-                  onClick={handleSubmit}
+                  onClick={(e) => {
+                    e.preventDefault(); // Prevent form submission refresh
+                    handleSubmit();
+                  }}
                   color="failure"
                   className="w-full py-2"
                 >
