@@ -13,7 +13,11 @@ const useCrudUsers = () => {
   const addUser = async (data) => {
     try {
       const colRef = collection(db, "users");
-      await addDoc(colRef, { ...data, createdAt: serverTimestamp() });
+      await addDoc(colRef, {
+        ...data,
+        createdAt: serverTimestamp(),
+        photoURL: `https://avatar.iran.liara.run/public/boy?username=${data.fullName}`,
+      });
     } catch (error) {
       console.log(error.message);
     }
@@ -31,7 +35,7 @@ const useCrudUsers = () => {
   const deleteUser = async (id) => {
     try {
       const docRef = doc(db, "users", id);
-      deleteDoc(docRef, data);
+      await deleteDoc(docRef);
     } catch (error) {
       console.log(error.message);
     }

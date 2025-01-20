@@ -72,7 +72,6 @@ export function UsersTable() {
     try {
       await deleteUser(userId);
       console.log("Deleted User ID:", userId);
-      setUsers((prev) => prev.filter((user) => user.id !== userId));
       toast.success("User deleted successfully!");
     } catch (error) {
       console.error("Error deleting user:", error);
