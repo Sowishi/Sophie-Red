@@ -1,4 +1,11 @@
-import { Alert, Button, Dropdown, Table, TextInput } from "flowbite-react";
+import {
+  Alert,
+  Button,
+  Datepicker,
+  Dropdown,
+  Table,
+  TextInput,
+} from "flowbite-react";
 import { CustomDatePicker } from "./datePicker";
 import logo from "../assets/logo.png";
 import { ImMenu } from "react-icons/im";
@@ -18,7 +25,7 @@ import { createPaymongoCheckout } from "../utils/paymongoCheckout";
 import { IoReload } from "react-icons/io5";
 import { getCheckoutPaymongo } from "../utils/getCheckout";
 
-const ClientHeader = () => {
+const FrontDeskHeader = () => {
   const [bookNowModal, setBookNowModal] = useState(false);
   const [bookingModal, setBookingModal] = useState(false);
   const [arrivalDate, setArrivalDate] = useState("");
@@ -157,7 +164,7 @@ const ClientHeader = () => {
         background:
           "linear-gradient(43deg, rgba(225,240,247,1) 1%, rgb(162,0,0) 45%)",
       }}
-      className="header bg-white p-5 px-10 flex items-center justify-between fixed w-full z-10"
+      className="header bg-white p-5 px-10 flex items-center justify-between rounded-xl"
     >
       <img
         onClick={() => navigation("/")}
@@ -176,16 +183,15 @@ const ClientHeader = () => {
       </Button>
 
       <div className="dates hidden flex-1 lg:flex items-center justify-center">
-        <CustomDatePicker
-          label={"Arrival Date"}
-          onChange={(date) => setArrivalDate(date)}
-          value={arrivalDate}
-        />
-        <CustomDatePicker
-          label={"Departure Date"}
-          onChange={(date) => setDepartureDate(date)}
-          value={departureDate}
-        />
+        <div className="wrapper">
+          <h1 className="text-sm text-white">Check In Date</h1>
+          <Datepicker onChange={(date) => setArrivalDate(date)} />
+        </div>
+        <div className="wrapper mx-3">
+          <h1 className="text-sm text-white">Check Out Date</h1>
+          <Datepicker onChange={(date) => setDepartureDate(date)} />
+        </div>
+
         <div className="persons ml-3">
           <h1 className="text-sm text-white">Persons</h1>
           <Dropdown
@@ -677,4 +683,4 @@ const ClientHeader = () => {
   );
 };
 
-export default ClientHeader;
+export default FrontDeskHeader;

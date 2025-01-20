@@ -4,7 +4,7 @@ import ClientDashboardLayout from "./clientDashboardLayout";
 import useCrudBooking from "../../hooks/useCrudBooking";
 import { useEffect, useState } from "react";
 import Loader from "../../components/loader";
-import { CustomModal } from "../../components/customModal";
+import CustomModal from "../../components/customModal";
 
 import moment from "moment";
 import { calculateStayDuration } from "../../utils/calculateStay";

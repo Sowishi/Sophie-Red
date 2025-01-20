@@ -3,7 +3,7 @@ import DashboardLayout from "./dashboardLayout";
 import { Button, TextInput } from "flowbite-react";
 import { RoomsTable } from "../../components/roomsTable";
 import { useEffect, useState } from "react";
-import { CustomModal } from "../../components/customModal";
+import CustomModal from "../../components/customModal";
 import CustomInput from "../../components/customInput";
 import { CustomSelect } from "../../components/customSelect";
 import { roomTypeData } from "../../utils/roomType";

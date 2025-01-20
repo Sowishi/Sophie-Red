@@ -3,7 +3,7 @@
 import { Button, Modal } from "flowbite-react";
 import { useState } from "react";
 
-export function CustomModal({
+export default function CustomModal({
   children,
   open,
   handleClose,

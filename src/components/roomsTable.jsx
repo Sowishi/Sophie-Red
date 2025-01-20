@@ -18,7 +18,7 @@ import { FaArrowRight, FaTrash } from "react-icons/fa6";
 import { BottomDrawer } from "./bottomDrawer";
 import CustomGallery from "./gallery";
 import { AiOutlineCloudUpload } from "react-icons/ai";
-import { CustomModal } from "./customModal";
+import CustomModal from "./customModal";
 import CustomInput from "./customInput";
 import { handleFileUpload } from "../utils/uploadPhoto";
 import { toast } from "react-toastify";
