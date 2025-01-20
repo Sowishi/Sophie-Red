@@ -71,11 +71,22 @@ const Header = () => {
           style={{ width: 50 }}
           alt="User Avatar"
         />
-        <div className="div text-white ml-5">
+        <div className="div text-white mx-5">
           <h1>Juan Dela Cruz</h1>
           <h1 className="font-extralight opacity-70">Front Desk</h1>
         </div>
-        <FaAngleDown style={{ marginLeft: 10 }} color="white" size={25} />
+        <Dropdown gradientMonochrome="failure" label="">
+          <Dropdown.Header>
+            <span className="block text-sm">Bonnie Green</span>
+            <span className="block truncate text-sm font-medium">
+              bonnie@flowbite.com
+            </span>
+          </Dropdown.Header>
+
+          <Dropdown.Item onClick={() => navigation("/")}>
+            Sign out
+          </Dropdown.Item>
+        </Dropdown>
       </div>
       <CiMenuBurger
         onClick={() => setIsOpen(true)}
