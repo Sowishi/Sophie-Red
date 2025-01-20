@@ -4,6 +4,7 @@ import {
   deleteDoc,
   doc,
   getDocs,
+  onSnapshot,
   query,
   updateDoc,
   where,
@@ -167,10 +168,12 @@ const useCrudBooking = () => {
 
   const fetchAllBookings = async (setBooking) => {
     const colRef = collection(db, "bookings");
-    const snapshot = await getDocs(colRef);
-    const output = [];
-    snapshot.docs.map((doc) => {
-      output.push({ ...doc.data(), id: doc.id });
+    onSnapshot(colRef, (snapshot) => {
+      const output = [];
+      snapshot.docs.map((doc) => {
+        output.push({ ...doc.data(), id: doc.id });
+      });
+      setBooking(output);
     });
 
     setBooking(output);

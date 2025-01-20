@@ -24,6 +24,7 @@ import { calculateStayDuration } from "../utils/calculateStay";
 import { createPaymongoCheckout } from "../utils/paymongoCheckout";
 import { IoReload } from "react-icons/io5";
 import { getCheckoutPaymongo } from "../utils/getCheckout";
+import CustomInput from "./customInput";
 
 const FrontDeskHeader = () => {
   const [bookNowModal, setBookNowModal] = useState(false);
@@ -47,7 +48,11 @@ const FrontDeskHeader = () => {
 
   const { fetchAvailableRoom, checkRoomAvailability, bookRoom } =
     useCrudBooking();
-  const { currentUser } = useUserStore();
+
+  const [currentUser, setCurrentUser] = useState({
+    uid: "guest-" + Math.random().toString(36).substr(2, 9), // Unique guest ID
+    name: "",
+  });
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -95,11 +100,16 @@ const FrontDeskHeader = () => {
 
   const handleBook = async () => {
     if (checkout) {
-      const sessionID = await createPaymongoCheckout(
-        paymentTerm == "down" ? downpayment : totalPrice,
-        paymentTerm
-      );
-      setCheckoutID(sessionID);
+      // Comment this out just in case nag padagdag ng features
+
+      // const sessionID = await createPaymongoCheckout(
+      //   paymentTerm == "down" ? downpayment : totalPrice,
+      //   paymentTerm
+      // );
+      // setCheckoutID(sessionID);
+
+      handleConfirmBook();
+
       return;
     }
 
@@ -108,8 +118,7 @@ const FrontDeskHeader = () => {
       const output = await checkRoomAvailability(
         selectedRoom?.id,
         arrivalDate,
-        departureDate,
-        currentUser.uid
+        departureDate
       );
       if (!output) {
         toast.error("Room not available for the selected dates.");
@@ -148,6 +157,14 @@ const FrontDeskHeader = () => {
       selectedRoom
     );
     toast.success("Successfully Booked!");
+    setBookingModal(false);
+  };
+
+  const handleGuestName = (e) => {
+    setCurrentUser((prevUser) => ({
+      ...prevUser,
+      name: e.target.value,
+    }));
   };
 
   useEffect(() => {
@@ -157,6 +174,8 @@ const FrontDeskHeader = () => {
       }, 1000);
     }
   }, [paymentStatus]);
+
+  console.log(currentUser);
 
   return (
     <div
@@ -172,14 +191,13 @@ const FrontDeskHeader = () => {
         src={logo}
         alt="Logo"
       />
-      <ImMenu size={25} className="text-white font-bold xl:hidden" />
 
       <Button
         onClick={() => setBookNowModal(true)}
         className="lg:hidden"
         gradientMonochrome="cyan"
       >
-        Book Now
+        Book Guest
       </Button>
 
       <div className="dates hidden flex-1 lg:flex items-center justify-center">
@@ -275,6 +293,10 @@ const FrontDeskHeader = () => {
             value={voucher}
             onChange={(e) => setVoucher(e.target.value)}
           />
+        </div>
+        <div className="voucher ml-2">
+          <h1 className="text-sm text-white">Guest Name</h1>
+          <TextInput placeholder="Guest Name" onChange={handleGuestName} />
         </div>
         <div className="wrapper ml-3">
           <h1 className="text-sm text-white">Availability</h1>
@@ -496,10 +518,6 @@ const FrontDeskHeader = () => {
 
             {checkout && selectedRoom && (
               <div className="w-full  bg-white rounded-lg px-5  dark:bg-gray-800">
-                <Alert className="text-center flex justify-center items-center">
-                  To secure your reservation, a 50% deposit of the total price
-                  is required.
-                </Alert>
                 <div className="flex">
                   <h1 className="my-3">
                     {moment(arrivalDate).format("LL")}
