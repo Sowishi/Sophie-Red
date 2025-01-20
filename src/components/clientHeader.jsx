@@ -17,6 +17,7 @@ import { calculateStayDuration } from "../utils/calculateStay";
 import { createPaymongoCheckout } from "../utils/paymongoCheckout";
 import { IoReload } from "react-icons/io5";
 import { getCheckoutPaymongo } from "../utils/getCheckout";
+import DisplayRoomsSelection from "./displayRoomsSelection";
 
 const ClientHeader = () => {
   const [bookNowModal, setBookNowModal] = useState(false);
@@ -426,56 +427,11 @@ const ClientHeader = () => {
                   />
                 )}
                 {rooms !== null && rooms.length >= 1 && !checkingLoading && (
-                  <Table hoverable striped>
-                    <Table.Head>
-                      <Table.HeadCell>Room ID</Table.HeadCell>
-                      <Table.HeadCell>Room Type</Table.HeadCell>
-                      <Table.HeadCell>Price Per Night</Table.HeadCell>
-                      <Table.HeadCell>Description</Table.HeadCell>
-                      <Table.HeadCell></Table.HeadCell>
-                    </Table.Head>
-                    <Table.Body className="divide-y">
-                      {rooms.map((room, index) => (
-                        <Table.Row
-                          key={index}
-                          className={`${
-                            selectedRoom?.roomNumber === room.roomNumber
-                              ? "bg-green-100 dark:bg-green-800"
-                              : "bg-white dark:border-gray-700 dark:bg-gray-800"
-                          }`}
-                        >
-                          <Table.Cell className="font-bold text-lg text-red-500">
-                            {room.roomNumber}
-                          </Table.Cell>
-                          <Table.Cell>{room.roomType}</Table.Cell>
-                          <Table.Cell>₱{room.pricePerNight}</Table.Cell>
-                          <Table.Cell>{room.description}</Table.Cell>
-
-                          <Table.Cell className="flex items-center justify-center">
-                            <Button
-                              className="flex items-center justify-center"
-                              onClick={() => handleRoomSelection(room)}
-                              color={
-                                selectedRoom?.roomNumber === room.roomNumber
-                                  ? "success"
-                                  : "light"
-                              }
-                            >
-                              {selectedRoom?.roomNumber === room.roomNumber
-                                ? "Selected"
-                                : "Select Room"}
-
-                              {selectedRoom?.roomNumber === room.roomNumber ? (
-                                <FaCheck className="ml-2 h-5 w-5" />
-                              ) : (
-                                ""
-                              )}
-                            </Button>
-                          </Table.Cell>
-                        </Table.Row>
-                      ))}
-                    </Table.Body>
-                  </Table>
+                  <DisplayRoomsSelection
+                    selectedRoom={selectedRoom}
+                    handleRoomSelection={handleRoomSelection}
+                    rooms={rooms}
+                  />
                 )}
 
                 {rooms && rooms.length <= 0 && (

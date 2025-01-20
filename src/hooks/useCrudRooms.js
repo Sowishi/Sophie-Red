@@ -52,6 +52,23 @@ const useCrudRooms = () => {
     setImages(output);
   };
 
+  const fetchRoomImagesCarousel = async (roomID) => {
+    try {
+      const colRef = collection(db, "room-images");
+      const q = query(colRef, where("roomID", "==", roomID));
+      const snapshot = await getDocs(q);
+
+      if (snapshot.empty) {
+        return []; // No images found, return empty array
+      }
+
+      return snapshot.docs.map((doc) => doc.data().image); // Assuming images are stored under 'imageURL'
+    } catch (error) {
+      console.error(`Error fetching images for Room ${roomID}:`, error);
+      return [];
+    }
+  };
+
   const deleteRoomImage = (id) => {
     try {
       const docRef = doc(db, "room-images", id);
@@ -67,6 +84,7 @@ const useCrudRooms = () => {
     fetchRoomImages,
     deleteRoom,
     deleteRoomImage,
+    fetchRoomImagesCarousel,
   };
 };
 
