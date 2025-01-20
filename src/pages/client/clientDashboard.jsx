@@ -112,8 +112,8 @@ const ClientDashboard = () => {
 
       {booking ? (
         <>
-          <div className="flex flex-wrap gap-5">
-            <div className="w-full lg:w-8/12">
+          <div className="flex w-full flex-wrap gap-5">
+            <div className="basis-full lg:basis-7/12">
               {booking.paymentStatus === "down" && (
                 <div className="flex flex-wrap items-center gap-4">
                   <div className="w-full lg:w-6/12">
@@ -209,7 +209,7 @@ const ClientDashboard = () => {
                 </div>
               </div>
             </div>
-            <div className="w-full lg:w-4/12">
+            <div className="basis-full lg:basis-4/12">
               <div className="bg-white p-5 lg:p-10 rounded-lg shadow-sm mt-5">
                 <h1 className="text-2xl font-semibold mb-5">Summary</h1>
                 <hr />
