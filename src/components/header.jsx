@@ -112,7 +112,7 @@ const Header = () => {
 
       <div className="hidden lg:flex items-center justify-start cursor-pointer">
         <img
-          src={"https://avatar.iran.liara.run/public/boy?username=Sowishi69"}
+          src={currentAdmin?.photoURL}
           style={{ width: 50 }}
           alt="User Avatar"
         />

@@ -179,13 +179,7 @@ const FrontDeskHeader = () => {
   console.log(currentUser);
 
   return (
-    <div
-      style={{
-        background:
-          "linear-gradient(43deg, rgba(225,240,247,1) 1%, rgb(162,0,0) 45%)",
-      }}
-      className="header bg-white p-5 px-10 flex items-center justify-between rounded-xl"
-    >
+    <div className="header bg-slate-800 p-5 px-10 flex items-center justify-between ">
       <img
         onClick={() => navigation("/")}
         className="w-[130px] hidden xl:flex cursor-pointer"

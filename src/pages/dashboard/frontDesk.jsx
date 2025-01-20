@@ -18,7 +18,7 @@ const FrontDesk = () => {
 
   return (
     <DashboardLayout>
-      <div className="w-full mx-auto pb-20">
+      <div className="container mx-auto pb-20">
         <div className="flex justify-between items-center mb-10 p-5">
           <div>
             <h1 className="text-2xl lg:text-4xl font-bold">Booking Calendar</h1>
