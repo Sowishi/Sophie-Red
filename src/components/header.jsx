@@ -18,20 +18,45 @@ const Header = () => {
   const isCurrentPath = (path) => location.pathname === path;
   const [isOpen, setIsOpen] = useState(false);
 
-  const { currentUser } = useUserStore();
+  const { currentAdmin, setCurrentAdmin } = useUserStore();
 
-  return (
-    <div className="header bg-slate-900 px-10 lg:px-20 p-5 flex items-center justify-between w-full">
-      <AdminSidebar isOpen={isOpen} handleClose={() => setIsOpen(false)} />
-      <div
-        onClick={() => navigation("/")}
-        className="flex items-center justify-start cursor-pointer"
-      >
-        <img src={logo} style={{ width: 50 }} alt="Logo" />
-        <h1 className="text-white ml-3 text-sm font-medium text-nowrap italic">
-          Sophie Red Hotel
-        </h1>
+  function FrontDeskNav() {
+    return (
+      <div className="navigation hidden lg:flex flex-1  mx-10 text-white px-5">
+        <Link
+          to="/dashboard"
+          className={`flex px-5 cursor-pointer mx-2 py-3 rounded-lg justify-start items-center ${
+            isCurrentPath("/dashboard") ? "bg-red-800" : "bg-slate-700"
+          }`}
+        >
+          <HiHome color="white" className="mr-3" />
+          <h1 className="text-sm font-extralight">Dashboard</h1>
+        </Link>
+
+        <Link
+          to="/front-desk"
+          className={`flex px-5 cursor-pointer mx-2 py-3 rounded-lg justify-start items-center ${
+            isCurrentPath("/front-desk") ? "bg-red-800" : "bg-slate-700"
+          }`}
+        >
+          <RiComputerLine color="white" className="mr-3" />
+          <h1 className="text-sm font-extralight">Booking</h1>
+        </Link>
+        <Link
+          to="/front-desk"
+          className={`flex px-5 cursor-pointer mx-2 py-3 rounded-lg justify-start items-center ${
+            isCurrentPath("/front-desk") ? "bg-red-800" : "bg-slate-700"
+          }`}
+        >
+          <RiComputerLine color="white" className="mr-3" />
+          <h1 className="text-sm font-extralight">Payments</h1>
+        </Link>
       </div>
+    );
+  }
+
+  function AdminNav() {
+    return (
       <div className="navigation hidden lg:flex flex-1  mx-10 text-white px-5">
         <Link
           to="/dashboard"
@@ -65,6 +90,25 @@ const Header = () => {
           <Dropdown.Item icon={HiUsers}>Users Management</Dropdown.Item>
         </Dropdown>
       </div>
+    );
+  }
+
+  return (
+    <div className="header bg-slate-900 px-10 lg:px-20 p-5 flex items-center justify-between w-full">
+      <AdminSidebar isOpen={isOpen} handleClose={() => setIsOpen(false)} />
+      <div
+        onClick={() => navigation("/")}
+        className="flex items-center justify-start cursor-pointer"
+      >
+        <img src={logo} style={{ width: 50 }} alt="Logo" />
+        <h1 className="text-white ml-3 text-sm font-medium text-nowrap italic">
+          Sophie Red Hotel
+        </h1>
+      </div>
+
+      {currentAdmin?.role == "Front Desk" && <FrontDeskNav />}
+      {currentAdmin?.role == "Admin" && <AdminNav />}
+
       <div className="hidden lg:flex items-center justify-start cursor-pointer">
         <img
           src={"https://avatar.iran.liara.run/public/boy?username=Sowishi69"}
@@ -72,18 +116,23 @@ const Header = () => {
           alt="User Avatar"
         />
         <div className="div text-white mx-5">
-          <h1>Juan Dela Cruz</h1>
-          <h1 className="font-extralight opacity-70">Front Desk</h1>
+          <h1>{currentAdmin.fullName}</h1>
+          <h1 className="font-extralight opacity-70">{currentAdmin.role}</h1>
         </div>
         <Dropdown gradientMonochrome="failure" label="">
           <Dropdown.Header>
-            <span className="block text-sm">Bonnie Green</span>
+            <span className="block text-sm">{currentAdmin?.fullName}</span>
             <span className="block truncate text-sm font-medium">
-              bonnie@flowbite.com
+              {currentAdmin?.email}
             </span>
           </Dropdown.Header>
 
-          <Dropdown.Item onClick={() => navigation("/")}>
+          <Dropdown.Item
+            onClick={() => {
+              navigation("/");
+              setCurrentAdmin(null);
+            }}
+          >
             Sign out
           </Dropdown.Item>
         </Dropdown>
