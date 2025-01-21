@@ -10,11 +10,6 @@ html {
   padding: 10px;
 }
 
-.rbc-event {
-  background-color: #ef4444 !important; /* Bright Red Events */
-  border: none;
-}
-
 .rbc-day-bg {
   background: #fef2f2 !important; /* Soft Pinkish Red */
 }

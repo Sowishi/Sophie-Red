@@ -4,7 +4,7 @@ import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import useCrudBooking from "../hooks/useCrudBooking";
 import Loader from "../components/loader";
-import { Modal } from "flowbite-react"; // Import Flowbite modal
+import { Modal } from "flowbite-react";
 import FrontDeskHeader from "./frontDeskHeader";
 
 const localizer = momentLocalizer(moment);
@@ -12,7 +12,7 @@ const localizer = momentLocalizer(moment);
 export const BookingCalendar = ({ selectedRoom }) => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedEvent, setSelectedEvent] = useState(null); // Store selected event
+  const [selectedEvent, setSelectedEvent] = useState(null);
   const { fetchAllBookings } = useCrudBooking();
 
   useEffect(() => {
@@ -46,18 +46,33 @@ export const BookingCalendar = ({ selectedRoom }) => {
     );
   }
 
+  // 🎨 Define a set of unique colors
+  const eventColors = [
+    "#E57373",
+    "#81C784",
+    "#64B5F6",
+    "#FFD54F",
+    "#BA68C8",
+    "#FF8A65",
+    "#4DB6AC",
+    "#DCE775",
+    "#F06292",
+    "#7986CB",
+  ];
+
   // ✅ Convert bookings to calendar event format
-  const events = bookings.map((booking) => ({
+  const events = bookings.map((booking, index) => ({
     id: booking.id,
     title: `Room ${booking.roomDetails.roomNumber} - ${booking.currentUser.name}`,
     start: new Date(booking.checkInDate.seconds * 1000),
     end: new Date(booking.checkOutDate.seconds * 1000),
     roomType: booking.roomDetails.roomType,
-    status: booking.status, // "Booked"
+    status: booking.status,
     price: booking.roomDetails.pricePerNight,
     downpayment: booking.downpayment,
-    paymentStatus: booking.paymentStatus, // "down"
+    paymentStatus: booking.paymentStatus,
     description: booking.roomDetails.description,
+    color: eventColors[index % eventColors.length], // Assign a unique color
   }));
 
   // ✅ Handle event click to open modal
@@ -85,7 +100,12 @@ export const BookingCalendar = ({ selectedRoom }) => {
         endAccessor="end"
         style={{ minHeight: 600 }}
         className="custom-calendar"
-        onSelectEvent={handleEventClick} // Handle click event
+        onSelectEvent={handleEventClick}
+        backgroundEvents={events.map((event) => ({
+          start: event.start,
+          end: event.end,
+          style: { backgroundColor: event.color, opacity: 0.5 },
+        }))}
       />
 
       {/* ✅ Modal for Event Details */}
