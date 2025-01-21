@@ -5,6 +5,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import useCrudBooking from "../hooks/useCrudBooking";
 import Loader from "../components/loader";
 import { Modal } from "flowbite-react"; // Import Flowbite modal
+import FrontDeskHeader from "./frontDeskHeader";
 
 const localizer = momentLocalizer(moment);
 
@@ -38,7 +39,11 @@ export const BookingCalendar = ({ selectedRoom }) => {
   }
 
   if (!bookings || bookings.length === 0) {
-    return <div className="text-center p-4">No bookings available.</div>;
+    return (
+      <div className="text-center p-4">
+        <Loader />
+      </div>
+    );
   }
 
   // ✅ Convert bookings to calendar event format
@@ -71,6 +76,8 @@ export const BookingCalendar = ({ selectedRoom }) => {
 
   return (
     <div className="bg-red-100 p-4 rounded-lg shadow-lg">
+      <FrontDeskHeader />
+
       <Calendar
         localizer={localizer}
         events={selectedRoom == null ? events : filterEvents}

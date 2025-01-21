@@ -2,7 +2,6 @@ import moment from "moment";
 import { BookingCalendar } from "../../components/bookingCalendar";
 import DashboardLayout from "./dashboardLayout";
 import { Button, Dropdown } from "flowbite-react";
-import FrontDeskHeader from "../../components/frontDeskHeader";
 import useFetchCollection from "../../hooks/useFetchCollection";
 import { useEffect, useState } from "react";
 
@@ -46,7 +45,6 @@ const FrontDesk = () => {
           </Dropdown>
         </div>
 
-        <FrontDeskHeader />
         <BookingCalendar selectedRoom={selectedRoom} />
       </div>
     </DashboardLayout>

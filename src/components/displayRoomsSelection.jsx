@@ -1,4 +1,4 @@
-import { Button, Card, Carousel } from "flowbite-react";
+import { Button, Card, Carousel, Modal } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { FaCheck } from "react-icons/fa6";
 import useCrudRooms from "../hooks/useCrudRooms";
@@ -10,6 +10,8 @@ const DisplayRoomsSelection = ({
 }) => {
   const { fetchRoomImagesCarousel } = useCrudRooms();
   const [roomImages, setRoomImages] = useState({});
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedRoomImages, setSelectedRoomImages] = useState([]);
 
   useEffect(() => {
     const fetchImagesForRooms = async () => {
@@ -32,6 +34,11 @@ const DisplayRoomsSelection = ({
     }
   }, [rooms, fetchRoomImagesCarousel]);
 
+  const openModal = (images) => {
+    setSelectedRoomImages(images);
+    setIsModalOpen(true);
+  };
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {rooms.map((room) => (
@@ -44,7 +51,10 @@ const DisplayRoomsSelection = ({
           }`}
         >
           {/* ✅ Room Image Carousel */}
-          <div className="h-40 w-full">
+          <div
+            className="h-40 w-full cursor-pointer"
+            onClick={() => openModal(roomImages[room.id] || [])}
+          >
             <Carousel slideInterval={3000} indicators={false}>
               {roomImages[room.id]?.map((img, idx) => (
                 <img
@@ -67,7 +77,8 @@ const DisplayRoomsSelection = ({
             <strong>Price Per Night:</strong> ₱{room.pricePerNight}
           </p>
           <p className="text-gray-600 dark:text-gray-300">
-            <strong>Description:</strong> {room.description}
+            <strong>Guest Allowed:</strong> {room.adultCount} Adult &{" "}
+            {room.childCount} Kids
           </p>
 
           {/* ✅ Select Button */}
@@ -87,6 +98,29 @@ const DisplayRoomsSelection = ({
           </Button>
         </Card>
       ))}
+
+      {/* ✅ Large Image Modal */}
+      <Modal
+        show={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        size="6xl"
+      >
+        <Modal.Header>Room Images</Modal.Header>
+        <Modal.Body>
+          <div className="w-full h-[500px] flex justify-center items-center">
+            <Carousel slideInterval={3000} indicators={true}>
+              {selectedRoomImages.map((img, idx) => (
+                <img
+                  key={idx}
+                  src={img}
+                  alt={`Selected Room Image ${idx + 1}`}
+                  className="w-full h-full object-cover rounded-lg"
+                />
+              ))}
+            </Carousel>
+          </div>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 };
