@@ -159,6 +159,10 @@ const FrontDeskHeader = () => {
     );
     toast.success("Successfully Booked!");
     setBookingModal(false);
+    setCheckout(false);
+    setRooms(null);
+    setArrivalDate(null);
+    setDepartureDate(null);
   };
 
   const handleGuestName = (e) => {
@@ -179,14 +183,7 @@ const FrontDeskHeader = () => {
   console.log(currentUser);
 
   return (
-    <div className="header flex-col bg-slate-800 p-5 px-10 flex items-center justify-between ">
-      <img
-        onClick={() => navigation("/")}
-        className="w-[130px] hidden xl:flex cursor-pointer"
-        src={logo}
-        alt="Logo"
-      />
-
+    <div className="header flex-col bg-red-800 p-5 px-10 flex items-start justify-start ">
       <Button
         onClick={() => setBookNowModal(true)}
         className="lg:hidden"
@@ -194,18 +191,18 @@ const FrontDeskHeader = () => {
       >
         Book Guest
       </Button>
-
-      <div className="dates flex-col hidden flex-1 lg:flex items-center justify-center">
-        <div className="wrapper">
+      <div className="dates mt-10 flex-col hidden flex-1 lg:flex items-start justify-start">
+        <h1 className="text-white text-3xl font-bold mb-3">Book a guest</h1>
+        <div className="wrapper my-1">
           <h1 className="text-sm text-white">Check In Date</h1>
           <Datepicker onChange={(date) => setArrivalDate(date)} />
         </div>
-        <div className="wrapper mx-3">
+        <div className="wrapper my-1">
           <h1 className="text-sm text-white">Check Out Date</h1>
           <Datepicker onChange={(date) => setDepartureDate(date)} />
         </div>
 
-        <div className="persons">
+        <div className="persons my-1 w-full ">
           <h1 className="text-sm text-white">Persons</h1>
           <Dropdown
             ref={dropdownRef}
@@ -281,7 +278,7 @@ const FrontDeskHeader = () => {
             </div>
           </Dropdown>
         </div>
-        <div className="voucher ml-2">
+        <div className="voucher w-full my-1">
           <h1 className="text-sm text-white">Voucher</h1>
           <TextInput
             placeholder="Promo Code"
@@ -289,16 +286,17 @@ const FrontDeskHeader = () => {
             onChange={(e) => setVoucher(e.target.value)}
           />
         </div>
-        <div className="voucher ml-2">
+        <div className="voucher w-full my-1">
           <h1 className="text-sm text-white">Guest Name</h1>
           <TextInput placeholder="Guest Name" onChange={handleGuestName} />
         </div>
-        <div className="wrapper">
+        <div className="wrapper w-full mt-5">
           <h1 className="text-sm text-white">Availability</h1>
-          <Button onClick={handleSubmit}>Check Availability</Button>
+          <Button className="w-full" onClick={handleSubmit}>
+            Check Availability
+          </Button>
         </div>
       </div>
-
       {/*Bottom Modal */}
       <BottomDrawer
         red={true}
@@ -322,7 +320,7 @@ const FrontDeskHeader = () => {
               value={departureDate}
             />
 
-            <div className="voucher my-3">
+            <div className="voucher my-1">
               <h1 className="text-sm text-white">Voucher</h1>
               <TextInput placeholder="Promo Code" />
             </div>
@@ -412,7 +410,6 @@ const FrontDeskHeader = () => {
           </div>
         </div>
       </BottomDrawer>
-
       {/* Booking Modal */}
       <CustomModal
         size={"5xl"}
@@ -469,7 +466,7 @@ const FrontDeskHeader = () => {
             {checkout && selectedRoom && (
               <div className="w-full  bg-white rounded-lg px-5  dark:bg-gray-800">
                 <div className="flex">
-                  <h1 className="my-3">
+                  <h1 className="my-1">
                     {moment(arrivalDate).format("LL")}
                     {" - "}
                     {moment(departureDate).format("LL")}
