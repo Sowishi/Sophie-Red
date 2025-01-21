@@ -58,25 +58,24 @@ const UsersManagement = () => {
 
   return (
     <DashboardLayout>
-      {/* Header */}
-      <div className="flex flex-col lg:flex-row justify-between items-center">
-        <div className="p-5">
-          <h1 className="text-2xl lg:text-4xl font-bold">Users Management</h1>
-          <p className="mt-3 text-gray-500">
-            Manage user accounts in this section.
-          </p>
+      <div className="container mx-auto lg:p-10 rounded-3xl min-h-[600px]">
+        {/* Header */}
+        <div className="flex flex-col lg:flex-row justify-between items-center mb-10">
+          <div className="p-5">
+            <h1 className="text-2xl lg:text-4xl font-bold">Users Management</h1>
+            <p className="mt-3 text-gray-500">
+              Manage user accounts in this section.
+            </p>
+          </div>
+          <Button
+            onClick={() => setAddUserModal(true)}
+            style={{ padding: 10 }}
+            gradientMonochrome="failure"
+          >
+            Add User
+            <FaPlus className="ml-2 h-5 w-5" />
+          </Button>
         </div>
-        <Button
-          onClick={() => setAddUserModal(true)}
-          style={{ padding: 10 }}
-          gradientMonochrome="failure"
-        >
-          Add User
-          <FaPlus className="ml-2 h-5 w-5" />
-        </Button>
-      </div>
-
-      <div className="w-full mt-10 bg-[#F6F6F6] lg:p-10 rounded-3xl min-h-[600px]">
         <UsersTable />
       </div>
 

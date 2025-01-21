@@ -88,7 +88,9 @@ const Header = () => {
           <Dropdown.Item icon={MdOutlineCleaningServices}>
             Housekeeper Management
           </Dropdown.Item>
-          <Dropdown.Item icon={HiUsers}>Users Management</Dropdown.Item>
+          <Dropdown.Item onClick={() => navigation("/users")} icon={HiUsers}>
+            Users Management
+          </Dropdown.Item>
         </Dropdown>
       </div>
     );
