@@ -3,10 +3,10 @@
 import {
   Badge,
   Button,
-  Checkbox,
-  Spinner,
   Table,
   TextInput,
+  Select,
+  Dropdown,
 } from "flowbite-react";
 import { useEffect, useState } from "react";
 import useFetchCollection from "../hooks/useFetchCollection";
@@ -14,37 +14,40 @@ import { CiSearch } from "react-icons/ci";
 import empty from "../assets/empty-box.png";
 import Lottie from "react-lottie";
 import loader from "../assets/lotties/loader.json";
-import { FaTrash } from "react-icons/fa6";
-import CustomModal from "./customModal";
-import CustomInput from "./customInput";
-import { CustomSelect } from "./customSelect"; // Ensure this component is implemented
-import { toast } from "react-toastify";
-import useCrudUsers from "../hooks/useCrudUsers";
 import moment from "moment/moment";
+import useCrudBooking from "../hooks/useCrudBooking";
+import { toast } from "react-toastify";
 
 export function PaymentsTable() {
   const { fetchCollection } = useFetchCollection();
-  const { updateUser, deleteUser } = useCrudUsers(); // Assuming `deleteUser` exists in the custom hook
   const [bookings, setBookings] = useState([]);
-  const [filteredUsers, setFilteredUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
-  const [selectedUser, setSelectedUser] = useState(null);
+  const [filter, setFilter] = useState("all");
+  const { updateBookingPayment } = useCrudBooking();
 
   useEffect(() => {
-    // Fetch users on component mount
     fetchCollection("bookings", setBookings, setLoading);
   }, []);
+
+  const handlePaymentStatusChange = async (bookingId, newStatus) => {
+    await updateBookingPayment(bookingId, newStatus);
+    toast.success("Successfully updated the payment");
+  };
+
+  const filteredBookings = bookings.filter((booking) => {
+    if (filter === "all") return true;
+    return filter === "paid"
+      ? booking.paymentStatus === "full"
+      : booking.paymentStatus !== "full";
+  });
 
   if (loading) {
     return (
       <div className="container flex pt-28 h-full justify-center items-center flex-col">
         <Lottie
           style={{ width: 150 }}
-          options={{
-            animationData: loader,
-            autoplay: true,
-          }}
+          options={{ animationData: loader, autoplay: true }}
         />
       </div>
     );
@@ -61,14 +64,18 @@ export function PaymentsTable() {
 
   return (
     <div className="overflow-x-auto">
-      <div className="flex items-center justify-end mb-5">
+      <div className="flex items-center justify-between mb-5">
         <TextInput
           onChange={(event) => setSearch(event.target.value)}
           className="w-60"
           placeholder="Search Here..."
           value={search}
         />
-        <CiSearch className="ml-3" size={24} />
+        <Select value={filter} onChange={(e) => setFilter(e.target.value)}>
+          <option value="all">All</option>
+          <option value="paid">Paid</option>
+          <option value="unpaid">Unpaid</option>
+        </Select>
       </div>
       <Table hoverable striped>
         <Table.Head>
@@ -78,9 +85,10 @@ export function PaymentsTable() {
           <Table.HeadCell>Payment Status</Table.HeadCell>
           <Table.HeadCell>Balance</Table.HeadCell>
           <Table.HeadCell>Check Out Date</Table.HeadCell>
+          <Table.HeadCell>Actions</Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
-          {bookings.map((booking, index) => {
+          {filteredBookings.map((booking, index) => {
             const date = booking.checkOutDate
               ? moment(booking.checkOutDate.toDate()).format("LLL")
               : "Invalid Date";
@@ -96,84 +104,38 @@ export function PaymentsTable() {
                 <Table.Cell>{booking.roomDetails.roomNumber}</Table.Cell>
                 <Table.Cell>₱{booking.totalPrice}</Table.Cell>
                 <Table.Cell>
-                  {booking.paymentStatus == "down" ? (
-                    "Unpaid"
-                  ) : (
-                    <Badge color="success">Fully Paid</Badge>
-                  )}
+                  <Badge
+                    color={
+                      booking.paymentStatus === "full" ? "success" : "failure"
+                    }
+                  >
+                    {booking.paymentStatus === "full" ? "Fully Paid" : "Unpaid"}
+                  </Badge>
                 </Table.Cell>
                 <Table.Cell>
-                  {booking.paymentStatus == "full" ? (
+                  {booking.paymentStatus === "full" ? (
                     <Badge color="success">No Balance</Badge>
                   ) : (
                     <h1>₱{booking?.totalPrice - booking?.downpayment}</h1>
                   )}
                 </Table.Cell>
                 <Table.Cell>{date}</Table.Cell>
-
-                <Table.Cell className="flex items-center justify-center">
-                  <Button
-                    gradientMonochrome="failure"
-                    className="ml-3"
-                    onClick={() => handleDeleteUser(user.id)}
-                    color="failure"
+                <Table.Cell>
+                  <Select
+                    value={booking.paymentStatus}
+                    onChange={(e) =>
+                      handlePaymentStatusChange(booking.id, e.target.value)
+                    }
                   >
-                    Update Payment
-                  </Button>
+                    <option value="down">Unpaid</option>
+                    <option value="full">Paid</option>
+                  </Select>
                 </Table.Cell>
               </Table.Row>
             );
           })}
         </Table.Body>
       </Table>
-      {selectedUser && (
-        <CustomModal
-          title="Edit User"
-          size="5xl"
-          open={!!selectedUser}
-          handleClose={() => setSelectedUser(null)}
-          onSubmit={handleSaveUser}
-        >
-          <div className="container">
-            <CustomInput
-              label="Full Name"
-              value={selectedUser.fullName || ""}
-              onChange={handleChange}
-              name="fullName"
-              placeholder="Enter full name"
-            />
-            <CustomInput
-              label="Email"
-              value={selectedUser.email || ""}
-              onChange={handleChange}
-              name="email"
-              type="email"
-              placeholder="Enter email"
-            />
-            <CustomInput
-              label="Password"
-              value={selectedUser.password || ""}
-              onChange={handleChange}
-              name="password"
-              type="password"
-              placeholder="Enter password"
-            />
-            <CustomSelect
-              value={selectedUser.role || "Select Role"}
-              data={[
-                "Select Role",
-                "Admin",
-                "Front Desk",
-                "Super Admin",
-                "Housekeeping",
-              ]}
-              label="Role"
-              name="role"
-              onChange={handleChange}
-            />
-          </div>
-        </CustomModal>
-      )}
     </div>
   );
 }
