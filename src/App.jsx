@@ -11,6 +11,7 @@ import { useEffect } from "react";
 import ClientDashboard from "./pages/client/clientDashboard";
 import Users from "./pages/dashboard/users";
 import Payments from "./pages/dashboard/payments";
+import Housekeeping from "./pages/dashboard/housekeeping";
 
 const App = () => {
   const { currentUser, currentAdmin, setCurrentAdmin } = useUserStore();
@@ -51,6 +52,10 @@ const App = () => {
         <Route
           path="/payments"
           element={currentAdmin ? <Payments /> : <Landing />}
+        />
+        <Route
+          path="/housekeeping"
+          element={currentAdmin ? <Housekeeping /> : <Landing />}
         />
         <Route path="/" element={<Landing />} />
       </Routes>

@@ -1,0 +1,39 @@
+import { HiOutlineArrowRight } from "react-icons/hi";
+import DashboardLayout from "./dashboardLayout";
+import { Button, TextInput } from "flowbite-react";
+import { RoomsTable } from "../../components/roomsTable";
+import { useEffect, useState } from "react";
+import CustomModal from "../../components/customModal";
+import CustomInput from "../../components/customInput";
+import { CustomSelect } from "../../components/customSelect";
+import { roomTypeData } from "../../utils/roomType";
+import { CustomTextArea } from "../../components/customTextarea";
+import useCrudRooms from "../../hooks/useCrudRooms";
+import { FaPlus } from "react-icons/fa";
+import { toast } from "react-toastify";
+import Lottie from "react-lottie";
+import loader from "../../assets/lotties/loader.json";
+import { HousekeepingTable } from "../../components/housekeepingTable";
+
+const Housekeeping = () => {
+  return (
+    <DashboardLayout>
+      {/* Header */}
+
+      <div className="container mx-auto lg:p-10 rounded-3xl min-h-[600px]">
+        <div className="flex mb-10 flex-col lg:flex-row justify-between items-center">
+          <div className="div p-5">
+            <h1 className="text-2xl lg:text-4xl font-bold">HouseKeeping</h1>
+            <p className="mt-3 text-gray-500">
+              You can manage the housekeeping here
+            </p>
+          </div>
+        </div>
+
+        <HousekeepingTable />
+      </div>
+    </DashboardLayout>
+  );
+};
+
+export default Housekeeping;

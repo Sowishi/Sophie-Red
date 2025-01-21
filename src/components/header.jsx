@@ -4,7 +4,7 @@ import logo from "../assets/logo2.png";
 import { HiHome, HiUsers, HiDocumentReport } from "react-icons/hi";
 import { RiComputerLine } from "react-icons/ri";
 import { MdHotel, MdOutlineCleaningServices } from "react-icons/md";
-import { FaAngleDown, FaBed, FaCalendarAlt } from "react-icons/fa";
+import { FaAngleDown, FaBed, FaBroom, FaCalendarAlt } from "react-icons/fa";
 import { Button, Dropdown } from "flowbite-react";
 import useUserStore from "../utils/zustand";
 import { CiMenuBurger } from "react-icons/ci";
@@ -51,6 +51,15 @@ const Header = () => {
         >
           <FaPesoSign color="white" className="mr-3" />
           <h1 className="text-sm font-extralight">Payments</h1>
+        </Link>
+        <Link
+          to="/housekeeping"
+          className={`flex px-5 cursor-pointer mx-2 py-3 rounded-lg justify-start items-center ${
+            isCurrentPath("/housekeeping") ? "bg-red-800" : "bg-slate-700"
+          }`}
+        >
+          <FaBroom color="white" className="mr-3" />
+          <h1 className="text-sm font-extralight">Housekeeping</h1>
         </Link>
       </div>
     );
