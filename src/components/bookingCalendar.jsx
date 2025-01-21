@@ -88,7 +88,7 @@ export const BookingCalendar = ({ selectedRoom, searchQuery }) => {
   );
 
   return (
-    <div className="bg-[#f3f5f7] flex  lg:p-10 rounded-lg shadow-lg">
+    <div className=" flex  lg:p-10 rounded-lg shadow">
       <div className="flex-1">
         <Calendar
           localizer={localizer}

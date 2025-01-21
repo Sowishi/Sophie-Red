@@ -7,7 +7,7 @@ import { CiWarning } from "react-icons/ci";
 const Payments = () => {
   return (
     <DashboardLayout>
-      <div className="container mx-auto lg:p-10 rounded-3xl min-h-[600px] ">
+      <div className="container mx-auto lg:p-10 rounded-3xl min-h-[600px] pt-10 ">
         <div className="flex flex-col lg:flex-row justify-between items-center">
           <div className="div p-5">
             <h1 className="text-2xl lg:text-4xl font-bold">Payments</h1>
