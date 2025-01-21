@@ -9,7 +9,7 @@ import FrontDeskHeader from "./frontDeskHeader";
 
 const localizer = momentLocalizer(moment);
 
-export const BookingCalendar = ({ selectedRoom }) => {
+export const BookingCalendar = ({ selectedRoom, searchQuery }) => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -46,7 +46,6 @@ export const BookingCalendar = ({ selectedRoom }) => {
     );
   }
 
-  // 🎨 Define a set of unique colors
   const eventColors = [
     "#E57373",
     "#81C784",
@@ -60,7 +59,6 @@ export const BookingCalendar = ({ selectedRoom }) => {
     "#7986CB",
   ];
 
-  // ✅ Convert bookings to calendar event format
   const events = bookings.map((booking, index) => ({
     id: booking.id,
     title: `Room ${booking.roomDetails.roomNumber} - ${booking.currentUser.name}`,
@@ -72,39 +70,34 @@ export const BookingCalendar = ({ selectedRoom }) => {
     downpayment: booking.downpayment,
     paymentStatus: booking.paymentStatus,
     description: booking.roomDetails.description,
-    color: eventColors[index % eventColors.length], // Assign a unique color
+    color: eventColors[index % eventColors.length],
   }));
 
-  // ✅ Handle event click to open modal
   const handleEventClick = (event) => {
     setSelectedEvent(event);
   };
 
-  // ✅ Close modal
   const closeModal = () => {
     setSelectedEvent(null);
   };
 
-  const filterEvents = events.filter((item) =>
-    item.title.includes(selectedRoom)
+  const filteredEvents = events.filter(
+    (event) =>
+      (!selectedRoom || event.title.includes(selectedRoom)) &&
+      event.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
-    <div className="bg-[#f3f5f7] flex lg:p-10 rounded-lg shadow-lg">
+    <div className="bg-[#f3f5f7] flex  lg:p-10 rounded-lg shadow-lg">
       <div className="flex-1">
         <Calendar
           localizer={localizer}
-          events={selectedRoom == null ? events : filterEvents}
+          events={filteredEvents}
           startAccessor="start"
           endAccessor="end"
           style={{ minHeight: 600 }}
           className="custom-calendar"
           onSelectEvent={handleEventClick}
-          backgroundEvents={events.map((event) => ({
-            start: event.start,
-            end: event.end,
-            style: { backgroundColor: event.color, opacity: 0.5 },
-          }))}
         />
       </div>
 
@@ -112,7 +105,6 @@ export const BookingCalendar = ({ selectedRoom }) => {
         <FrontDeskHeader />
       </div>
 
-      {/* ✅ Modal for Event Details */}
       <Modal show={selectedEvent !== null} onClose={closeModal}>
         <Modal.Header>
           Booking Details - Room {selectedEvent?.roomType}
@@ -142,7 +134,7 @@ export const BookingCalendar = ({ selectedRoom }) => {
               </p>
               <p>
                 <strong>Payment Status:</strong>{" "}
-                {selectedEvent.paymentStatus == "full"
+                {selectedEvent.paymentStatus === "full"
                   ? "Fully Paid"
                   : "Downpayment"}
               </p>

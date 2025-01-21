@@ -4,12 +4,14 @@ import DashboardLayout from "./dashboardLayout";
 import { Button, Dropdown } from "flowbite-react";
 import useFetchCollection from "../../hooks/useFetchCollection";
 import { useEffect, useState } from "react";
+import CustomInput from "../../components/customInput";
 
 const FrontDesk = () => {
   const { fetchCollection } = useFetchCollection();
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     fetchCollection("rooms", setRooms, setLoading);
@@ -18,7 +20,7 @@ const FrontDesk = () => {
   return (
     <DashboardLayout>
       <div className="container mx-auto pb-20">
-        <div className="flex justify-between items-center mb-10 p-5">
+        <div className="flex justify-between items-center  p-5">
           <div>
             <h1 className="text-2xl lg:text-4xl font-bold">Booking Calendar</h1>
             <p className="mt-3 text-sm text-gray-500">
@@ -44,8 +46,17 @@ const FrontDesk = () => {
             ))}
           </Dropdown>
         </div>
-
-        <BookingCalendar selectedRoom={selectedRoom} />
+        <div className="w-5/12">
+          <CustomInput
+            onChange={(event) => setSearchQuery(event.target.value)}
+            label={"Search Guest"}
+            placeholder={"Search for a guest"}
+          />
+        </div>
+        <BookingCalendar
+          searchQuery={searchQuery}
+          selectedRoom={selectedRoom}
+        />
       </div>
     </DashboardLayout>
   );
