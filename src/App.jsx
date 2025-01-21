@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 import Login from "./pages/login";
 import Index from "./pages/dashboard";
 import Room from "./pages/dashboard/room";
@@ -13,12 +13,21 @@ import Users from "./pages/dashboard/users";
 import Payments from "./pages/dashboard/payments";
 
 const App = () => {
-  const initializeUser = useUserStore((state) => state.initializeUser);
-  useEffect(() => {
-    initializeUser(); // Restore user state
-  }, [initializeUser]);
+  const { currentUser, currentAdmin, setCurrentAdmin } = useUserStore();
 
-  const { currentUser, currentAdmin } = useUserStore();
+  const initializeUser = useUserStore((state) => state.initializeUser);
+  const getUserFromStorage = async () => {
+    const res = localStorage.getItem("user");
+    const user = await JSON.parse(res);
+    if (user) {
+      setCurrentAdmin(user);
+    }
+  };
+
+  useEffect(() => {
+    initializeUser();
+    getUserFromStorage();
+  }, [initializeUser]);
 
   return (
     <BrowserRouter>

@@ -25,8 +25,7 @@ const useAuth = () => {
       // Check if the password matches
       if (user.password === password) {
         toast.success("Login successful!");
-        console.log("Authenticated User:", user);
-        // Return the authenticated user or handle it as needed
+        localStorage.setItem("user", JSON.stringify(user));
         return user;
       } else {
         toast.error("Invalid email or password.");

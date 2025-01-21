@@ -132,6 +132,7 @@ const Header = () => {
             onClick={() => {
               navigation("/");
               setCurrentAdmin(null);
+              localStorage.removeItem("user");
             }}
           >
             Sign out
