@@ -90,23 +90,27 @@ export const BookingCalendar = ({ selectedRoom }) => {
   );
 
   return (
-    <div className="bg-red-100 p-4 rounded-lg shadow-lg">
-      <FrontDeskHeader />
+    <div className="bg-[#f3f5f7] flex lg:p-10 rounded-lg shadow-lg">
+      <div className="flex-1">
+        <Calendar
+          localizer={localizer}
+          events={selectedRoom == null ? events : filterEvents}
+          startAccessor="start"
+          endAccessor="end"
+          style={{ minHeight: 600 }}
+          className="custom-calendar"
+          onSelectEvent={handleEventClick}
+          backgroundEvents={events.map((event) => ({
+            start: event.start,
+            end: event.end,
+            style: { backgroundColor: event.color, opacity: 0.5 },
+          }))}
+        />
+      </div>
 
-      <Calendar
-        localizer={localizer}
-        events={selectedRoom == null ? events : filterEvents}
-        startAccessor="start"
-        endAccessor="end"
-        style={{ minHeight: 600 }}
-        className="custom-calendar"
-        onSelectEvent={handleEventClick}
-        backgroundEvents={events.map((event) => ({
-          start: event.start,
-          end: event.end,
-          style: { backgroundColor: event.color, opacity: 0.5 },
-        }))}
-      />
+      <div className="hidden lg:flex">
+        <FrontDeskHeader />
+      </div>
 
       {/* ✅ Modal for Event Details */}
       <Modal show={selectedEvent !== null} onClose={closeModal}>

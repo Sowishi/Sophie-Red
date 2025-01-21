@@ -179,7 +179,7 @@ const FrontDeskHeader = () => {
   console.log(currentUser);
 
   return (
-    <div className="header bg-slate-800 p-5 px-10 flex items-center justify-between ">
+    <div className="header flex-col bg-slate-800 p-5 px-10 flex items-center justify-between ">
       <img
         onClick={() => navigation("/")}
         className="w-[130px] hidden xl:flex cursor-pointer"
@@ -195,7 +195,7 @@ const FrontDeskHeader = () => {
         Book Guest
       </Button>
 
-      <div className="dates hidden flex-1 lg:flex items-center justify-center">
+      <div className="dates flex-col hidden flex-1 lg:flex items-center justify-center">
         <div className="wrapper">
           <h1 className="text-sm text-white">Check In Date</h1>
           <Datepicker onChange={(date) => setArrivalDate(date)} />
@@ -205,7 +205,7 @@ const FrontDeskHeader = () => {
           <Datepicker onChange={(date) => setDepartureDate(date)} />
         </div>
 
-        <div className="persons ml-3">
+        <div className="persons">
           <h1 className="text-sm text-white">Persons</h1>
           <Dropdown
             ref={dropdownRef}
@@ -293,7 +293,7 @@ const FrontDeskHeader = () => {
           <h1 className="text-sm text-white">Guest Name</h1>
           <TextInput placeholder="Guest Name" onChange={handleGuestName} />
         </div>
-        <div className="wrapper ml-3">
+        <div className="wrapper">
           <h1 className="text-sm text-white">Availability</h1>
           <Button onClick={handleSubmit}>Check Availability</Button>
         </div>

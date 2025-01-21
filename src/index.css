@@ -5,13 +5,13 @@ html {
   scroll-behavior: smooth;
 }
 .custom-calendar {
-  background-color: #fee2e2; /* Light Red Background */
+  background-color: #f3f5f7; /* Light Red Background */
   border-radius: 8px;
   padding: 10px;
 }
 
 .rbc-day-bg {
-  background: #fef2f2 !important; /* Soft Pinkish Red */
+  background: white !important; /* Soft Pinkish Red */
 }
 
 .rbc-today {
@@ -25,8 +25,13 @@ html {
   border-radius: 6px;
 }
 
+.rbc-event {
+  transition: 0.5s;
+}
+
 .rbc-event:hover {
-  background-color: #b91c1c !important; /* Darker red on hover */
+  background-color: #b91c1c !important;
+  transform: scale(1.1); /* Darker red on hover */
 }
 
 .rbc-selected {
