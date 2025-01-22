@@ -20,9 +20,11 @@ import loader from "../assets/lotties/loader.json";
 import { FaArrowRight } from "react-icons/fa6";
 import { BottomDrawer } from "./bottomDrawer";
 import { toast } from "react-toastify";
+import useCrudHousekeeping from "../hooks/useCrudHousekeeping";
 
 export function HousekeepingTable() {
   const { fetchCollection } = useFetchCollection();
+  const { addTask } = useCrudHousekeeping();
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
@@ -76,13 +78,13 @@ export function HousekeepingTable() {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    console.log({
-      roomNumber: selectedRoom?.roomNumber,
+    addTask({
+      selectedRoom,
       housekeeper,
       serviceType,
       description,
     });
-    toast.success("Assignment logged successfully!");
+    toast.success("Assignment task successfully!");
     setSelectedRoom(null);
     setHousekeeper("");
     setServiceType("");
@@ -122,12 +124,13 @@ export function HousekeepingTable() {
               <Table.Cell>{room.description}</Table.Cell>
               <Table.Cell>
                 {room.status === "vacant" ? (
-                  <Badge color="success">Vacant</Badge>
+                  <Badge color="success">Normal</Badge>
                 ) : (
                   <Badge>{room.status}</Badge>
                 )}
               </Table.Cell>
               <Table.Cell className="flex items-center justify-center">
+                <Button className="mr-5">View Logs</Button>
                 <Button
                   gradientMonochrome="failure"
                   onClick={() => setSelectedRoom(room)}
@@ -151,7 +154,9 @@ export function HousekeepingTable() {
             <h1 className="text-3xl font-bold flex items-center justify-start">
               Room Number: #{selectedRoom?.roomNumber}{" "}
               <Badge size="lg" className="ml-3 p-1 px-4">
-                {selectedRoom?.status}
+                {selectedRoom?.status == "vacant"
+                  ? "normal"
+                  : selectedRoom?.status}
               </Badge>
             </h1>
           </div>
