@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import useUserStore from "../utils/zustand";
 import Loader from "./loader";
 import moment from "moment";
+import { toast } from "react-toastify";
 
 const HousekeeperTable = () => {
   const { fetchUserTasks, updateTaskStatus } = useCrudHousekeeping();
@@ -14,14 +15,13 @@ const HousekeeperTable = () => {
     fetchUserTasks(currentAdmin?.id, setTasks);
   }, []);
 
-  const handleStatusUpdate = (taskId, newStatus) => {
+  const handleStatusUpdate = async (taskId, newStatus, roomID) => {
     console.log(`Updating Task ID: ${taskId} to Status: ${newStatus}`);
 
     // Update task status in the backend (assuming updateTaskStatus is implemented)
-    updateTaskStatus(taskId, newStatus, (updatedTasks) => {
-      setTasks(updatedTasks);
-      console.log("Updated Tasks:", updatedTasks);
-    });
+    await updateTaskStatus(taskId, newStatus, roomID);
+    toast.success("Successfully update the task status");
+    window.location.reload();
   };
 
   if (tasks == null) {
@@ -67,12 +67,24 @@ const HousekeeperTable = () => {
               <Table.Cell>
                 <Dropdown gradientMonochrome="failure" label="Action">
                   <Dropdown.Item
-                    onClick={() => handleStatusUpdate(task.id, "Ongoing")}
+                    onClick={() =>
+                      handleStatusUpdate(
+                        task.id,
+                        "Ongoing",
+                        task.selectedRoom.id
+                      )
+                    }
                   >
                     Ongoing
                   </Dropdown.Item>
                   <Dropdown.Item
-                    onClick={() => handleStatusUpdate(task.id, "Completed")}
+                    onClick={() =>
+                      handleStatusUpdate(
+                        task.id,
+                        "Completed",
+                        task.selectedRoom.id
+                      )
+                    }
                   >
                     Completed
                   </Dropdown.Item>

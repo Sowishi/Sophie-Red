@@ -56,7 +56,7 @@ const useCrudHousekeeping = () => {
     }
   };
 
-  const updateTaskStatus = async (taskID, newStatus, setTasks) => {
+  const updateTaskStatus = async (taskID, newStatus, roomID) => {
     try {
       const taskRef = doc(db, "housekeeping", taskID);
       await updateDoc(taskRef, { status: newStatus });
@@ -70,7 +70,13 @@ const useCrudHousekeeping = () => {
         ...doc.data(),
         id: doc.id,
       }));
-      setTasks(updatedTasks);
+
+      if (newStatus == "Completed") {
+        const docRef = doc(db, "rooms", roomID);
+        await updateDoc(docRef, { status: "vacant" });
+
+        await updateDoc(taskRef, { completedAt: serverTimestamp() });
+      }
     } catch (error) {
       console.log(error.message);
     }
