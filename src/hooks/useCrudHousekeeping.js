@@ -38,7 +38,22 @@ const useCrudHousekeeping = () => {
     }
   };
 
-  return { addTask, fetchRoomTasks };
+  const fetchUserTasks = async (userID, setTasks) => {
+    try {
+      const colRef = collection(db, "housekeeping");
+      const q = query(colRef, where("housekeeper.id", "==", userID));
+      const snapshot = await getDocs(q);
+      const output = [];
+      snapshot.docs.map((doc) => {
+        output.push({ ...doc.data(), id: doc.id });
+      });
+      setTasks(output);
+    } catch (error) {
+      console.log(error.messages);
+    }
+  };
+
+  return { addTask, fetchRoomTasks, fetchUserTasks };
 };
 
 export default useCrudHousekeeping;

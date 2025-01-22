@@ -10,6 +10,7 @@ import {
   Textarea,
   Modal,
   Dropdown,
+  Tooltip,
 } from "flowbite-react";
 import { useEffect, useState } from "react";
 import useFetchCollection from "../hooks/useFetchCollection";
@@ -145,14 +146,22 @@ export function HousekeepingTable() {
                 >
                   View Logs
                 </Button>
-                <Button
-                  // disabled={room.status !== "vacant"}
-                  gradientMonochrome="failure"
-                  onClick={() => setSelectedRoom(room)}
-                  color="info"
+                <Tooltip
+                  content={
+                    room.status !== "vacant"
+                      ? "Already assigned a housekeeper"
+                      : "Assign a housekeeper"
+                  }
                 >
-                  Assign Housekeeper <FaArrowRight className="ml-2 h-5 w-5" />
-                </Button>
+                  <Button
+                    disabled={room.status !== "vacant"}
+                    gradientMonochrome="failure"
+                    onClick={() => setSelectedRoom(room)}
+                    color="info"
+                  >
+                    Assign Housekeeper <FaArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
+                </Tooltip>
               </Table.Cell>
             </Table.Row>
           ))}

@@ -105,6 +105,32 @@ const Header = () => {
     );
   }
 
+  function HousekeepingNav() {
+    return (
+      <div className="navigation hidden lg:flex flex-1  mx-10 text-white px-5">
+        <Link
+          to="/dashboard"
+          className={`flex px-5 cursor-pointer mx-2 py-3 rounded-lg justify-start items-center ${
+            isCurrentPath("/dashboard") ? "bg-red-800" : "bg-slate-700"
+          }`}
+        >
+          <HiHome color="white" className="mr-3" />
+          <h1 className="text-sm font-extralight">Dashboard</h1>
+        </Link>
+
+        <Link
+          to="/housekeeper"
+          className={`flex px-5 cursor-pointer mx-2 py-3 rounded-lg justify-start items-center ${
+            isCurrentPath("/housekeeper") ? "bg-red-800" : "bg-slate-700"
+          }`}
+        >
+          <FaBroom color="white" className="mr-3" />
+          <h1 className="text-sm font-extralight">Housekeeper Tasks</h1>
+        </Link>
+      </div>
+    );
+  }
+
   return (
     <div className="header bg-slate-900 px-10 lg:px-20 p-5 flex items-center justify-between w-full">
       <AdminSidebar isOpen={isOpen} handleClose={() => setIsOpen(false)} />
@@ -120,6 +146,7 @@ const Header = () => {
 
       {currentAdmin?.role == "Front Desk" && <FrontDeskNav />}
       {currentAdmin?.role == "Admin" && <AdminNav />}
+      {currentAdmin?.role == "Housekeeping" && <HousekeepingNav />}
 
       <div className="hidden lg:flex items-center justify-start cursor-pointer">
         <img
