@@ -1,4 +1,4 @@
-import { Button, Table } from "flowbite-react";
+import { Badge, Button, Dropdown, Table } from "flowbite-react";
 import useCrudHousekeeping from "../hooks/useCrudHousekeeping";
 import { useEffect, useState } from "react";
 import useUserStore from "../utils/zustand";
@@ -6,7 +6,7 @@ import Loader from "./loader";
 import moment from "moment";
 
 const HousekeeperTable = () => {
-  const { fetchUserTasks } = useCrudHousekeeping();
+  const { fetchUserTasks, updateTaskStatus } = useCrudHousekeeping();
   const [tasks, setTasks] = useState(null);
   const { currentAdmin } = useUserStore();
 
@@ -14,22 +14,30 @@ const HousekeeperTable = () => {
     fetchUserTasks(currentAdmin?.id, setTasks);
   }, []);
 
+  const handleStatusUpdate = (taskId, newStatus) => {
+    console.log(`Updating Task ID: ${taskId} to Status: ${newStatus}`);
+
+    // Update task status in the backend (assuming updateTaskStatus is implemented)
+    updateTaskStatus(taskId, newStatus, (updatedTasks) => {
+      setTasks(updatedTasks);
+      console.log("Updated Tasks:", updatedTasks);
+    });
+  };
+
   if (tasks == null) {
-    return (
-      <>
-        <Loader />
-      </>
-    );
+    return <Loader />;
   }
 
   return (
     <Table hoverable striped>
       <Table.Head>
+        <Table.HeadCell>Room Number</Table.HeadCell>
         <Table.HeadCell>Assign Date</Table.HeadCell>
         <Table.HeadCell>Housekeeper</Table.HeadCell>
         <Table.HeadCell>Service Type</Table.HeadCell>
         <Table.HeadCell>Description</Table.HeadCell>
         <Table.HeadCell>Completed At</Table.HeadCell>
+        <Table.HeadCell>Status</Table.HeadCell>
         <Table.HeadCell></Table.HeadCell>
       </Table.Head>
       <Table.Body className="divide-y">
@@ -40,18 +48,35 @@ const HousekeeperTable = () => {
 
           const completedDate = task.completedAt
             ? moment(task.completedAt.toDate()).format("LLL")
-            : "invalid";
+            : "---";
+
           return (
             <Table.Row key={task.id}>
+              <Table.Cell className="text-red-500 font-bold text-3xl">
+                {task.selectedRoom.roomNumber}
+              </Table.Cell>
+
               <Table.Cell>{assignDate}</Table.Cell>
               <Table.Cell>{task.housekeeper.fullName}</Table.Cell>
               <Table.Cell>{task.serviceType}</Table.Cell>
               <Table.Cell>{task.description}</Table.Cell>
+              <Table.Cell>{completedDate}</Table.Cell>
               <Table.Cell>
-                {task.completedAt ? completedDate : "---"}
+                <Badge>{task.status}</Badge>
               </Table.Cell>
               <Table.Cell>
-                <Button>Complete Tasks</Button>
+                <Dropdown gradientMonochrome="failure" label="Action">
+                  <Dropdown.Item
+                    onClick={() => handleStatusUpdate(task.id, "Ongoing")}
+                  >
+                    Ongoing
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    onClick={() => handleStatusUpdate(task.id, "Completed")}
+                  >
+                    Completed
+                  </Dropdown.Item>
+                </Dropdown>
               </Table.Cell>
             </Table.Row>
           );

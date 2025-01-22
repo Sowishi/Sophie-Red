@@ -183,6 +183,7 @@ export function HousekeepingTable() {
               <Table.HeadCell>Service Type</Table.HeadCell>
               <Table.HeadCell>Description</Table.HeadCell>
               <Table.HeadCell>Completed At</Table.HeadCell>
+              <Table.HeadCell>Status</Table.HeadCell>
             </Table.Head>
             <Table.Body className="divide-y">
               {housekeepingLogs.map((log) => {
@@ -199,8 +200,12 @@ export function HousekeepingTable() {
                     <Table.Cell>{log.housekeeper.fullName}</Table.Cell>
                     <Table.Cell>{log.serviceType}</Table.Cell>
                     <Table.Cell>{log.description}</Table.Cell>
+
                     <Table.Cell>
                       {log.completedAt ? completedDate : "---"}
+                    </Table.Cell>
+                    <Table.Cell>
+                      <Badge>{log.status}</Badge>
                     </Table.Cell>
                   </Table.Row>
                 );
