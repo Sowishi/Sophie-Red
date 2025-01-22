@@ -3,13 +3,13 @@
 import {
   Badge,
   Button,
-  Checkbox,
-  Spinner,
   Table,
   TextInput,
   Label,
   Select,
   Textarea,
+  Modal,
+  Dropdown,
 } from "flowbite-react";
 import { useEffect, useState } from "react";
 import useFetchCollection from "../hooks/useFetchCollection";
@@ -21,18 +21,21 @@ import { FaArrowRight } from "react-icons/fa6";
 import { BottomDrawer } from "./bottomDrawer";
 import { toast } from "react-toastify";
 import useCrudHousekeeping from "../hooks/useCrudHousekeeping";
+import moment from "moment/moment";
 
 export function HousekeepingTable() {
   const { fetchCollection } = useFetchCollection();
-  const { addTask } = useCrudHousekeeping();
+  const { addTask, fetchRoomTasks } = useCrudHousekeeping();
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [users, setUsers] = useState([]);
-  const [housekeeper, setHousekeeper] = useState("");
+  const [housekeeper, setHousekeeper] = useState(null);
   const [serviceType, setServiceType] = useState("");
   const [description, setDescription] = useState("");
+  const [isLogsModalOpen, setIsLogsModalOpen] = useState(false);
+  const [housekeepingLogs, setHousekeepingLogs] = useState([]);
 
   useEffect(() => {
     fetchCollection("rooms", setRooms, setLoading);
@@ -91,6 +94,12 @@ export function HousekeepingTable() {
     setDescription("");
   };
 
+  const handleViewLogs = (roomId) => {
+    fetchRoomTasks(roomId, setHousekeepingLogs);
+
+    setIsLogsModalOpen(true);
+  };
+
   return (
     <div className="overflow-x-auto">
       <div className="flex items-center justify-end mb-5">
@@ -130,8 +139,14 @@ export function HousekeepingTable() {
                 )}
               </Table.Cell>
               <Table.Cell className="flex items-center justify-center">
-                <Button className="mr-5">View Logs</Button>
                 <Button
+                  className="mr-5"
+                  onClick={() => handleViewLogs(room.id)}
+                >
+                  View Logs
+                </Button>
+                <Button
+                  // disabled={room.status !== "vacant"}
                   gradientMonochrome="failure"
                   onClick={() => setSelectedRoom(room)}
                   color="info"
@@ -143,6 +158,48 @@ export function HousekeepingTable() {
           ))}
         </Table.Body>
       </Table>
+
+      {/* Modal for Viewing Logs */}
+      <Modal
+        show={isLogsModalOpen}
+        onClose={() => setIsLogsModalOpen(false)}
+        size="7xl"
+      >
+        <Modal.Header>Housekeeping Logs</Modal.Header>
+        <Modal.Body>
+          <Table hoverable striped>
+            <Table.Head>
+              <Table.HeadCell>Assign Date</Table.HeadCell>
+              <Table.HeadCell>Housekeeper</Table.HeadCell>
+              <Table.HeadCell>Service Type</Table.HeadCell>
+              <Table.HeadCell>Description</Table.HeadCell>
+              <Table.HeadCell>Completed At</Table.HeadCell>
+            </Table.Head>
+            <Table.Body className="divide-y">
+              {housekeepingLogs.map((log) => {
+                const assignDate = log.createdAt
+                  ? moment(log.createdAt.toDate()).format("LLL")
+                  : "invalid";
+
+                const completedDate = log.completedAt
+                  ? moment(log.completedAt.toDate()).format("LLL")
+                  : "invalid";
+                return (
+                  <Table.Row key={log.id}>
+                    <Table.Cell>{assignDate}</Table.Cell>
+                    <Table.Cell>{log.housekeeper.fullName}</Table.Cell>
+                    <Table.Cell>{log.serviceType}</Table.Cell>
+                    <Table.Cell>{log.description}</Table.Cell>
+                    <Table.Cell>
+                      {log.completedAt ? completedDate : "---"}
+                    </Table.Cell>
+                  </Table.Row>
+                );
+              })}
+            </Table.Body>
+          </Table>
+        </Modal.Body>
+      </Modal>
 
       {/* Bottom Drawer for Assigning Housekeeper */}
       <BottomDrawer
@@ -163,21 +220,19 @@ export function HousekeepingTable() {
           <div className="space-y-4">
             <div>
               <Label htmlFor="housekeeper" value="Select Housekeeper" />
-              <Select
-                id="housekeeper"
-                value={housekeeper}
-                onChange={(e) => setHousekeeper(e.target.value)}
-                required
+              <Dropdown
+                label={
+                  housekeeper == null
+                    ? "Please Select Housekeeper"
+                    : housekeeper.fullName
+                }
               >
-                <option value="" disabled>
-                  Choose a housekeeper
-                </option>
                 {houseKeepers.map((user) => (
-                  <option key={user.id} value={user.id}>
+                  <Dropdown.Item onClick={() => setHousekeeper(user)}>
                     {user.fullName}
-                  </option>
+                  </Dropdown.Item>
                 ))}
-              </Select>
+              </Dropdown>
             </div>
             <div>
               <Label htmlFor="serviceType" value="Select Service Type" />
@@ -206,8 +261,15 @@ export function HousekeepingTable() {
               />
             </div>
           </div>
-          <div className="mt-5 flex justify-end">
-            <Button type="submit" color="success">
+          <div className="mt-5 flex justify-end items-center">
+            <Button
+              type="button"
+              gradientMonochrome="failure"
+              onClick={() => setSelectedRoom(null)}
+            >
+              Cancel
+            </Button>
+            <Button className="ml-3" type="submit" gradientMonochrome="success">
               Assign Task
             </Button>
           </div>
