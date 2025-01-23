@@ -596,6 +596,7 @@ const ClientHeader = () => {
                 <FaCheck color="white" size={40} />
               </div>{" "}
               <Button
+                onClick={() => navigation("/client-dashboard")}
                 gradientMonochrome="failure"
                 className="mt-10 py-3 w-full"
               >

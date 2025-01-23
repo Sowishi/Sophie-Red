@@ -5,17 +5,29 @@ import { Link, useNavigate } from "react-router-dom";
 import Testimonials from "../components/testimonial";
 import { ClientFooter } from "../components/clientFooter";
 import useUserStore from "../utils/zustand";
+import DisplayRoomsSelection from "../components/displayRoomsSelection";
+import { useEffect, useState } from "react";
+import useFetchCollection from "../hooks/useFetchCollection";
+import DisplayRoomLanding from "../components/displayRoomLanding";
 
 const Landing = () => {
   const navigation = useNavigate();
   const { currentUser, logout } = useUserStore();
+
+  const [rooms, setRooms] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const { fetchCollection } = useFetchCollection();
+
+  useEffect(() => {
+    fetchCollection("rooms", setRooms, setLoading);
+  }, []);
 
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
-      className="w-full min-h-screen"
+      className=" min-h-screen"
     >
       <div
         style={{
@@ -142,7 +154,20 @@ const Landing = () => {
         </div>
       </div>
 
-      <Testimonials />
+      <div className="container mx-auto p-10 lg:p-20">
+        <div className="mx-auto max-w-screen-sm text-center">
+          <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
+            Sophie Room Hotels
+          </h2>
+          <p className="mb-8 font-light text-gray-500 lg:mb-16 sm:text-xl dark:text-gray-400">
+            "Book your stay at Sophie Red Hotel today and enjoy the best comfort
+            at unbeatable prices!"
+          </p>
+        </div>
+        <DisplayRoomLanding rooms={rooms} />
+        <Testimonials />
+      </div>
+
       <ClientFooter />
     </motion.div>
   );
