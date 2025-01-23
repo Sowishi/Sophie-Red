@@ -35,16 +35,16 @@ const ClientDashboardHeader = () => {
         <Link
           to="/client-dashboard"
           className={`flex px-5 cursor-pointer mx-2 py-3 rounded-lg justify-start items-center ${
-            isCurrentPath("/-client-dashboard") ? "bg-red-800" : "bg-slate-700"
+            isCurrentPath("/client-dashboard") ? "bg-red-800" : "bg-slate-700"
           }`}
         >
           <HiHome color="white" className="mr-3" />
           <h1 className="text-sm font-extralight">Dashboard</h1>
         </Link>
         <Link
-          to="/front-desk"
+          to="/client-room"
           className={`flex px-5 cursor-pointer mx-2 py-3 rounded-lg justify-start items-center ${
-            isCurrentPath("/front-desk") ? "bg-red-800" : "bg-slate-700"
+            isCurrentPath("/client-room") ? "bg-red-800" : "bg-slate-700"
           }`}
         >
           <FaBed color="white" className="mr-3" />

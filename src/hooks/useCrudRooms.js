@@ -85,6 +85,7 @@ const useCrudRooms = () => {
     deleteRoom,
     deleteRoomImage,
     fetchRoomImagesCarousel,
+    fetchRoomImages,
   };
 };
 

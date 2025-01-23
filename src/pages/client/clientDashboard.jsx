@@ -10,22 +10,22 @@ import moment from "moment";
 import { calculateStayDuration } from "../../utils/calculateStay";
 import { FcCancel } from "react-icons/fc";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const ClientDashboard = () => {
-  const { currentUser } = useUserStore();
+  const { currentUser, booking, setBooking } = useUserStore();
   const {
     fetchUserBooking,
     cancelBooking,
     checkRoomAvailability,
     reschedBooking,
   } = useCrudBooking();
-  const [booking, setBooking] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
   const [dateModal, setDateModal] = useState(false);
   const [arrivalDate, setArrivalDate] = useState();
   const [departureDate, setDepartureDate] = useState();
-
+  const navigation = useNavigate();
   useEffect(() => {
     const getBooking = async () => {
       if (currentUser) {
@@ -108,8 +108,12 @@ const ClientDashboard = () => {
             This is where you can view all the details about your booking
           </p>
         </div>
-        <Button className="ml-10 px-3 " gradientMonochrome="failure">
-          View Hotel
+        <Button
+          onClick={() => navigation("/client-room")}
+          className="ml-10 px-3 "
+          gradientMonochrome="failure"
+        >
+          View Your Room
         </Button>
       </div>
 
