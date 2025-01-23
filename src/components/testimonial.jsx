@@ -4,45 +4,44 @@ import { Button, Avatar } from "flowbite-react";
 const Testimonials = () => {
   const testimonials = [
     {
-      title: "Speechless with how easy this was to integrate",
+      title: "A Luxurious Stay with Unmatched Comfort",
       content: [
-        "I recently got my hands on Flowbite Pro, and holy crap, I'm speechless with how easy this was to integrate within my application. Most templates are a pain, code is scattered, and near impossible to theme.",
-        "Flowbite has code in one place and I'm not joking when I say it took me a matter of minutes to copy the code, customise it and integrate within a Laravel + Vue application.",
-        "If you care for your time, I hands down would go with this.",
+        "Sophie Red Hotel offers a luxurious experience in the heart of Cagayan de Oro. The rooms are well-designed, spacious, and provide all the modern amenities you could ask for.",
+        "The staff goes above and beyond to make your stay comfortable, and the location is perfect for both business and leisure travelers.",
+        "If you're looking for the best hotel in the area, Sophie Red is undoubtedly the top choice.",
       ],
-      name: "Bonnie Green",
-      role: "Developer at Open AI",
+      name: "Anna Santos",
+      role: "Travel Blogger",
       img: "https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/karen-nelson.png",
     },
     {
-      title: "Solid foundation for any project",
+      title: "Exceptional Service and Delicious Cuisine",
       content: [
-        "FlowBite provides a robust set of design tokens and components based on the popular Tailwind CSS framework. From the most used UI components like forms and navigation bars to the whole app screens designed both for desktop and mobile, this UI kit provides a solid foundation for any project.",
-        "Designing with Figma components that can be easily translated to the utility classes of Tailwind CSS is a huge timesaver!",
+        "The staff at Sophie Red Hotel are incredibly professional and friendly. From the moment you step in, you're greeted with warm smiles and top-notch service.",
+        "The in-house restaurant serves a variety of dishes that cater to every palate, and the breakfast buffet is a must-try!",
       ],
-      name: "Roberta Casas",
-      role: "Lead designer at Dropbox",
+      name: "Carlos Reyes",
+      role: "Food Critic",
       img: "https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/roberta-casas.png",
     },
     {
-      title: "Mindblowing workflow and variants",
+      title: "Perfect Venue for Events and Celebrations",
       content: [
-        "As someone who mainly designs in the browser, I've been a casual user of Figma, but as soon as I saw and started playing with FlowBite my mind was 🤯.",
-        "Everything is so well structured and simple to use (I've learnt so much about Figma by just using the toolkit).",
-        "Aesthetically, the well designed components are beautiful and will undoubtedly level up your next application.",
+        "I hosted a corporate event at Sophie Red Hotel, and it exceeded all expectations. The event hall was elegantly set up, and the technical support provided ensured everything went smoothly.",
+        "Highly recommend this hotel for business events or even family celebrations!",
       ],
-      name: "Jese Leos",
-      role: "Software Engineer at Facebook",
+      name: "Mark Villanueva",
+      role: "Event Organizer",
       img: "https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/jese-leos.png",
     },
     {
-      title: "Efficient Collaborating",
+      title: "A Hidden Gem in Cagayan de Oro",
       content: [
-        "This is a very complex and beautiful set of elements. Under the hood it comes with the best things from 2 different worlds: Figma and Tailwind.",
-        "You have many examples that can be used to create a fast prototype for your team.",
+        "Sophie Red Hotel offers an oasis of relaxation amidst the hustle and bustle of the city. The spa services are heavenly, and the rooftop pool provides stunning views of the cityscape.",
+        "It’s a hidden gem that guarantees an unforgettable stay.",
       ],
-      name: "Joseph McFall",
-      role: "CTO at Google",
+      name: "Isabella Cruz",
+      role: "Lifestyle Influencer",
       img: "https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/joseph-mcfall.png",
     },
   ];
@@ -55,8 +54,8 @@ const Testimonials = () => {
             Testimonials
           </h2>
           <p className="mb-8 font-light text-gray-500 lg:mb-16 sm:text-xl dark:text-gray-400">
-            Explore the whole collection of open-source web components and
-            elements built with the utility classes from Tailwind
+            Discover what our guests have to say about their experience at
+            Sophie Red Hotel in Cagayan de Oro, Philippines.
           </p>
         </div>
         <div className="grid mb-8 lg:mb-12 lg:grid-cols-2">

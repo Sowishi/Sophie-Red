@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "sophieredhotel-31a68"
-  }
+    "etiket": "etik-3caa6",
+    "default": "etik-3caa6"
+  },
+  "targets": {},
+  "etags": {}
 }

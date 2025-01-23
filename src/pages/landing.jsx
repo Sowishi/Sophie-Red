@@ -141,6 +141,7 @@ const Landing = () => {
           </div>
         </div>
       </div>
+
       <Testimonials />
       <ClientFooter />
     </motion.div>
