@@ -39,11 +39,87 @@ const Landing = () => {
       >
         <Navbar style={{ background: "transparent" }} fluid rounded>
           <Navbar.Brand as={Link} to="/">
+            <h1 className="text-white hidden lg:flex text-2xl font-bold">
+              Sophie <span className="text-red-500">Red Hotel</span>
+            </h1>
+            <div className=" lg:hidden">
+              {currentUser && (
+                <div className="relative flex items-center justify-center">
+                  <p className="font-medium text-white mr-5 text-lg">
+                    {currentUser.name}
+                  </p>
+                  <Dropdown
+                    inline
+                    label={
+                      <img
+                        className="w-[50px] h-[50px] rounded-full cursor-pointer"
+                        src={currentUser.photoURL}
+                        alt="User Avatar"
+                      />
+                    }
+                  >
+                    <Dropdown.Item>
+                      <p className="font-medium">{currentUser.name}</p>
+                    </Dropdown.Item>
+                    <Dropdown.Item>
+                      <p className="text-gray-500">{currentUser.email}</p>
+                    </Dropdown.Item>
+                    <Dropdown.Item>
+                      <Button
+                        color="info"
+                        className="w-full text-left"
+                        onClick={() => navigation("/client-dashboard")}
+                      >
+                        Dashboard
+                      </Button>
+                    </Dropdown.Item>
+                    <Dropdown.Divider />
+                    <Dropdown.Item>
+                      <Button
+                        color="failure"
+                        className="w-full text-left"
+                        onClick={logout}
+                      >
+                        Logout
+                      </Button>
+                    </Dropdown.Item>
+                  </Dropdown>
+                </div>
+              )}
+            </div>
+          </Navbar.Brand>
+          <Navbar.Toggle />
+          <Navbar.Collapse>
+            <Navbar.Link
+              className="text-white text-lg opacity-80 hover:bg-red-500"
+              href="#"
+            >
+              <span className="hover:text-red-500">Services</span>
+            </Navbar.Link>
+            <Navbar.Link
+              className="text-white text-lg opacity-80 hover:bg-red-500"
+              href="#"
+            >
+              About
+            </Navbar.Link>
+            <Navbar.Link
+              className="text-white text-lg opacity-80 hover:bg-red-500"
+              href="#"
+            >
+              Testimonials
+            </Navbar.Link>
+
             {!currentUser && (
-              <h1 className="text-white text-2xl font-bold">
-                Sophie <span className="text-red-500">Red Hotel</span>
-              </h1>
+              <Button
+                onClick={() => navigation("/login")}
+                className="px-5"
+                gradientMonochrome="info"
+              >
+                Login
+              </Button>
             )}
+          </Navbar.Collapse>
+          <div className="hidden lg:flex">
             {currentUser && (
               <div className="relative flex items-center justify-center">
                 <p className="font-medium text-white mr-5 text-lg">
@@ -87,37 +163,7 @@ const Landing = () => {
                 </Dropdown>
               </div>
             )}
-          </Navbar.Brand>
-          <Navbar.Toggle />
-          <Navbar.Collapse>
-            <Navbar.Link
-              className="text-white text-lg opacity-80 hover:bg-red-500"
-              href="#"
-            >
-              <span className="hover:text-red-500">Services</span>
-            </Navbar.Link>
-            <Navbar.Link
-              className="text-white text-lg opacity-80 hover:bg-red-500"
-              href="#"
-            >
-              About
-            </Navbar.Link>
-            <Navbar.Link
-              className="text-white text-lg opacity-80 hover:bg-red-500"
-              href="#"
-            >
-              Testimonials
-            </Navbar.Link>
-            {!currentUser && (
-              <Button
-                onClick={() => navigation("/login")}
-                className="px-5"
-                gradientMonochrome="info"
-              >
-                Login
-              </Button>
-            )}
-          </Navbar.Collapse>
+          </div>
         </Navbar>
 
         <div className="content h-full flex justify-center items-center">
@@ -168,6 +214,16 @@ const Landing = () => {
         <DisplayRoomLanding rooms={rooms} />
         <Testimonials />
       </div>
+
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3944.287762941997!2d124.73801817494206!3d8.664159191383336!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x32ffe45d368a3333%3A0xaae58833c816e934!2sSophie%20Red%20Hotel%20and%20Onshore%20Restaurant!5e0!3m2!1sen!2sph!4v1736693142618!5m2!1sen!2sph"
+        width="100%"
+        height="450"
+        style={{ border: 0 }}
+        allowFullScreen=""
+        loading="lazy"
+        referrerPolicy="no-referrer-when-downgrade"
+      ></iframe>
 
       <ClientFooter />
     </motion.div>
