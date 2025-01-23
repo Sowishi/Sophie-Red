@@ -14,8 +14,12 @@ import {
   HiViewBoards,
 } from "react-icons/hi";
 import { RiComputerLine } from "react-icons/ri";
+import { Link, useNavigate } from "react-router-dom";
+import useUserStore from "../utils/zustand";
 
 export function ClientSidebar({ isOpen, handleClose }) {
+  const { logout } = useUserStore();
+  const navigation = useNavigate();
   return (
     <>
       <Drawer open={isOpen} onClose={handleClose}>
@@ -23,17 +27,20 @@ export function ClientSidebar({ isOpen, handleClose }) {
         <Sidebar className="bg-white" aria-label="Default sidebar example">
           <Sidebar.Items>
             <Sidebar.ItemGroup>
-              <Sidebar.Item href="/client-dashboard" icon={HiChartPie}>
-                Dashboard
+              <Sidebar.Item icon={HiChartPie}>
+                <Link to={"/client-dashboard"}>Dashboard</Link>
               </Sidebar.Item>
-              <Sidebar.Item href="/client-room" icon={FaBed} labelColor="dark">
-                Room
-              </Sidebar.Item>
-              <Sidebar.Item href="client-accomodation" icon={RiComputerLine}>
-                Accomodation
+              <Sidebar.Item icon={FaBed} labelColor="dark">
+                <Link to={"/client-room"}>Room</Link>
               </Sidebar.Item>
 
-              <Sidebar.Item href="#" icon={HiLogout}>
+              <Sidebar.Item
+                onClick={() => {
+                  logout();
+                  navigation("/");
+                }}
+                icon={HiLogout}
+              >
                 Sign Out
               </Sidebar.Item>
             </Sidebar.ItemGroup>

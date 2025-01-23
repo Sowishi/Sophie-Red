@@ -10,20 +10,22 @@ const ClientRoom = () => {
   return (
     <ClientDashboardLayout>
       <div className="flex justify-between items-center mb-5">
-        <h1 className="font-extrabold text-3xl">Your Room Information</h1>
+        <h1 className="font-extrabold text-lg lg:text-3xl">
+          Your Room Information
+        </h1>
         <Button gradientMonochrome="failure">Request Service</Button>
       </div>
 
       {roomDetails && (
-        <div className="container mx-auto h-screen flex gap-5">
+        <div className="container mx-auto h-screen flex flex-wrap">
           {/* Left Side - Room Display */}
           <div className="basis-full lg:basis-6/12 flex">
             <DisplayRoom roomID={roomDetails.id} />
           </div>
 
           {/* Right Side - Room Details Table */}
-          <div className="basis-full lg:basis-6/12">
-            <Table className="border border-gray-300 shadow-sm">
+          <div className="basis-full lg:basis-6/12 mt-5 lg:mt-0">
+            <Table className="border border-gray-300 shadow-sm lg:mx-5">
               <Table.Head>
                 <Table.HeadCell className="bg-gray-200 text-gray-700">
                   Property

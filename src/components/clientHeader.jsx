@@ -156,17 +156,16 @@ const ClientHeader = () => {
     <div
       style={{
         background:
-          "linear-gradient(43deg, rgba(225,240,247,1) 1%, rgb(162,0,0) 45%)",
+          "linear-gradient(43deg, rgba(225,240,247,1) 20%, rgb(162,0,0) 45%)",
       }}
       className="header bg-white p-5 px-10 flex items-center justify-between fixed w-full z-10"
     >
       <img
         onClick={() => navigation("/")}
-        className="w-[130px] hidden xl:flex cursor-pointer"
+        className="w-[130px]  xl:flex cursor-pointer"
         src={logo}
         alt="Logo"
       />
-      <ImMenu size={25} className="text-white font-bold xl:hidden" />
 
       <Button
         onClick={() => setBookNowModal(true)}

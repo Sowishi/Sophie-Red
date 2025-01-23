@@ -39,9 +39,54 @@ const Landing = () => {
       >
         <Navbar style={{ background: "transparent" }} fluid rounded>
           <Navbar.Brand as={Link} to="/">
-            <h1 className="text-white text-2xl font-bold">
-              Sophie <span className="text-red-500">Red Hotel</span>
-            </h1>
+            {!currentUser && (
+              <h1 className="text-white text-2xl font-bold">
+                Sophie <span className="text-red-500">Red Hotel</span>
+              </h1>
+            )}
+            {currentUser && (
+              <div className="relative flex items-center justify-center">
+                <p className="font-medium text-white mr-5 text-lg">
+                  {currentUser.name}
+                </p>
+                <Dropdown
+                  inline
+                  label={
+                    <img
+                      className="w-[50px] h-[50px] rounded-full cursor-pointer"
+                      src={currentUser.photoURL}
+                      alt="User Avatar"
+                    />
+                  }
+                >
+                  <Dropdown.Item>
+                    <p className="font-medium">{currentUser.name}</p>
+                  </Dropdown.Item>
+                  <Dropdown.Item>
+                    <p className="text-gray-500">{currentUser.email}</p>
+                  </Dropdown.Item>
+                  <Dropdown.Item>
+                    <Button
+                      color="info"
+                      className="w-full text-left"
+                      onClick={() => navigation("/client-dashboard")}
+                    >
+                      Dashboard
+                    </Button>
+                  </Dropdown.Item>
+                  <Dropdown.Divider />
+                  <Dropdown.Item>
+                    <Button
+                      color="failure"
+                      className="w-full text-left"
+                      onClick={logout}
+                    >
+                      Logout
+                    </Button>
+                  </Dropdown.Item>
+                </Dropdown>
+              </div>
+            )}
           </Navbar.Brand>
           <Navbar.Toggle />
           <Navbar.Collapse>
@@ -73,50 +118,6 @@ const Landing = () => {
               </Button>
             )}
           </Navbar.Collapse>
-
-          {currentUser && (
-            <div className="relative flex items-center justify-center">
-              <p className="font-medium text-white mr-5 text-lg">
-                {currentUser.name}
-              </p>
-              <Dropdown
-                inline
-                label={
-                  <img
-                    className="w-[50px] h-[50px] rounded-full cursor-pointer"
-                    src={currentUser.photoURL}
-                    alt="User Avatar"
-                  />
-                }
-              >
-                <Dropdown.Item>
-                  <p className="font-medium">{currentUser.name}</p>
-                </Dropdown.Item>
-                <Dropdown.Item>
-                  <p className="text-gray-500">{currentUser.email}</p>
-                </Dropdown.Item>
-                <Dropdown.Item>
-                  <Button
-                    color="info"
-                    className="w-full text-left"
-                    onClick={() => navigation("/client-dashboard")}
-                  >
-                    Dashboard
-                  </Button>
-                </Dropdown.Item>
-                <Dropdown.Divider />
-                <Dropdown.Item>
-                  <Button
-                    color="failure"
-                    className="w-full text-left"
-                    onClick={logout}
-                  >
-                    Logout
-                  </Button>
-                </Dropdown.Item>
-              </Dropdown>
-            </div>
-          )}
         </Navbar>
 
         <div className="content h-full flex justify-center items-center">
