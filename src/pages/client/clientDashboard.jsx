@@ -99,7 +99,7 @@ const ClientDashboard = () => {
   };
   return (
     <ClientDashboardLayout>
-      <div className="flex items-center justify-start mx-10">
+      <div className="lg:flex items-center justify-start mx-10">
         <div className="flex flex-col items-start justify-center ">
           <h1 className="text-2xl lg:text-3xl font-bold">
             Good Day, {currentUser?.name}
@@ -110,7 +110,7 @@ const ClientDashboard = () => {
         </div>
         <Button
           onClick={() => navigation("/client-room")}
-          className="ml-10 px-3 "
+          className="ml-10 px-3 mt-5 lg:mt-0"
           gradientMonochrome="failure"
         >
           View Your Room
@@ -196,7 +196,7 @@ const ClientDashboard = () => {
                 </div>
               </div>
             </div>
-            <div className="basis-full lg:basis-5/12 flex   items-start justify-center">
+            <div className="basis-full lg:basis-5/12 flex items-start justify-center">
               <div className="bg-white p-5 lg:p-10 w-9/12 rounded-lg shadow-sm mt-5">
                 <h1 className="text-2xl font-semibold mb-5">Summary</h1>
                 <hr />
