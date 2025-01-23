@@ -1,6 +1,7 @@
 import { Button, Card, Carousel, Modal } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { FaCheck } from "react-icons/fa6";
+import { motion } from "framer-motion"; // ✅ Import Framer Motion
 import useCrudRooms from "../hooks/useCrudRooms";
 
 const DisplayRoomLanding = ({ rooms, selectedRoom, handleRoomSelection }) => {
@@ -36,47 +37,62 @@ const DisplayRoomLanding = ({ rooms, selectedRoom, handleRoomSelection }) => {
   };
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {rooms.map((room) => (
-        <Card
+    <motion.div
+      className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      {rooms.map((room, index) => (
+        <motion.div
           key={room.id}
-          className={`p-4 shadow-lg transition-transform transform hover:scale-105 ${
-            selectedRoom?.roomNumber === room.roomNumber
-              ? "border-2 border-green-500"
-              : "border border-gray-300 dark:border-gray-700"
-          }`}
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.4, delay: index * 0.1 }}
         >
-          {/* ✅ Room Image Carousel */}
-          <div
-            className="h-40 w-full cursor-pointer"
-            onClick={() => openModal(roomImages[room.id] || [])}
+          <Card
+            className={`p-4 shadow-lg transition-transform transform hover:scale-105 ${
+              selectedRoom?.roomNumber === room.roomNumber
+                ? "border-2 border-green-500"
+                : "border border-gray-300 dark:border-gray-700"
+            }`}
           >
-            <Carousel slideInterval={3000} indicators={false}>
-              {roomImages[room.id]?.map((img, idx) => (
-                <img
-                  key={idx}
-                  src={img}
-                  alt={`Room ${room.roomNumber} - Image ${idx + 1}`}
-                  className="h-40 w-full object-cover rounded-md"
-                />
-              ))}
-            </Carousel>
-          </div>
+            {/* ✅ Room Image Carousel */}
+            <motion.div
+              className="h-40 w-full cursor-pointer"
+              onClick={() => openModal(roomImages[room.id] || [])}
+              whileHover={{ scale: 1.02 }}
+            >
+              <Carousel slideInterval={3000} indicators={false}>
+                {roomImages[room.id]?.map((img, idx) => (
+                  <motion.img
+                    key={idx}
+                    src={img}
+                    alt={`Room ${room.roomNumber} - Image ${idx + 1}`}
+                    className="h-40 w-full object-cover rounded-md"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5 }}
+                  />
+                ))}
+              </Carousel>
+            </motion.div>
 
-          <h3 className="text-xl font-semibold text-red-500 mt-3">
-            Room {room.roomNumber}
-          </h3>
-          <p className="text-gray-600 dark:text-gray-300">
-            <strong>Type:</strong> {room.roomType}
-          </p>
-          <p className="text-gray-600 dark:text-gray-300">
-            <strong>Price Per Night:</strong> ₱{room.pricePerNight}
-          </p>
-          <p className="text-gray-600 dark:text-gray-300">
-            <strong>Guest Allowed:</strong> {room.adultCount} Adult &{" "}
-            {room.childCount} Kids
-          </p>
-        </Card>
+            <h3 className="text-xl font-semibold text-red-500 mt-3">
+              Room {room.roomNumber}
+            </h3>
+            <p className="text-gray-600 dark:text-gray-300">
+              <strong>Type:</strong> {room.roomType}
+            </p>
+            <p className="text-gray-600 dark:text-gray-300">
+              <strong>Price Per Night:</strong> ₱{room.pricePerNight}
+            </p>
+            <p className="text-gray-600 dark:text-gray-300">
+              <strong>Guest Allowed:</strong> {room.adultCount} Adult &{" "}
+              {room.childCount} Kids
+            </p>
+          </Card>
+        </motion.div>
       ))}
 
       {/* ✅ Large Image Modal */}
@@ -87,21 +103,29 @@ const DisplayRoomLanding = ({ rooms, selectedRoom, handleRoomSelection }) => {
       >
         <Modal.Header>Room Images</Modal.Header>
         <Modal.Body>
-          <div className="w-full h-[500px] flex justify-center items-center">
+          <motion.div
+            className="w-full h-[500px] flex justify-center items-center"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+          >
             <Carousel slideInterval={3000} indicators={true}>
               {selectedRoomImages.map((img, idx) => (
-                <img
+                <motion.img
                   key={idx}
                   src={img}
                   alt={`Selected Room Image ${idx + 1}`}
                   className="w-full h-full object-cover rounded-lg"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5 }}
                 />
               ))}
             </Carousel>
-          </div>
+          </motion.div>
         </Modal.Body>
       </Modal>
-    </div>
+    </motion.div>
   );
 };
 

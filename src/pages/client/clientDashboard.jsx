@@ -99,8 +99,8 @@ const ClientDashboard = () => {
   };
   return (
     <ClientDashboardLayout>
-      <div className="flex items-center justify-between">
-        <div className="flex flex-col items-start justify-start mb-5">
+      <div className="flex items-center justify-start mx-10">
+        <div className="flex flex-col items-start justify-center ">
           <h1 className="text-2xl lg:text-3xl font-bold">
             Good Day, {currentUser?.name}
           </h1>
@@ -108,32 +108,15 @@ const ClientDashboard = () => {
             This is where you can view all the details about your booking
           </p>
         </div>
+        <Button className="ml-10 px-3 " gradientMonochrome="failure">
+          View Hotel
+        </Button>
       </div>
 
       {booking ? (
         <>
-          <div className="flex w-full flex-wrap gap-5">
+          <div className="flex w-full flex-wrap">
             <div className="basis-full lg:basis-7/12">
-              {booking.paymentStatus === "down" && (
-                <div className="flex flex-wrap items-center gap-4">
-                  <div className="w-full lg:w-6/12">
-                    <Alert color="warning">
-                      <h1 className="text-sm">
-                        Thank you for booking with us! You can always pay the
-                        full price here.
-                      </h1>
-                    </Alert>
-                  </div>
-                  <div className="w-full lg:w-6/12 flex justify-center lg:justify-start">
-                    <Button
-                      gradientMonochrome="failure"
-                      className="px-5 mt-3 lg:mt-0"
-                    >
-                      Pay Now
-                    </Button>
-                  </div>
-                </div>
-              )}
               <div className="bg-white p-5 lg:p-10 rounded-lg shadow-sm mt-5">
                 <h1 className="text-lg lg:text-2xl font-semibold">
                   Book Information
@@ -209,8 +192,8 @@ const ClientDashboard = () => {
                 </div>
               </div>
             </div>
-            <div className="basis-full lg:basis-4/12">
-              <div className="bg-white p-5 lg:p-10 rounded-lg shadow-sm mt-5">
+            <div className="basis-full lg:basis-5/12 flex   items-start justify-center">
+              <div className="bg-white p-5 lg:p-10 w-9/12 rounded-lg shadow-sm mt-5">
                 <h1 className="text-2xl font-semibold mb-5">Summary</h1>
                 <hr />
                 <div className="p-5 space-y-3">
