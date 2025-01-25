@@ -4,8 +4,10 @@ import { HiOutlineArrowRight } from "react-icons/hi";
 import ChartComponent from "../../components/chartComponent";
 import DashboardLayout from "./dashboardLayout";
 import LineGraph from "../../components/lineGraph";
+import { useNavigate } from "react-router-dom";
 
 const Index = () => {
+  const navigation = useNavigate();
   return (
     <DashboardLayout>
       <div className="container mx-auto mt-10 pt-10">
@@ -15,12 +17,20 @@ const Index = () => {
             <h1 className="text-4xl font-bold">Dashboard</h1>
             <p className="mt-3 text-gray-500">
               Sophie Red Hotel Dashboard{" "}
-              <span style={{ color: "#6251CB" }} className="cursor-pointer">
+              <span
+                onClick={() => navigation("/reports")}
+                style={{ color: "#6251CB" }}
+                className="cursor-pointer"
+              >
                 View Reports
               </span>
             </p>
           </div>
-          <Button style={{ padding: 10 }} gradientMonochrome="failure">
+          <Button
+            onClick={() => navigation("/reports")}
+            style={{ padding: 10 }}
+            gradientMonochrome="failure"
+          >
             View Detailed Reports
             <HiOutlineArrowRight className="ml-2 h-5 w-5" />
           </Button>{" "}
