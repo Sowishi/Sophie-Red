@@ -62,7 +62,7 @@ const ChartComponent = () => {
         backgroundColor: "rgba(74, 144, 226, 0.2)",
         pointBackgroundColor: "#4A90E2",
         pointBorderColor: "#fff",
-        borderWidth: 2,
+        borderWidth: 5,
       },
     ],
   };
@@ -90,6 +90,15 @@ const ChartComponent = () => {
           display: true,
           text: "Total Sales",
         },
+      },
+    },
+    animations: {
+      tension: {
+        duration: 1000,
+        easing: "linear",
+        from: 1,
+        to: 0,
+        loop: true,
       },
     },
   };
