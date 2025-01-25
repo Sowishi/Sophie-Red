@@ -12,7 +12,6 @@ import {
 } from "chart.js";
 import { ButtonGroup, Button } from "flowbite-react";
 import useCrudBooking from "../hooks/useCrudBooking";
-import { animate } from "framer-motion";
 
 // Register Chart.js components
 ChartJS.register(
@@ -47,6 +46,12 @@ const ChartComponent = () => {
     acc[key] = (acc[key] || 0) + booking.totalPrice; // Sum sales for the key
     return acc;
   }, {});
+
+  // Calculate total sales from all time
+  const totalSales = bookings.reduce(
+    (total, booking) => parseInt(total) + parseInt(booking.totalPrice),
+    0
+  );
 
   // Prepare the data for the chart
   const labels = Object.keys(salesData).sort(); // Sorted dates or months
@@ -105,8 +110,12 @@ const ChartComponent = () => {
 
   return (
     <div className="chart-container">
-      {/* Button group to toggle between daily and monthly view */}
-      <div className="mb-4 flex justify-start items-center mt-5">
+      {/* Total Sales from all time */}
+      <div className="flex justify-between items-center my-4">
+        <div className="text-3xl font-bold">
+          Total Sales: ₱{totalSales.toLocaleString()}
+        </div>
+        {/* Button group to toggle between daily and monthly view */}
         <ButtonGroup>
           <Button
             color={filter === "day" ? "info" : "gray"}
