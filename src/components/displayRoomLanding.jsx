@@ -97,11 +97,11 @@ const DisplayRoomLanding = ({ rooms, selectedRoom, handleRoomSelection }) => {
 
       {/* ✅ Large Image Modal */}
       <Modal
+        dismissible
         show={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         size="6xl"
       >
-        <Modal.Header>Room Images</Modal.Header>
         <Modal.Body>
           <motion.div
             className="w-full h-[500px] flex justify-center items-center"
