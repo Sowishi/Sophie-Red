@@ -16,6 +16,7 @@ import useFetchCollection from "../../hooks/useFetchCollection";
 import useCrudHousekeeping from "../../hooks/useCrudHousekeeping";
 import { toast } from "react-toastify";
 import { FaStar } from "react-icons/fa";
+import useCrudRatings from "../../hooks/useCrudHooks";
 
 const ClientRoom = () => {
   const { booking } = useUserStore();
@@ -31,6 +32,7 @@ const ClientRoom = () => {
   const [loading, setLoading] = useState(false);
   const [rating, setRating] = useState(0);
   const [remarks, setRemarks] = useState("");
+  const { addRating } = useCrudRatings();
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -48,7 +50,7 @@ const ClientRoom = () => {
   };
 
   const handleRatingSubmit = () => {
-    console.log("Rating Submitted:", { rating, remarks });
+    addRating({ rating, remarks, room: roomDetails });
     setRating(0);
     setRemarks("");
     setRatingModal(false);
@@ -129,7 +131,28 @@ const ClientRoom = () => {
         onSubmit={handleFormSubmit}
       >
         <form className="container p-10 mx-auto">
+          <div className="header flex justify-between items-center mb-5">
+            <h1 className="text-3xl font-bold flex items-center justify-start">
+              Room Number: #{booking.roomDetails?.roomNumber}{" "}
+            </h1>
+          </div>
           <div className="space-y-4">
+            <div>
+              <Label htmlFor="housekeeper" value="Select Housekeeper" />
+              <Dropdown
+                label={
+                  housekeeper == null
+                    ? "Please Select Housekeeper"
+                    : housekeeper.fullName
+                }
+              >
+                {houseKeepers.map((user) => (
+                  <Dropdown.Item onClick={() => setHousekeeper(user)}>
+                    {user.fullName}
+                  </Dropdown.Item>
+                ))}
+              </Dropdown>
+            </div>
             <div>
               <Label htmlFor="serviceType" value="Select Service Type" />
               <Select
