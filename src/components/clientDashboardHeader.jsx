@@ -17,7 +17,7 @@ const ClientDashboardHeader = () => {
   const isCurrentPath = (path) => location.pathname === path;
   const [isOpen, setIsOpen] = useState(false);
 
-  const { currentUser } = useUserStore();
+  const { currentUser, logout } = useUserStore();
 
   return (
     <div className="header bg-slate-900 px-10 lg:px-20 p-5 flex items-center justify-between w-full">
@@ -66,11 +66,27 @@ const ClientDashboardHeader = () => {
           style={{ width: 50 }}
           alt="User Avatar"
         />
-        <div className="div text-white ml-5">
+        <div className="div text-white mx-5">
           <h1>{currentUser?.name}</h1>
           <h1 className="font-extralight opacity-70">{currentUser?.email}</h1>
         </div>
-        <FaAngleDown style={{ marginLeft: 10 }} color="white" size={25} />
+        <Dropdown gradientMonochrome="failure">
+          <Dropdown.Header>
+            <span className="block text-sm">{currentUser?.fullName}</span>
+            <span className="block truncate text-sm font-medium">
+              {currentUser?.email}
+            </span>
+          </Dropdown.Header>
+
+          <Dropdown.Item
+            onClick={() => {
+              navigation("/");
+              logout();
+            }}
+          >
+            Sign out
+          </Dropdown.Item>
+        </Dropdown>
       </div>
       <CiMenuBurger
         onClick={() => setIsOpen(true)}
