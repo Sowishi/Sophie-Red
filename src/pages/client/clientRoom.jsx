@@ -15,18 +15,22 @@ import { useEffect, useState } from "react";
 import useFetchCollection from "../../hooks/useFetchCollection";
 import useCrudHousekeeping from "../../hooks/useCrudHousekeeping";
 import { toast } from "react-toastify";
+import { FaStar } from "react-icons/fa";
 
 const ClientRoom = () => {
   const { booking } = useUserStore();
   const { fetchCollection } = useFetchCollection();
-  const { addTask, fetchRoomTasks } = useCrudHousekeeping();
-  const roomDetails = booking?.roomDetails || {}; // Use optional chaining to prevent errors
+  const { addTask } = useCrudHousekeeping();
+  const roomDetails = booking?.roomDetails || {};
   const [requestModal, setRequestModal] = useState(false);
+  const [ratingModal, setRatingModal] = useState(false);
   const [users, setUsers] = useState([]);
   const [housekeeper, setHousekeeper] = useState(null);
   const [serviceType, setServiceType] = useState("");
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
+  const [rating, setRating] = useState(0);
+  const [remarks, setRemarks] = useState("");
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -43,6 +47,13 @@ const ClientRoom = () => {
     setRequestModal(false);
   };
 
+  const handleRatingSubmit = () => {
+    console.log("Rating Submitted:", { rating, remarks });
+    setRating(0);
+    setRemarks("");
+    setRatingModal(false);
+  };
+
   useEffect(() => {
     fetchCollection("users", setUsers, setLoading);
   }, []);
@@ -52,25 +63,30 @@ const ClientRoom = () => {
   return (
     <ClientDashboardLayout>
       <div className="flex justify-between items-center mb-5">
-        <h1 className="font-extrabold text-lg lg:text-3xl">
+        <h1 className="font-extrabold text-lg lg:text-3xl mb-10">
           Your Room Information
         </h1>
-        <Button
-          onClick={() => setRequestModal(true)}
-          gradientMonochrome="failure"
-        >
-          Request Service
-        </Button>
+        <div className="wrapper flex gap-5">
+          <Button
+            onClick={() => setRequestModal(true)}
+            gradientMonochrome="info"
+          >
+            Request Service
+          </Button>
+          <Button
+            onClick={() => setRatingModal(true)}
+            gradientMonochrome="failure"
+          >
+            Leave Feedback
+          </Button>
+        </div>
       </div>
 
       {roomDetails && (
         <div className="container mx-auto h-screen flex flex-wrap">
-          {/* Left Side - Room Display */}
           <div className="basis-full lg:basis-6/12 flex">
             <DisplayRoom roomID={roomDetails.id} />
           </div>
-
-          {/* Right Side - Room Details Table */}
           <div className="basis-full lg:basis-6/12 mt-5 lg:mt-0">
             <Table className="border border-gray-300 shadow-sm lg:mx-5">
               <Table.Head>
@@ -91,20 +107,11 @@ const ClientRoom = () => {
                   <Table.Cell>{roomDetails.roomNumber}</Table.Cell>
                 </Table.Row>
                 <Table.Row className="bg-white">
-                  <Table.Cell className="font-medium">Adults</Table.Cell>
-                  <Table.Cell>{roomDetails.adultCount}</Table.Cell>
-                </Table.Row>
-                <Table.Row className="bg-gray-50">
-                  <Table.Cell className="font-medium">Children</Table.Cell>
-                  <Table.Cell>{roomDetails.childCount}</Table.Cell>
-                </Table.Row>
-                <Table.Row className="bg-white">
                   <Table.Cell className="font-medium">
                     Price per Night
                   </Table.Cell>
                   <Table.Cell>₱{roomDetails.pricePerNight}</Table.Cell>
                 </Table.Row>
-
                 <Table.Row className="bg-white">
                   <Table.Cell className="font-medium">Description</Table.Cell>
                   <Table.Cell>{roomDetails.description}</Table.Cell>
@@ -122,28 +129,7 @@ const ClientRoom = () => {
         onSubmit={handleFormSubmit}
       >
         <form className="container p-10 mx-auto">
-          <div className="header flex justify-between items-center mb-5">
-            <h1 className="text-3xl font-bold flex items-center justify-start">
-              Room Number: #{booking.roomDetails?.roomNumber}{" "}
-            </h1>
-          </div>
           <div className="space-y-4">
-            <div>
-              <Label htmlFor="housekeeper" value="Select Housekeeper" />
-              <Dropdown
-                label={
-                  housekeeper == null
-                    ? "Please Select Housekeeper"
-                    : housekeeper.fullName
-                }
-              >
-                {houseKeepers.map((user) => (
-                  <Dropdown.Item onClick={() => setHousekeeper(user)}>
-                    {user.fullName}
-                  </Dropdown.Item>
-                ))}
-              </Dropdown>
-            </div>
             <div>
               <Label htmlFor="serviceType" value="Select Service Type" />
               <Select
@@ -172,6 +158,37 @@ const ClientRoom = () => {
             </div>
           </div>
         </form>
+      </CustomModal>
+
+      <CustomModal
+        title={"Leave Feedback"}
+        open={ratingModal}
+        handleClose={() => setRatingModal(false)}
+        onSubmit={handleRatingSubmit}
+      >
+        <div className="container p-10 mx-auto">
+          <h1 className="text-3xl font-bold mb-4">Rate Your Stay</h1>
+          <div className="flex space-x-2 mb-5">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <FaStar
+                key={star}
+                className={`cursor-pointer text-3xl ${
+                  star <= rating ? "text-yellow-500" : "text-gray-300"
+                }`}
+                onClick={() => setRating(star)}
+              />
+            ))}
+          </div>
+          <Label htmlFor="remarks" value="Your Remarks" />
+          <Textarea
+            rows={4}
+            id="remarks"
+            placeholder="Share your experience..."
+            value={remarks}
+            onChange={(e) => setRemarks(e.target.value)}
+            required
+          />
+        </div>
       </CustomModal>
     </ClientDashboardLayout>
   );
