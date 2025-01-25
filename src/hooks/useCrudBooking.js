@@ -6,6 +6,7 @@ import {
   getDocs,
   onSnapshot,
   query,
+  serverTimestamp,
   updateDoc,
   where,
 } from "firebase/firestore";
@@ -119,6 +120,7 @@ const useCrudBooking = () => {
       downpayment,
       paymentStatus: paymentTerm,
       roomDetails,
+      createdAt: serverTimestamp(),
     };
 
     const docRef = await addDoc(bookingsRef, newBooking);

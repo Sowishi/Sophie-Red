@@ -3,6 +3,7 @@ import Header from "../../components/header";
 import { HiOutlineArrowRight } from "react-icons/hi";
 import ChartComponent from "../../components/chartComponent";
 import DashboardLayout from "./dashboardLayout";
+import LineGraph from "../../components/lineGraph";
 
 const Index = () => {
   return (
@@ -51,14 +52,13 @@ const Index = () => {
           >
             <div className="header flex items-center justify-between">
               <div className="flex flex-col">
-                <h1 className="font-medium text-2xl">User Overview</h1>
-                <p className="text-gray-500">Monthly Booking Data</p>
+                <h1 className="font-medium text-2xl">Sales Chart</h1>
+                <p className="text-gray-500">
+                  Overview of Daily and Monthly Sales
+                </p>
               </div>
-              <Button style={{ padding: 10 }} color="dark">
-                User Management
-                <HiOutlineArrowRight className="ml-2 h-5 w-5" />
-              </Button>{" "}
             </div>
+            <LineGraph />
           </div>
         </div>
       </div>

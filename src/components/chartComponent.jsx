@@ -1,5 +1,4 @@
-// ChartComponent.js
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -10,6 +9,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import useCrudBooking from "../hooks/useCrudBooking";
 
 // Register Chart.js components
 ChartJS.register(
@@ -22,21 +22,39 @@ ChartJS.register(
 );
 
 const ChartComponent = () => {
-  // Data for the chart
+  const [bookings, setBookings] = useState([]);
+  const { fetchAllBookings } = useCrudBooking();
+
+  useEffect(() => {
+    fetchAllBookings(setBookings);
+  }, []);
+
+  // Process the bookings to calculate the number of bookings per day
+  const bookingsPerDay = bookings.reduce((acc, booking) => {
+    const checkInDate = new Date(booking.createdAt.seconds * 1000);
+    const dateString = checkInDate.toISOString().split("T")[0]; // Format as "YYYY-MM-DD"
+
+    acc[dateString] = (acc[dateString] || 0) + 1; // Increment count for the date
+    return acc;
+  }, {});
+
+  // Prepare the data for the chart
+  const labels = Object.keys(bookingsPerDay).sort(); // Sorted dates
+  const dataValues = labels.map((label) => bookingsPerDay[label]);
+
   const data = {
-    labels: ["January", "February", "March", "April", "May"],
+    labels,
     datasets: [
       {
-        label: "Sales",
-        data: [150, 200, 250, 180, 220],
-        backgroundColor: "#F77676",
-        borderColor: "rgba(75, 192, 192, 1)",
+        label: "Bookings Per Day",
+        data: dataValues,
+        backgroundColor: "#EE4C4C",
+        borderColor: "#4A90E2",
         borderWidth: 1,
       },
     ],
   };
 
-  // Chart options
   const options = {
     responsive: true,
     plugins: {
@@ -45,7 +63,7 @@ const ChartComponent = () => {
       },
       title: {
         display: true,
-        text: "Monthly Sales Data",
+        text: "Number of Bookings Per Day",
       },
     },
   };
