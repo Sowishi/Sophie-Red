@@ -11,6 +11,7 @@ import { CiMenuBurger } from "react-icons/ci";
 import { ClientSidebar } from "./clientSidebar";
 import { AdminSidebar } from "./adminSidebar";
 import { FaPesoSign } from "react-icons/fa6";
+import { ConfirmModal } from "./confirmModal";
 
 const Header = () => {
   const location = useLocation();
@@ -20,6 +21,7 @@ const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const { currentAdmin, setCurrentAdmin } = useUserStore();
+  const [confirmModal, setConfirmModal] = useState(false);
 
   function FrontDeskNav() {
     return (
@@ -131,6 +133,12 @@ const Header = () => {
     );
   }
 
+  const handleLogout = () => {
+    navigation("/");
+    setCurrentAdmin(null);
+    localStorage.removeItem("user");
+  };
+
   return (
     <div className="header bg-slate-900 px-10 lg:px-20 p-5 flex items-center justify-between w-full">
       <AdminSidebar isOpen={isOpen} handleClose={() => setIsOpen(false)} />
@@ -168,12 +176,10 @@ const Header = () => {
 
           <Dropdown.Item
             onClick={() => {
-              navigation("/");
-              setCurrentAdmin(null);
-              localStorage.removeItem("user");
+              setConfirmModal(true);
             }}
           >
-            Sign out
+            Log out
           </Dropdown.Item>
         </Dropdown>
       </div>
@@ -182,6 +188,13 @@ const Header = () => {
         className="cursor-pointer flex lg:hidden"
         size={25}
         color="white"
+      />
+
+      <ConfirmModal
+        handleSubmit={handleLogout}
+        open={confirmModal}
+        title={"Are you sure you want to logout?"}
+        handleClose={() => setConfirmModal(false)}
       />
     </div>
   );

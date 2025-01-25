@@ -190,6 +190,15 @@ const useCrudBooking = () => {
     }
   };
 
+  const deleteBooking = async (id) => {
+    try {
+      const docRef = doc(db, "bookings", id);
+      await deleteDoc(docRef);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return {
     fetchAvailableRoom,
     checkRoomAvailability,
@@ -199,6 +208,7 @@ const useCrudBooking = () => {
     reschedBooking,
     fetchAllBookings,
     updateBookingPayment,
+    deleteBooking,
   };
 };
 

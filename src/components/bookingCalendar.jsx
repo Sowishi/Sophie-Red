@@ -4,8 +4,10 @@ import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import useCrudBooking from "../hooks/useCrudBooking";
 import Loader from "../components/loader";
-import { Button, Modal } from "flowbite-react";
+import { Button, Modal, Tooltip } from "flowbite-react";
 import FrontDeskHeader from "./frontDeskHeader";
+import { ConfirmModal } from "./confirmModal";
+import { toast } from "react-toastify";
 
 const localizer = momentLocalizer(moment);
 
@@ -13,7 +15,8 @@ export const BookingCalendar = ({ selectedRoom, searchQuery }) => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedEvent, setSelectedEvent] = useState(null);
-  const { fetchAllBookings } = useCrudBooking();
+  const { fetchAllBookings, deleteBooking } = useCrudBooking();
+  const [deleteModal, setDeleteModal] = useState(false);
 
   useEffect(() => {
     const loadBookings = async () => {
@@ -87,6 +90,21 @@ export const BookingCalendar = ({ selectedRoom, searchQuery }) => {
       event.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const handleCheckout = () => {
+    console.log(selectedEvent);
+  };
+
+  const handleDelete = async () => {
+    try {
+      await deleteBooking(selectedEvent?.id);
+      toast.success("Successfully Deleted Booking");
+      setDeleteModal(false);
+      setSelectedEvent(null);
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
   return (
     <div className=" flex  lg:p-10 rounded-lg shadow">
       <div className="flex-1">
@@ -147,12 +165,41 @@ export const BookingCalendar = ({ selectedRoom, searchQuery }) => {
             </div>
           )}
         </Modal.Body>
-        <Modal.Footer>
-          <Button className="w-full" gradientMonochrome="failure">
-            Checkout Guest
-          </Button>
+        <Modal.Footer className="flex justify-end">
+          <Tooltip content="Delete Booking for accidental/errors in booking">
+            <Button
+              onClick={() => setDeleteModal(true)}
+              className="w-full"
+              gradientMonochrome="failure"
+            >
+              Delete Booking
+            </Button>
+          </Tooltip>
+
+          <Tooltip content="Check Out the guest">
+            <Button
+              onClick={handleCheckout}
+              className="w-full"
+              gradientMonochrome="info"
+            >
+              Checkout Guest
+            </Button>
+          </Tooltip>
         </Modal.Footer>
       </Modal>
+
+      <ConfirmModal
+        handleSubmit={handleDelete}
+        title={"Are you sure you want to checkout this guest?"}
+        open={deleteModal}
+        handleClose={() => setDeleteModal(false)}
+      />
+      <ConfirmModal
+        handleSubmit={handleDelete}
+        title={"Are you sure you want to delete this booking?"}
+        open={deleteModal}
+        handleClose={() => setDeleteModal(false)}
+      />
     </div>
   );
 };
