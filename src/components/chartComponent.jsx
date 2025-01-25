@@ -9,6 +9,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { ButtonGroup, Button } from "flowbite-react";
 import useCrudBooking from "../hooks/useCrudBooking";
 
 // Register Chart.js components
@@ -23,32 +24,38 @@ ChartJS.register(
 
 const ChartComponent = () => {
   const [bookings, setBookings] = useState([]);
+  const [filter, setFilter] = useState("day"); // Filter state: "day" or "month"
   const { fetchAllBookings } = useCrudBooking();
 
   useEffect(() => {
     fetchAllBookings(setBookings);
   }, []);
 
-  // Process the bookings to calculate the number of bookings per day
-  const bookingsPerDay = bookings.reduce((acc, booking) => {
+  // Process the bookings to calculate the number of bookings per day or per month
+  const bookingsPerPeriod = bookings.reduce((acc, booking) => {
     const checkInDate = new Date(booking.createdAt.seconds * 1000);
-    const dateString = checkInDate.toISOString().split("T")[0]; // Format as "YYYY-MM-DD"
+    const dateKey =
+      filter === "day"
+        ? checkInDate.toISOString().split("T")[0] // Format as "YYYY-MM-DD" for daily
+        : `${checkInDate.getFullYear()}-${String(
+            checkInDate.getMonth() + 1
+          ).padStart(2, "0")}`; // Format as "YYYY-MM" for monthly
 
-    acc[dateString] = (acc[dateString] || 0) + 1; // Increment count for the date
+    acc[dateKey] = (acc[dateKey] || 0) + 1; // Increment count for the period
     return acc;
   }, {});
 
   // Prepare the data for the chart
-  const labels = Object.keys(bookingsPerDay).sort(); // Sorted dates
-  const dataValues = labels.map((label) => bookingsPerDay[label]);
+  const labels = Object.keys(bookingsPerPeriod).sort(); // Sorted periods (dates or months)
+  const dataValues = labels.map((label) => bookingsPerPeriod[label]);
 
   const data = {
     labels,
     datasets: [
       {
-        label: "Bookings Per Day",
+        label: filter === "day" ? "Bookings Per Day" : "Bookings Per Month",
         data: dataValues,
-        backgroundColor: "#EE4C4C",
+        backgroundColor: "#E22929",
         borderColor: "#4A90E2",
         borderWidth: 1,
       },
@@ -63,13 +70,39 @@ const ChartComponent = () => {
       },
       title: {
         display: true,
-        text: "Number of Bookings Per Day",
+        text:
+          filter === "day"
+            ? "Number of Bookings Per Day"
+            : "Number of Bookings Per Month",
       },
     },
   };
 
   return (
     <div className="chart-container">
+      {/* Button group to toggle between daily and monthly view */}
+      <div className="mb-4 flex justify-between items-center mt-5">
+        <div className="flex flex-col">
+          <h1 className="font-medium text-2xl">Booking Chart</h1>
+          <p className="text-gray-500">
+            Frequency of booking per day and months
+          </p>
+        </div>
+        <ButtonGroup>
+          <Button
+            color={filter === "day" ? "info" : "gray"}
+            onClick={() => setFilter("day")}
+          >
+            Day
+          </Button>
+          <Button
+            color={filter === "month" ? "info" : "gray"}
+            onClick={() => setFilter("month")}
+          >
+            Month
+          </Button>
+        </ButtonGroup>
+      </div>
       <Bar data={data} options={options} />
     </div>
   );

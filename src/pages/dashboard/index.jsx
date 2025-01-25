@@ -33,17 +33,6 @@ const Index = () => {
             style={{ background: "#F6F6F6", marginRight: 10, borderRadius: 20 }}
             className="basis-6/12 p-10"
           >
-            <div className="header flex items-center justify-between">
-              <div className="flex flex-col">
-                <h1 className="font-medium text-2xl">Overview</h1>
-                <p className="text-gray-500">Monthly Booking Data</p>
-              </div>
-              <Button.Group>
-                <Button color="gray">Daily</Button>
-                <Button color="gray">Montly</Button>
-                <Button color="gray">Yearly</Button>
-              </Button.Group>
-            </div>
             <ChartComponent />
           </div>
           <div
