@@ -15,8 +15,9 @@ export const BookingCalendar = ({ selectedRoom, searchQuery }) => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedEvent, setSelectedEvent] = useState(null);
-  const { fetchAllBookings, deleteBooking } = useCrudBooking();
+  const { fetchAllBookings, deleteBooking, checkoutBooking } = useCrudBooking();
   const [deleteModal, setDeleteModal] = useState(false);
+  const [confirmCheckout, setConfirmCheckout] = useState(false);
 
   useEffect(() => {
     const loadBookings = async () => {
@@ -62,19 +63,21 @@ export const BookingCalendar = ({ selectedRoom, searchQuery }) => {
     "#7986CB",
   ];
 
-  const events = bookings.map((booking, index) => ({
-    id: booking.id,
-    title: `Room ${booking.roomDetails.roomNumber} - ${booking.currentUser.name}`,
-    start: new Date(booking.checkInDate.seconds * 1000),
-    end: new Date(booking.checkOutDate.seconds * 1000),
-    roomType: booking.roomDetails.roomType,
-    status: booking.status,
-    price: booking.roomDetails.pricePerNight,
-    downpayment: booking.downpayment,
-    paymentStatus: booking.paymentStatus,
-    description: booking.roomDetails.description,
-    color: eventColors[index % eventColors.length],
-  }));
+  const events = bookings
+    .filter((booking) => booking.status !== "Completed") // Exclude completed bookings
+    .map((booking, index) => ({
+      id: booking.id,
+      title: `Room ${booking.roomDetails.roomNumber} - ${booking.currentUser.name}`,
+      start: new Date(booking.checkInDate.seconds * 1000),
+      end: new Date(booking.checkOutDate.seconds * 1000),
+      roomType: booking.roomDetails.roomType,
+      status: booking.status,
+      price: booking.roomDetails.pricePerNight,
+      downpayment: booking.downpayment,
+      paymentStatus: booking.paymentStatus,
+      description: booking.roomDetails.description,
+      color: eventColors[index % eventColors.length],
+    }));
 
   const handleEventClick = (event) => {
     setSelectedEvent(event);
@@ -90,8 +93,15 @@ export const BookingCalendar = ({ selectedRoom, searchQuery }) => {
       event.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const handleCheckout = () => {
-    console.log(selectedEvent);
+  const handleCheckout = async () => {
+    try {
+      await checkoutBooking(selectedEvent?.id);
+      toast.success("Successfully Checkout");
+      setConfirmCheckout(false);
+      setSelectedEvent(null);
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   const handleDelete = async () => {
@@ -178,7 +188,7 @@ export const BookingCalendar = ({ selectedRoom, searchQuery }) => {
 
           <Tooltip content="Check Out the guest">
             <Button
-              onClick={handleCheckout}
+              onClick={() => setConfirmCheckout(true)}
               className="w-full"
               gradientMonochrome="info"
             >
@@ -189,10 +199,10 @@ export const BookingCalendar = ({ selectedRoom, searchQuery }) => {
       </Modal>
 
       <ConfirmModal
-        handleSubmit={handleDelete}
+        handleSubmit={handleCheckout}
         title={"Are you sure you want to checkout this guest?"}
-        open={deleteModal}
-        handleClose={() => setDeleteModal(false)}
+        open={confirmCheckout}
+        handleClose={() => setConfirmCheckout(false)}
       />
       <ConfirmModal
         handleSubmit={handleDelete}

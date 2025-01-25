@@ -198,6 +198,16 @@ const useCrudBooking = () => {
       console.log(error);
     }
   };
+  const checkoutBooking = async (id) => {
+    try {
+      const docRef = doc(db, "bookings", id);
+      await updateDoc(docRef, {
+        status: "Completed",
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return {
     fetchAvailableRoom,
@@ -209,6 +219,7 @@ const useCrudBooking = () => {
     fetchAllBookings,
     updateBookingPayment,
     deleteBooking,
+    checkoutBooking,
   };
 };
 
