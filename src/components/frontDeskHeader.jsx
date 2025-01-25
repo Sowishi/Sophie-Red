@@ -58,6 +58,11 @@ const FrontDeskHeader = () => {
   const handleSubmit = async () => {
     setLoading(true);
 
+    if (currentUser.name.length <= 0) {
+      toast.error("Please input the guest name");
+      setLoading(false);
+      return;
+    }
     // Validate date inputs
     if (!arrivalDate || !departureDate) {
       toast.error("Please select your check-in and check-out dates");

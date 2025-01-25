@@ -4,7 +4,7 @@ import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import useCrudBooking from "../hooks/useCrudBooking";
 import Loader from "../components/loader";
-import { Modal } from "flowbite-react";
+import { Button, Modal } from "flowbite-react";
 import FrontDeskHeader from "./frontDeskHeader";
 
 const localizer = momentLocalizer(moment);
@@ -148,12 +148,9 @@ export const BookingCalendar = ({ selectedRoom, searchQuery }) => {
           )}
         </Modal.Body>
         <Modal.Footer>
-          <button
-            className="px-4 py-2 bg-blue-500 text-white rounded"
-            onClick={closeModal}
-          >
-            Close
-          </button>
+          <Button className="w-full" gradientMonochrome="failure">
+            Checkout Guest
+          </Button>
         </Modal.Footer>
       </Modal>
     </div>
