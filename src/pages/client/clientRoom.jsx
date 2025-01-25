@@ -54,6 +54,7 @@ const ClientRoom = () => {
     setRating(0);
     setRemarks("");
     setRatingModal(false);
+    toast.success("Thank you for your feedback");
   };
 
   useEffect(() => {
@@ -68,19 +69,36 @@ const ClientRoom = () => {
         <h1 className="font-extrabold text-lg lg:text-3xl mb-10">
           Your Room Information
         </h1>
-        <div className="wrapper flex gap-5">
-          <Button
-            onClick={() => setRequestModal(true)}
-            gradientMonochrome="info"
-          >
-            Request Service
-          </Button>
-          <Button
-            onClick={() => setRatingModal(true)}
-            gradientMonochrome="failure"
-          >
-            Leave Feedback
-          </Button>
+        <div className="wrapper flex ">
+          <Dropdown label="Service">
+            <Dropdown.Item>
+              <Button
+                onClick={() => setRequestModal(true)}
+                gradientMonochrome="info"
+                className="w-full"
+              >
+                Request Service
+              </Button>
+            </Dropdown.Item>
+            <Dropdown.Item>
+              <Button
+                className="w-full"
+                onClick={() => setRatingModal(true)}
+                gradientMonochrome="failure"
+              >
+                Leave Feedback
+              </Button>
+            </Dropdown.Item>
+            <Dropdown.Item>
+              <Button
+                className="w-full"
+                onClick={() => setRatingModal(true)}
+                gradientMonochrome="failure"
+              >
+                Check Out
+              </Button>
+            </Dropdown.Item>
+          </Dropdown>
         </div>
       </div>
 
@@ -133,7 +151,7 @@ const ClientRoom = () => {
         <form className="container p-10 mx-auto">
           <div className="header flex justify-between items-center mb-5">
             <h1 className="text-3xl font-bold flex items-center justify-start">
-              Room Number: #{booking.roomDetails?.roomNumber}{" "}
+              Room Number: #{booking?.roomDetails?.roomNumber}{" "}
             </h1>
           </div>
           <div className="space-y-4">

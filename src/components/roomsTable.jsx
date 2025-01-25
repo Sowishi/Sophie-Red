@@ -144,7 +144,7 @@ export function RoomsTable() {
 
               <Table.Cell className="flex items-center justify-center">
                 <Button onClick={() => setSelectedRoom(room)} color="info">
-                  View Room <FaArrowRight className="ml-2 h-5 w-5" />
+                  View <FaArrowRight className="ml-2 h-5 w-5" />
                 </Button>
                 <Button
                   className="ml-3"
