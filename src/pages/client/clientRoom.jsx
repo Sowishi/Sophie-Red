@@ -21,6 +21,7 @@ import RatingLanding from "../../components/ratings";
 import Lottie from "react-lottie";
 import anim from "../../assets/rating.json";
 import useCrudRating from "../../hooks/useCrudRating";
+import nodata from "../../assets/nodata.json";
 
 const ClientRoom = () => {
   const { currentUser, booking, setBooking } = useUserStore();
@@ -83,7 +84,21 @@ const ClientRoom = () => {
 
   return (
     <ClientDashboardLayout>
-      {roomDetails && (
+      <div className="container mx-auto h-screen bg-white flex justify-center items-center flex-col">
+        <div className="wrapper mb-10">
+          <p className="text-red-500 text-3xl text-center">
+            No active bookings found.
+          </p>
+          <Lottie
+            style={{ width: 250 }}
+            options={{
+              animationData: nodata,
+              autoplay: true,
+            }}
+          />
+        </div>
+      </div>
+      {roomDetails && booking && (
         <div className="container mx-auto h-screen p-7 lg:p-0">
           <div className="flex justify-between items-center mb-10">
             <div className="wrapper mb-5">

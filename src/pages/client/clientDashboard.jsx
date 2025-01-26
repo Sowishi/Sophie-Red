@@ -11,7 +11,8 @@ import { calculateStayDuration } from "../../utils/calculateStay";
 import { FcCancel } from "react-icons/fc";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-
+import nodata from "../../assets/nodata.json";
+import Lottie from "react-lottie";
 const ClientDashboard = () => {
   const { currentUser, booking, setBooking } = useUserStore();
   const {
@@ -99,26 +100,25 @@ const ClientDashboard = () => {
   };
   return (
     <ClientDashboardLayout>
-      <div className="lg:flex items-center justify-start mx-10">
-        <div className="flex flex-col items-start justify-center ">
-          <h1 className="text-2xl lg:text-3xl font-bold">
-            Good Day, {currentUser?.name}
-          </h1>
-          <p className="text-sm opacity-70">
-            This is where you can view all the details about your booking
-          </p>
-        </div>
-        <Button
-          onClick={() => navigation("/client-room")}
-          className="ml-10 px-3 mt-5 lg:mt-0"
-          gradientMonochrome="failure"
-        >
-          View Your Room
-        </Button>
-      </div>
-
       {booking ? (
         <>
+          <div className="lg:flex items-center justify-start mx-10">
+            <div className="flex flex-col items-start justify-center ">
+              <h1 className="text-2xl lg:text-3xl font-bold">
+                Good Day, {currentUser?.name}
+              </h1>
+              <p className="text-sm opacity-70">
+                This is where you can view all the details about your booking
+              </p>
+            </div>
+            <Button
+              onClick={() => navigation("/client-room")}
+              className="ml-10 px-3 mt-5 lg:mt-0"
+              gradientMonochrome="failure"
+            >
+              View Your Room
+            </Button>
+          </div>
           <div className="flex w-full flex-wrap">
             <div className="basis-full lg:basis-7/12">
               <div className="bg-white p-5 lg:p-10 rounded-lg shadow-sm mt-5">
@@ -278,9 +278,22 @@ const ClientDashboard = () => {
           </div>
         </>
       ) : (
-        <p className="text-red-500 text-3xl text-center mt-20">
-          No active bookings found.
-        </p>
+        <>
+          <div className="container mx-auto h-screen bg-white flex justify-center items-center flex-col">
+            <div className="wrapper mb-10">
+              <p className="text-red-500 text-3xl text-center">
+                No active bookings found.
+              </p>
+              <Lottie
+                style={{ width: 250 }}
+                options={{
+                  animationData: nodata,
+                  autoplay: true,
+                }}
+              />
+            </div>
+          </div>
+        </>
       )}
       {/* Confirmation Modal */}
       <Modal
