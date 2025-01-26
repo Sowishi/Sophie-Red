@@ -1,10 +1,13 @@
 import moment from "moment";
 import { BookingCalendar } from "../../components/bookingCalendar";
 import DashboardLayout from "./dashboardLayout";
-import { Button, Dropdown } from "flowbite-react";
+import { Button, Dropdown, TextInput } from "flowbite-react";
 import useFetchCollection from "../../hooks/useFetchCollection";
 import { useEffect, useState } from "react";
 import CustomInput from "../../components/customInput";
+import SearchInput from "../../components/searchInput";
+import { FaBed, FaList } from "react-icons/fa6";
+import { FaCalendarAlt } from "react-icons/fa";
 
 const FrontDesk = () => {
   const { fetchCollection } = useFetchCollection();
@@ -20,20 +23,43 @@ const FrontDesk = () => {
 
   return (
     <DashboardLayout>
-      <div className="container mx-auto pt-10 pb-20">
+      <div className="container mx-auto bg-[#F6F6F6] m-10 mb-20 p-10 rounded-2xl">
         <div className="flex justify-between items-center  p-5">
           <div>
             <h1 className="text-2xl lg:text-4xl font-bold">
-              {filterType == "room"
+              {filterType == "all"
+                ? "Booking Calendar"
+                : filterType == "room"
                 ? "Rooms Booking Calendar"
                 : "Event Booking Calendar"}
             </h1>
-            <p className="mt-3 text-sm text-gray-500">
-              Sophie Red Hotel Booking Calendar
-            </p>
+            <div className="flex mt-2">
+              <Button.Group color="failure">
+                <Button
+                  color={filterType == "all" ? "failure" : "light"}
+                  onClick={() => setFilterType("all")}
+                >
+                  <FaList className="mr-2 mt-1" /> All Bookings
+                </Button>
+                <Button
+                  color={filterType == "room" ? "failure" : "light"}
+                  onClick={() => setFilterType("room")}
+                >
+                  <FaBed className="mr-2 mt-1" /> Room
+                </Button>
+                <Button
+                  color={filterType == "event" ? "failure" : "light"}
+                  onClick={() => setFilterType("event")}
+                >
+                  <FaCalendarAlt className="mr-2 mt-1" /> Event
+                </Button>
+              </Button.Group>
+            </div>
           </div>
-
-          {/* ✅ Fixed Dropdown */}
+          <SearchInput
+            onChange={(event) => setSearchQuery(event.target.value)}
+          />
+          {/* 
           <Dropdown
             color="failure"
             label={selectedRoom ? `Room ${selectedRoom}` : "Check Room"}
@@ -49,29 +75,7 @@ const FrontDesk = () => {
                 Room {item.roomNumber}
               </Dropdown.Item>
             ))}
-          </Dropdown>
-        </div>
-
-        <div className="flex items-center justify-between">
-          <div className="flex">
-            <Button
-              color={filterType === "room" ? "failure" : "light"}
-              className="px-5 mr-5"
-              onClick={() => setFilterType("room")}
-            >
-              Rooms
-            </Button>
-            <Button
-              color={filterType === "event" ? "failure" : "light"}
-              onClick={() => setFilterType("event")}
-            >
-              Events
-            </Button>
-          </div>
-          <CustomInput
-            onChange={(event) => setSearchQuery(event.target.value)}
-            placeholder={"Search for a guest"}
-          />
+          </Dropdown> */}
         </div>
 
         <BookingCalendar

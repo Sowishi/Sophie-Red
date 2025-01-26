@@ -202,7 +202,11 @@ const Landing = () => {
           <p className="text-white text-lg mt-3">
             "We do not remember the days, we remember the moments."{" "}
           </p>
-          <Button className="mt-5 px-5" gradientMonochrome="failure">
+          <Button
+            onClick={() => navigation("/event-booking")}
+            className="mt-5 px-5"
+            gradientMonochrome="failure"
+          >
             Book Event
           </Button>
         </div>

@@ -71,6 +71,24 @@ export const BookingCalendar = ({ selectedRoom, searchQuery, filterType }) => {
       description: booking.roomDetails.description,
     }));
 
+  const allEvents = bookings
+    .filter((booking) => booking.status !== "Completed") // Exclude completed bookings
+    .map((booking, index) => ({
+      id: booking.id,
+      title:
+        booking.bookType == "room"
+          ? `Room ${booking.roomDetails.roomNumber} - ${booking.currentUser.name}`
+          : `Event  - ${booking.currentUser.name}`,
+      start: new Date(booking.checkInDate.seconds * 1000),
+      end: new Date(booking.checkOutDate.seconds * 1000),
+      roomType: booking.roomDetails.roomType,
+      status: booking.status,
+      price: booking.roomDetails.pricePerNight,
+      downpayment: booking.downpayment,
+      paymentStatus: booking.paymentStatus,
+      description: booking.roomDetails.description,
+    }));
+
   const handleEventClick = (event) => {
     setSelectedEvent(event);
   };
@@ -80,6 +98,12 @@ export const BookingCalendar = ({ selectedRoom, searchQuery, filterType }) => {
   };
 
   const filteredEvents = events.filter(
+    (event) =>
+      (!selectedRoom || event.title.includes(selectedRoom)) &&
+      event.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const filteredEventsAll = allEvents.filter(
     (event) =>
       (!selectedRoom || event.title.includes(selectedRoom)) &&
       event.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -108,22 +132,34 @@ export const BookingCalendar = ({ selectedRoom, searchQuery, filterType }) => {
   };
 
   return (
-    <div className=" flex  lg:p-10 rounded-lg shadow">
+    <div className=" container mx-auto bg-white lg:p-10 rounded-lg shadow">
       <div className="flex-1">
-        <Calendar
-          localizer={localizer}
-          events={filteredEvents}
-          startAccessor="start"
-          endAccessor="end"
-          style={{ minHeight: 600 }}
-          className="custom-calendar"
-          onSelectEvent={handleEventClick}
-        />
+        {filterType == "all" ? (
+          <Calendar
+            localizer={localizer}
+            events={filteredEventsAll}
+            startAccessor="start"
+            endAccessor="end"
+            style={{ minHeight: 600 }}
+            className="custom-calendar"
+            onSelectEvent={handleEventClick}
+          />
+        ) : (
+          <Calendar
+            localizer={localizer}
+            events={filteredEvents}
+            startAccessor="start"
+            endAccessor="end"
+            style={{ minHeight: 600 }}
+            className="custom-calendar"
+            onSelectEvent={handleEventClick}
+          />
+        )}
       </div>
 
-      <div className="hidden lg:flex">
+      {/* <div className="hidden lg:flex">
         <FrontDeskHeader />
-      </div>
+      </div> */}
 
       <Modal show={selectedEvent !== null} onClose={closeModal}>
         <Modal.Header>
