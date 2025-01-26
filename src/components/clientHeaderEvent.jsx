@@ -131,12 +131,11 @@ const ClientHeaderEvent = () => {
 
   const handleConfirmBook = async () => {
     await bookEvent(
-      selectedRoom?.id,
       currentUser,
       arrivalDate,
       departureDate,
-      totalPrice,
-      downpayment,
+      10000,
+      5000,
       paymentTerm,
       selectedRoom
     );

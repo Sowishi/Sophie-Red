@@ -157,7 +157,6 @@ const useCrudBooking = () => {
   };
 
   const bookEvent = async (
-    roomId,
     currentUser,
     checkInDate,
     checkOutDate,
@@ -182,7 +181,6 @@ const useCrudBooking = () => {
     const bookingsRef = collection(db, "bookings");
 
     const newBooking = {
-      roomId,
       currentUser,
       checkInDate: desiredCheckIn.toDate(), // Save as Firebase-compatible Date object
       checkOutDate: desiredCheckOut.toDate(),
@@ -204,7 +202,8 @@ const useCrudBooking = () => {
     const q = query(
       colRef,
       where("currentUser.uid", "==", user.uid),
-      where("status", "==", "Booked")
+      where("status", "==", "Booked"),
+      where("bookType", "==", "room")
     );
     const snapshot = await getDocs(q);
     const output = [];
@@ -291,6 +290,7 @@ const useCrudBooking = () => {
     fetchAvailableRoom,
     checkRoomAvailability,
     bookRoom,
+    bookEvent,
     fetchUserBooking,
     cancelBooking,
     reschedBooking,
