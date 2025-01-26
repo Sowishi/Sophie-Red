@@ -149,6 +149,50 @@ const useCrudBooking = () => {
       paymentStatus: paymentTerm,
       roomDetails,
       createdAt: serverTimestamp(),
+      bookType: "room",
+    };
+
+    const docRef = await addDoc(bookingsRef, newBooking);
+    return docRef.id; // Return the booking ID
+  };
+
+  const bookEvent = async (
+    roomId,
+    currentUser,
+    checkInDate,
+    checkOutDate,
+    totalPrice,
+    downpayment,
+    paymentTerm,
+    roomDetails
+  ) => {
+    // Convert input dates to Moment.js objects
+    const desiredCheckIn = moment(checkInDate);
+    const desiredCheckOut = moment(checkOutDate);
+
+    const roomAvailable = await checkEventAvailability(
+      desiredCheckIn,
+      desiredCheckOut
+    );
+
+    if (!roomAvailable) {
+      throw new Error("Event is not available for the selected dates.");
+    }
+
+    const bookingsRef = collection(db, "bookings");
+
+    const newBooking = {
+      roomId,
+      currentUser,
+      checkInDate: desiredCheckIn.toDate(), // Save as Firebase-compatible Date object
+      checkOutDate: desiredCheckOut.toDate(),
+      status: "Booked",
+      totalPrice,
+      downpayment,
+      paymentStatus: paymentTerm,
+      roomDetails,
+      createdAt: serverTimestamp(),
+      bookType: "event",
     };
 
     const docRef = await addDoc(bookingsRef, newBooking);

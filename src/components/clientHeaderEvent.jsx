@@ -47,7 +47,7 @@ const ClientHeaderEvent = () => {
   const dropdownRef = useRef();
   const navigation = useNavigate();
 
-  const { fetchAvailableRoom, checkEventAvailability, bookRoom } =
+  const { fetchAvailableRoom, checkEventAvailability, bookEvent } =
     useCrudBooking();
   const { currentUser } = useUserStore();
 
@@ -130,7 +130,7 @@ const ClientHeaderEvent = () => {
   };
 
   const handleConfirmBook = async () => {
-    await bookRoom(
+    await bookEvent(
       selectedRoom?.id,
       currentUser,
       arrivalDate,
