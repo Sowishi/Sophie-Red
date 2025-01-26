@@ -84,6 +84,34 @@ const useCrudBooking = () => {
     return true; // Room is available
   };
 
+  const checkEventAvailability = async (desiredCheckIn, desiredCheckOut) => {
+    console.log(desiredCheckIn, desiredCheckOut);
+    const bookingsRef = collection(db, "bookings");
+    const q = query(
+      bookingsRef,
+      where("bookType", "==", "event"),
+      where("status", "==", "Booked")
+    );
+
+    const querySnapshot = await getDocs(q);
+
+    for (const doc of querySnapshot.docs) {
+      const booking = doc.data();
+      const existingCheckIn = moment(booking.checkInDate.toDate());
+      const existingCheckOut = moment(booking.checkOutDate.toDate());
+
+      // Check for overlap
+      if (
+        moment(desiredCheckIn).isBefore(existingCheckOut) &&
+        moment(desiredCheckOut).isAfter(existingCheckIn)
+      ) {
+        return false; // Room is not available
+      }
+    }
+
+    return true; // Room is available
+  };
+
   const bookRoom = async (
     roomId,
     currentUser,
@@ -222,6 +250,7 @@ const useCrudBooking = () => {
     updateBookingPayment,
     deleteBooking,
     checkoutBooking,
+    checkEventAvailability,
   };
 };
 

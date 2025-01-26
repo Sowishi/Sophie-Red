@@ -1,4 +1,11 @@
-import { Alert, Button, Dropdown, Table, TextInput } from "flowbite-react";
+import {
+  Alert,
+  Button,
+  Card,
+  Dropdown,
+  Table,
+  TextInput,
+} from "flowbite-react";
 import { CustomDatePicker } from "./datePicker";
 import logo from "../assets/logo.png";
 import { ImMenu } from "react-icons/im";
@@ -18,6 +25,7 @@ import { createPaymongoCheckout } from "../utils/paymongoCheckout";
 import { IoReload } from "react-icons/io5";
 import { getCheckoutPaymongo } from "../utils/getCheckout";
 import DisplayRoomsSelection from "./displayRoomsSelection";
+import eventBG from "../assets/event.jpg";
 
 const ClientHeaderEvent = () => {
   const [bookNowModal, setBookNowModal] = useState(false);
@@ -39,7 +47,7 @@ const ClientHeaderEvent = () => {
   const dropdownRef = useRef();
   const navigation = useNavigate();
 
-  const { fetchAvailableRoom, checkRoomAvailability, bookRoom } =
+  const { fetchAvailableRoom, checkEventAvailability, bookRoom } =
     useCrudBooking();
   const { currentUser } = useUserStore();
 
@@ -80,11 +88,7 @@ const ClientHeaderEvent = () => {
   };
 
   const handleRoomSelection = (room) => {
-    if (selectedRoom?.roomNumber === room.roomNumber) {
-      setSelectedRoom(null); // Deselect if the same room is clicked again
-    } else {
-      setSelectedRoom(room); // Select the clicked room
-    }
+    setSelectedRoom(room);
   };
 
   const handleBook = async () => {
@@ -99,12 +103,7 @@ const ClientHeaderEvent = () => {
 
     setCheckingLoading(true);
     try {
-      const output = await checkRoomAvailability(
-        selectedRoom?.id,
-        arrivalDate,
-        departureDate,
-        currentUser.uid
-      );
+      const output = await checkEventAvailability(arrivalDate, departureDate);
       if (!output) {
         toast.error("Room not available for the selected dates.");
         setCheckingLoading(false);
@@ -152,6 +151,7 @@ const ClientHeaderEvent = () => {
     }
   }, [paymentStatus]);
 
+  console.log(selectedRoom);
   return (
     <div
       style={{
@@ -254,7 +254,49 @@ const ClientHeaderEvent = () => {
         }}
         hideFooter={true}
       >
-        {paymentStatus !== "succeeded" && <h1>Test</h1>}
+        {paymentStatus !== "succeeded" && (
+          <Card
+            className="max-w-sm"
+            imgAlt="Functional Room Image"
+            imgSrc={eventBG}
+          >
+            <div className="p-4">
+              <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                Functional Room
+              </h5>
+
+              <p className="text-gray-600 dark:text-gray-300 mt-5">
+                <strong>Rent Price</strong> ₱10000
+              </p>
+              <div className="opacity-50 my-3">
+                <p>Lights & Sounds P3,500.00</p>
+                <p>
+                  (White screen projector w/ microphone 4 hours usage additional
+                  P2,000/hr for the exceeding hours){" "}
+                </p>
+              </div>
+
+              <Button
+                className="mt-3 flex w-full items-center justify-center"
+                onClick={() =>
+                  handleRoomSelection({ eventName: "Functional Room" })
+                }
+                color={
+                  selectedRoom?.eventName === "Functional Room"
+                    ? "success"
+                    : "light"
+                }
+              >
+                {selectedRoom?.eventName === "Functional Room"
+                  ? "Selected"
+                  : "Select Room"}
+                {selectedRoom?.eventName === "Functional Room" && (
+                  <FaCheck className="ml-2 h-5 w-5" />
+                )}
+              </Button>
+            </div>
+          </Card>
+        )}
 
         {paymentStatus == "succeeded" && (
           <>
