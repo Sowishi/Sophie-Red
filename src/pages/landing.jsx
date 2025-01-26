@@ -145,7 +145,7 @@ const Landing = () => {
                     }
                   }}
                   gradientMonochrome="info"
-                  className="mt-5 px-10 py-2 lg:mx-3"
+                  className="mt-5 px-10 py-2 lg:mx-3 w-[250px]"
                 >
                   <span className="text-sm font-bold">Book Event</span>
                 </Button>
@@ -164,7 +164,7 @@ const Landing = () => {
                     }
                   }}
                   gradientMonochrome="failure"
-                  className="mt-5 px-10 py-2"
+                  className="mt-5 px-10 py-2 w-[250px]"
                 >
                   <span className="text-sm font-bold">Book Hotel Room</span>
                 </Button>
