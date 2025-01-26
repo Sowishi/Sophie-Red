@@ -94,7 +94,7 @@ const ClientHeaderEvent = () => {
   const handleBook = async () => {
     if (checkout) {
       const sessionID = await createPaymongoCheckout(
-        paymentTerm == "down" ? downpayment : totalPrice,
+        paymentTerm == "down" ? 5000 : 10000,
         paymentTerm
       );
       setCheckoutID(sessionID);
@@ -255,47 +255,159 @@ const ClientHeaderEvent = () => {
         hideFooter={true}
       >
         {paymentStatus !== "succeeded" && (
-          <Card
-            className="max-w-sm"
-            imgAlt="Functional Room Image"
-            imgSrc={eventBG}
-          >
-            <div className="p-4">
-              <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                Functional Room
-              </h5>
-
-              <p className="text-gray-600 dark:text-gray-300 mt-5">
-                <strong>Rent Price</strong> ₱10000
-              </p>
-              <div className="opacity-50 my-3">
-                <p>Lights & Sounds P3,500.00</p>
-                <p>
-                  (White screen projector w/ microphone 4 hours usage additional
-                  P2,000/hr for the exceeding hours){" "}
-                </p>
-              </div>
-
-              <Button
-                className="mt-3 flex w-full items-center justify-center"
-                onClick={() =>
-                  handleRoomSelection({ eventName: "Functional Room" })
-                }
-                color={
-                  selectedRoom?.eventName === "Functional Room"
-                    ? "success"
-                    : "light"
-                }
+          <>
+            {!checkout && (
+              <Card
+                className="max-w-sm"
+                imgAlt="Functional Room Image"
+                imgSrc={eventBG}
               >
-                {selectedRoom?.eventName === "Functional Room"
-                  ? "Selected"
-                  : "Select Room"}
-                {selectedRoom?.eventName === "Functional Room" && (
-                  <FaCheck className="ml-2 h-5 w-5" />
-                )}
-              </Button>
-            </div>
-          </Card>
+                <div className="p-4">
+                  <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                    Functional Room
+                  </h5>
+
+                  <p className="text-gray-600 dark:text-gray-300 mt-5">
+                    <strong>Rent Price</strong> ₱10000
+                  </p>
+                  <div className="opacity-50 my-3">
+                    <p>Lights & Sounds P3,500.00</p>
+                    <p>
+                      (White screen projector w/ microphone 4 hours usage
+                      additional P2,000/hr for the exceeding hours){" "}
+                    </p>
+                  </div>
+
+                  <Button
+                    className="mt-3 flex w-full items-center justify-center"
+                    onClick={() =>
+                      handleRoomSelection({ eventName: "Functional Room" })
+                    }
+                    color={
+                      selectedRoom?.eventName === "Functional Room"
+                        ? "success"
+                        : "light"
+                    }
+                  >
+                    {selectedRoom?.eventName === "Functional Room"
+                      ? "Selected"
+                      : "Select Room"}
+                    {selectedRoom?.eventName === "Functional Room" && (
+                      <FaCheck className="ml-2 h-5 w-5" />
+                    )}
+                  </Button>
+                </div>
+              </Card>
+            )}
+
+            {checkout && selectedRoom && (
+              <div className="w-full  bg-white rounded-lg px-5  dark:bg-gray-800">
+                <Alert className="text-center flex justify-center items-center">
+                  To secure your reservation, a 50% deposit of the total price
+                  is required.
+                </Alert>
+                <div className="flex">
+                  <h1 className="my-3">
+                    {moment(arrivalDate).format("LL")}
+                    {" - "}
+                    {moment(departureDate).format("LL")}
+                  </h1>
+                </div>
+
+                <div className="mb-4 overflow-x-auto">
+                  <table className="min-w-full table-auto border-collapse">
+                    <thead>
+                      <tr className="border-b bg-gray-100">
+                        <th className="px-4 py-2 text-left text-sm font-medium text-gray-600">
+                          Service
+                        </th>
+                        <th className="px-4 py-2 text-left text-sm font-medium text-gray-600">
+                          Details
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr className="border-b">
+                        <td className="px-4 py-2 text-sm text-gray-600">
+                          Stay Duration
+                        </td>
+                        <td className="px-4 py-2 text-sm text-gray-800">
+                          {(() => {
+                            try {
+                              return `${
+                                calculateStayDuration(
+                                  arrivalDate,
+                                  departureDate
+                                ).days
+                              } Day(s)`;
+                            } catch {
+                              return "Invalid Dates";
+                            }
+                          })()}
+                        </td>
+                      </tr>
+                      <tr className="border-b">
+                        <td className="px-4 py-2 text-sm text-gray-600">
+                          Promo Code Applied
+                        </td>
+                        <td className="px-4 py-2 text-sm text-gray-800">
+                          {voucher ? voucher : "None"}
+                        </td>
+                      </tr>
+                      <tr className="border-b">
+                        <td className="px-4 py-2 text-sm text-gray-600">
+                          Rent Price
+                        </td>
+                        <td className="px-4 py-2 text-sm text-gray-800">
+                          ₱10000
+                        </td>
+                      </tr>
+
+                      <tr className="border-b">
+                        <td className="px-4 py-2 text-sm text-gray-600">
+                          Status
+                        </td>
+                        <td className="px-4 py-2 text-sm text-gray-800 flex items-center justify-start">
+                          {paymentStatus}
+                          <Button className="ml-3">
+                            <IoReload onClick={getCheckout} />
+                          </Button>
+                        </td>
+                      </tr>
+                      <tr className="border-b">
+                        <td className="px-4 py-2 text-sm text-gray-600">
+                          Payment Term
+                        </td>
+                        <td className="px-4 py-2 text-sm text-gray-800 flex items-center justify-start">
+                          <Button
+                            onClick={() => setPaymentTerm("down")}
+                            color={paymentTerm == "down" ? "success" : "light"}
+                          >
+                            Downpayment
+                          </Button>
+                          <Button
+                            onClick={() => setPaymentTerm("full")}
+                            className="ml-3"
+                            color={paymentTerm == "full" ? "success" : "light"}
+                          >
+                            Full Payment
+                          </Button>
+                        </td>
+                      </tr>
+                      <tr className="border-b">
+                        <td className="px-4 py-2 text-sm text-gray-600">
+                          Make payment for:
+                        </td>
+                        <td className="px-4 py-2  font-bold text-3xl text-green-800 flex items-center justify-start">
+                          ₱{paymentTerm == "down" ? 5000 : 10000}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+          </>
         )}
 
         {paymentStatus == "succeeded" && (
