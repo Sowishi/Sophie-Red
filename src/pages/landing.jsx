@@ -139,7 +139,7 @@ const Landing = () => {
                 <Button
                   onClick={() => {
                     if (currentUser) {
-                      navigation("/booking");
+                      navigation("/event-booking");
                     } else {
                       navigation("/login");
                     }

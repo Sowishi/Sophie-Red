@@ -15,6 +15,7 @@ import Housekeeping from "./pages/dashboard/housekeeping";
 import Housekeeper from "./pages/dashboard/housekeeper";
 import ClientRoom from "./pages/client/clientRoom";
 import Reports from "./pages/dashboard/reports";
+import EventBooking from "./pages/client/eventBooking";
 
 const App = () => {
   const { currentUser, currentAdmin, setCurrentAdmin } = useUserStore();
@@ -42,6 +43,10 @@ const App = () => {
         <Route
           path="/booking"
           element={currentUser ? <Booking /> : <Landing />}
+        />
+        <Route
+          path="/event-booking"
+          element={currentUser ? <EventBooking /> : <Landing />}
         />
 
         <Route
