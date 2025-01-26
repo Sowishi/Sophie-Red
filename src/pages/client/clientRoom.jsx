@@ -57,7 +57,7 @@ const ClientRoom = () => {
   };
 
   const handleRatingSubmit = () => {
-    addRating({ rating, remarks, room: roomDetails });
+    addRating({ rating, remarks, room: roomDetails, currentUser });
     setRating(0);
     setRemarks("");
     setRatingModal(false);

@@ -11,7 +11,12 @@ import { db } from "../utils/firebase";
 
 const useCrudRating = () => {
   const addRating = async (data) => {
-    console.log(data);
+    try {
+      const colRef = collection(db, "feedback");
+      await addDoc(colRef, { ...data, createdAt: serverTimestamp() });
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   return { addRating };
