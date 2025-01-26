@@ -1,31 +1,40 @@
 import { Alert, Button } from "flowbite-react";
 import DashboardLayout from "./dashboardLayout";
-import { FaPlus } from "react-icons/fa";
+import { FaCalendarAlt, FaPlus } from "react-icons/fa";
 import { PaymentsTable } from "../../components/paymentsTable";
 import { CiWarning } from "react-icons/ci";
+import { FaBed, FaList } from "react-icons/fa6";
+import { useState } from "react";
+import SearchInput from "../../components/searchInput";
 
 const Payments = () => {
+  const [filterType, setFilterType] = useState("room");
   return (
     <DashboardLayout>
       <div className="container mx-auto lg:p-10 rounded-3xl min-h-[600px] pt-10 ">
         <div className="flex flex-col lg:flex-row justify-between items-center">
           <div className="div p-5">
             <h1 className="text-2xl lg:text-4xl font-bold">Payments</h1>
-            <p className="mt-3 text-gray-500">
-              You can manage and view the payments of user here
-            </p>
+            <div className="flex mt-2">
+              <Button.Group color="failure">
+                <Button
+                  color={filterType == "room" ? "failure" : "light"}
+                  onClick={() => setFilterType("room")}
+                >
+                  <FaBed className="mr-2 mt-1" /> Room
+                </Button>
+                <Button
+                  color={filterType == "event" ? "failure" : "light"}
+                  onClick={() => setFilterType("event")}
+                >
+                  <FaCalendarAlt className="mr-2 mt-1" /> Event
+                </Button>
+              </Button.Group>
+            </div>
           </div>
+          <SearchInput />
         </div>{" "}
-        <Alert
-          color="warning"
-          className="flex flex-row items-center gap-2 mb-3"
-        >
-          <span>
-            Always make sure to check the balance of the guest before checking
-            them out.
-          </span>
-        </Alert>
-        <PaymentsTable />
+        <PaymentsTable typeFilter={filterType} />
       </div>
     </DashboardLayout>
   );

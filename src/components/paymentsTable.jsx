@@ -18,13 +18,12 @@ import moment from "moment/moment";
 import useCrudBooking from "../hooks/useCrudBooking";
 import { toast } from "react-toastify";
 
-export function PaymentsTable() {
+export function PaymentsTable({ typeFilter }) {
   const { fetchCollection } = useFetchCollection();
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
-  const [typeFilter, setTypeFilter] = useState("room");
   const { updateBookingPayment } = useCrudBooking();
 
   useEffect(() => {
@@ -67,28 +66,7 @@ export function PaymentsTable() {
 
   return (
     <div className="overflow-x-auto">
-      <div className="flex gap-3 mb-5">
-        <Button
-          onClick={() => setTypeFilter("room")}
-          color={typeFilter == "room" ? "failure" : "light"}
-        >
-          Room
-        </Button>
-        <Button
-          onClick={() => setTypeFilter("event")}
-          color={typeFilter == "event" ? "failure" : "light"}
-        >
-          Event
-        </Button>
-      </div>
       <div className="flex items-center justify-between mb-5">
-        <TextInput
-          onChange={(event) => setSearch(event.target.value)}
-          className="w-60"
-          placeholder="Search Here..."
-          value={search}
-        />
-
         <Select value={filter} onChange={(e) => setFilter(e.target.value)}>
           <option value="all">All</option>
           <option value="paid">Paid</option>

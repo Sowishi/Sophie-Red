@@ -14,7 +14,7 @@ const FrontDesk = () => {
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [filterType, setFilterType] = useState("room");
+  const [filterType, setFilterType] = useState("all");
 
   useEffect(() => {
     fetchCollection("rooms", setRooms, setLoading);
@@ -22,7 +22,7 @@ const FrontDesk = () => {
 
   return (
     <DashboardLayout>
-      <div className="container mx-auto bg-[#F6F6F6] m-10 mb-20 p-10 rounded-2xl">
+      <div className="container mx-auto m-10 mb-20 p-10 rounded-2xl">
         <div className="flex justify-between items-center  p-5">
           <div>
             <h1 className="text-2xl lg:text-4xl font-bold">
