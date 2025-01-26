@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../assets/logo2.png";
 import { HiHome, HiUsers, HiDocumentReport } from "react-icons/hi";
 import { RiComputerLine } from "react-icons/ri";
-import { MdHotel, MdOutlineCleaningServices } from "react-icons/md";
+import { MdFeedback, MdHotel, MdOutlineCleaningServices } from "react-icons/md";
 import { FaAngleDown, FaBed, FaBroom, FaCalendarAlt } from "react-icons/fa";
 import { Button, Dropdown } from "flowbite-react";
 import useUserStore from "../utils/zustand";
@@ -12,6 +12,7 @@ import { ClientSidebar } from "./clientSidebar";
 import { AdminSidebar } from "./adminSidebar";
 import { FaPesoSign } from "react-icons/fa6";
 import { ConfirmModal } from "./confirmModal";
+import { MdDiscount } from "react-icons/md";
 
 const Header = () => {
   const location = useLocation();
@@ -89,6 +90,24 @@ const Header = () => {
           <RiComputerLine color="white" className="mr-3" />
           <h1 className="text-sm font-extralight">Front Desk</h1>
         </Link>
+        <Link
+          to="/voucher"
+          className={`flex px-5 cursor-pointer mx-2 py-3 rounded-lg justify-start items-center ${
+            isCurrentPath("/voucher") ? "bg-red-800" : "bg-slate-700"
+          }`}
+        >
+          <MdDiscount color="white" className="mr-3" />
+          <h1 className="text-sm font-extralight">Voucher</h1>
+        </Link>
+        <Link
+          to="/feedback"
+          className={`flex px-5 cursor-pointer mx-2 py-3 rounded-lg justify-start items-center ${
+            isCurrentPath("/feedback") ? "bg-red-800" : "bg-slate-700"
+          }`}
+        >
+          <MdFeedback color="white" className="mr-3" />
+          <h1 className="text-sm font-extralight">Feedback</h1>
+        </Link>
         <Dropdown gradientMonochrome="failure" label="Services">
           <Dropdown.Header>
             <span className="block text-sm">Sophie Red Hotel</span>
@@ -96,7 +115,10 @@ const Header = () => {
           <Dropdown.Item onClick={() => navigation("/room")} icon={MdHotel}>
             Room Management
           </Dropdown.Item>
-          <Dropdown.Item icon={MdOutlineCleaningServices}>
+          <Dropdown.Item
+            onClick={() => navigation("/housekeeping")}
+            icon={MdOutlineCleaningServices}
+          >
             Housekeeper Management
           </Dropdown.Item>
           <Dropdown.Item onClick={() => navigation("/users")} icon={HiUsers}>

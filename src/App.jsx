@@ -16,6 +16,8 @@ import Housekeeper from "./pages/dashboard/housekeeper";
 import ClientRoom from "./pages/client/clientRoom";
 import Reports from "./pages/dashboard/reports";
 import EventBooking from "./pages/client/eventBooking";
+import Voucher from "./pages/dashboard/voucher";
+import Feedback from "./pages/dashboard/feedback";
 
 const App = () => {
   const { currentUser, currentAdmin, setCurrentAdmin } = useUserStore();
@@ -52,6 +54,14 @@ const App = () => {
         <Route
           path="/dashboard"
           element={currentAdmin ? <Index /> : <Landing />}
+        />
+        <Route
+          path="/voucher"
+          element={currentAdmin ? <Voucher /> : <Landing />}
+        />
+        <Route
+          path="/feedback"
+          element={currentAdmin ? <Feedback /> : <Landing />}
         />
         <Route path="/room" element={currentAdmin ? <Room /> : <Landing />} />
         <Route path="/users" element={currentAdmin ? <Users /> : <Landing />} />

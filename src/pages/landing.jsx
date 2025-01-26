@@ -203,11 +203,17 @@ const Landing = () => {
             "We do not remember the days, we remember the moments."{" "}
           </p>
           <Button
-            onClick={() => navigation("/event-booking")}
-            className="mt-5 px-5"
-            gradientMonochrome="failure"
+            onClick={() => {
+              if (currentUser) {
+                navigation("/event-booking");
+              } else {
+                navigation("/login");
+              }
+            }}
+            gradientMonochrome="info"
+            className="mt-5 px-10 py-2 lg:mx-3"
           >
-            Book Event
+            <span className="text-sm font-bold">Book Event</span>
           </Button>
         </div>
       </div>
