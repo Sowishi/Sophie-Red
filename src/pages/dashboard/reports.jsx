@@ -1,42 +1,53 @@
-import { Alert, Badge, Button, Table } from "flowbite-react";
+import { Alert, Badge, Button, Table, Modal } from "flowbite-react";
 import DashboardLayout from "./dashboardLayout";
 import { FaPlus } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import moment from "moment";
 import {
-  PDFDownloadLink,
+  PDFViewer,
   Page,
   Text,
   View,
   Document,
   StyleSheet,
+  PDFDownloadLink,
+  Image,
 } from "@react-pdf/renderer";
 import useCrudBooking from "../../hooks/useCrudBooking";
+import logo from "../../assets/logo.png";
 
 const styles = StyleSheet.create({
-  page: {
-    padding: 30,
-  },
-  section: {
-    marginBottom: 10,
-    padding: 10,
-    borderBottom: "1px solid #ddd",
-  },
+  page: { padding: 20 },
   title: {
-    fontSize: 18,
+    fontSize: 25,
     marginBottom: 10,
+    textAlign: "center",
+    fontWeight: "bold",
   },
-  text: {
-    fontSize: 12,
-  },
+  section: { marginBottom: 10, padding: 10, borderBottom: "1px solid #000" },
+  text: { fontSize: 12, marginBottom: 5 },
+  image: { width: 130, height: 130, marginBottom: 10, objectFit: "contain" }, // Adjust size as needed\
+  header: { justifyContent: "center", alignItems: "center" },
+  date: { justifyContent: "end", alignItems: "end", width: "100%" },
+  dateText: { fontSize: 12, marginBottom: 10 },
 });
 
 const ReportsPDF = ({ bookings }) => (
   <Document>
     <Page size="A4" style={styles.page}>
-      <Text style={styles.title}>Bookings Report</Text>
+      <View style={styles.header}>
+        <Image style={styles.image} src={logo} />
+        <Text style={styles.title}>Bookings Report</Text>
+      </View>
+
+      <View style={styles.date}>
+        <Text style={styles.dateText}>Date: {new Date().toDateString()}</Text>
+      </View>
+
       {bookings.map((booking, index) => (
         <View key={index} style={styles.section}>
+          {/* Add Image */}
+
           <Text style={styles.text}>
             Guest Name: {booking.currentUser.name}
           </Text>
@@ -76,6 +87,7 @@ const Reports = () => {
   const [bookings, setBookings] = useState([]);
   const [filteredBookings, setFilteredBookings] = useState([]);
   const [filter, setFilter] = useState("all");
+  const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
   const { fetchAllBookings } = useCrudBooking();
 
   useEffect(() => {
@@ -114,53 +126,43 @@ const Reports = () => {
             </p>
           </div>
           <div className="flex space-x-4">
-            <div className="flex space-x-4">
-              <Button
-                className={`${
-                  filter === "all"
-                    ? "bg-red-500 text-white"
-                    : "bg-white text-red-500"
-                } border border-red-500`}
-                onClick={() => setFilter("all")}
-              >
-                All
-              </Button>
-              <Button
-                className={`${
-                  filter === "daily"
-                    ? "bg-red-500 text-white"
-                    : "bg-white text-red-500"
-                } border border-red-500`}
-                onClick={() => setFilter("daily")}
-              >
-                Daily
-              </Button>
-              <Button
-                className={`${
-                  filter === "monthly"
-                    ? "bg-red-500 text-white"
-                    : "bg-white text-red-500"
-                } border border-red-500`}
-                onClick={() => setFilter("monthly")}
-              >
-                Monthly
-              </Button>
-            </div>
-
-            <PDFDownloadLink
-              document={<ReportsPDF bookings={filteredBookings} />}
-              fileName="bookings_report.pdf"
+            <Button
+              className={`${
+                filter === "all"
+                  ? "bg-red-500 text-white"
+                  : "bg-white text-red-500"
+              } border border-red-500`}
+              onClick={() => setFilter("all")}
             >
-              {({ loading }) =>
-                loading ? (
-                  <Button disabled>Generating PDF...</Button>
-                ) : (
-                  <Button color="purple" icon={FaPlus}>
-                    Export to PDF
-                  </Button>
-                )
-              }
-            </PDFDownloadLink>
+              All
+            </Button>
+            <Button
+              className={`${
+                filter === "daily"
+                  ? "bg-red-500 text-white"
+                  : "bg-white text-red-500"
+              } border border-red-500`}
+              onClick={() => setFilter("daily")}
+            >
+              Daily
+            </Button>
+            <Button
+              className={`${
+                filter === "monthly"
+                  ? "bg-red-500 text-white"
+                  : "bg-white text-red-500"
+              } border border-red-500`}
+              onClick={() => setFilter("monthly")}
+            >
+              Monthly
+            </Button>
+            <Button
+              gradientMonochrome="failure"
+              icon={FaPlus}
+              onClick={() => setIsModalOpen(true)}
+            >
+              Preview & Export
+            </Button>
           </div>
         </div>
         <Table hoverable striped>
@@ -218,6 +220,40 @@ const Reports = () => {
           </Table.Body>
         </Table>
       </div>
+
+      {/* Modal for PDF Preview */}
+      <Modal
+        size="6xl"
+        show={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      >
+        <Modal.Header>PDF Preview</Modal.Header>
+        <Modal.Body>
+          <PDFViewer style={{ width: "100%", height: "700px" }}>
+            <ReportsPDF bookings={filteredBookings} />
+          </PDFViewer>
+        </Modal.Body>
+        <Modal.Footer className="flex justify-end items-center">
+          <Button
+            gradientMonochrome="info"
+            onClick={() => setIsModalOpen(false)}
+          >
+            Print
+          </Button>
+          <PDFDownloadLink
+            document={<ReportsPDF bookings={filteredBookings} />}
+            fileName="bookings_report.pdf"
+          >
+            {({ loading }) =>
+              loading ? (
+                <Button disabled>Generating PDF...</Button>
+              ) : (
+                <Button gradientMonochrome="failure">Download PDF</Button>
+              )
+            }
+          </PDFDownloadLink>
+        </Modal.Footer>
+      </Modal>
     </DashboardLayout>
   );
 };
