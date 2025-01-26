@@ -9,7 +9,7 @@ import DisplayRoomsSelection from "../components/displayRoomsSelection";
 import { useEffect, useState } from "react";
 import useFetchCollection from "../hooks/useFetchCollection";
 import DisplayRoomLanding from "../components/displayRoomLanding";
-
+import eventBg from "../assets/event.jpg";
 const Landing = () => {
   const navigation = useNavigate();
   const { currentUser, logout } = useUserStore();
@@ -130,25 +130,46 @@ const Landing = () => {
               <span className="text-yellow-200">Onshore Restaurant</span>
             </motion.h1>
 
-            <motion.div
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}
-            >
-              <Button
-                onClick={() => {
-                  if (currentUser) {
-                    navigation("/booking");
-                  } else {
-                    navigation("/login");
-                  }
-                }}
-                gradientMonochrome="info"
-                className="mt-5 px-10 py-2"
+            <div className="flex-col lg:flex-row flex ">
+              <motion.div
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
-                <span className="text-sm font-bold">Book Now!</span>
-              </Button>
-            </motion.div>
+                <Button
+                  onClick={() => {
+                    if (currentUser) {
+                      navigation("/booking");
+                    } else {
+                      navigation("/login");
+                    }
+                  }}
+                  gradientMonochrome="info"
+                  className="mt-5 px-10 py-2 lg:mx-3"
+                >
+                  <span className="text-sm font-bold">Book Event</span>
+                </Button>
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              >
+                <Button
+                  onClick={() => {
+                    if (currentUser) {
+                      navigation("/booking");
+                    } else {
+                      navigation("/login");
+                    }
+                  }}
+                  gradientMonochrome="failure"
+                  className="mt-5 px-10 py-2"
+                >
+                  <span className="text-sm font-bold">Book Now!</span>
+                </Button>
+              </motion.div>
+            </div>
           </div>
         </div>
       </div>
@@ -164,11 +185,32 @@ const Landing = () => {
           </p>
         </div>
         <DisplayRoomLanding rooms={rooms} />
-        <div id="testimonials">
-          <Testimonials />
+      </div>
+
+      <div
+        style={{
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.5)), url(${eventBg})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+        className="w-full h-screen bg-red-500 flex justify-center items-center"
+      >
+        <div className="wrapper text-center flex flex-col justify-center items-center">
+          <h1 className="text-white text-5xl font-extrabold">
+            Sophie Red Hotel Function Room
+          </h1>
+          <p className="text-white text-lg mt-3">
+            "We do not remember the days, we remember the moments."{" "}
+          </p>
+          <Button className="mt-5 px-5" gradientMonochrome="failure">
+            Book Event
+          </Button>
         </div>
       </div>
 
+      <div id="testimonials">
+        <Testimonials />
+      </div>
       <iframe
         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3944.287762941997!2d124.73801817494206!3d8.664159191383336!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x32ffe45d368a3333%3A0xaae58833c816e934!2sSophie%20Red%20Hotel%20and%20Onshore%20Restaurant!5e0!3m2!1sen!2sph!4v1736693142618!5m2!1sen!2sph"
         width="100%"
