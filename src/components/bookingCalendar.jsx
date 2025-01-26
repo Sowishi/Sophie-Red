@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 
 const localizer = momentLocalizer(moment);
 
-export const BookingCalendar = ({ selectedRoom, searchQuery }) => {
+export const BookingCalendar = ({ selectedRoom, searchQuery, filterType }) => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -50,24 +50,17 @@ export const BookingCalendar = ({ selectedRoom, searchQuery }) => {
     );
   }
 
-  const eventColors = [
-    "#E57373",
-    "#81C784",
-    "#64B5F6",
-    "#FFD54F",
-    "#BA68C8",
-    "#FF8A65",
-    "#4DB6AC",
-    "#DCE775",
-    "#F06292",
-    "#7986CB",
-  ];
-
   const events = bookings
-    .filter((booking) => booking.status !== "Completed") // Exclude completed bookings
+    .filter(
+      (booking) =>
+        booking.status !== "Completed" && booking.bookType == filterType
+    ) // Exclude completed bookings
     .map((booking, index) => ({
       id: booking.id,
-      title: `Room ${booking.roomDetails.roomNumber} - ${booking.currentUser.name}`,
+      title:
+        booking.bookType == "room"
+          ? `Room ${booking.roomDetails.roomNumber} - ${booking.currentUser.name}`
+          : `Event  - ${booking.currentUser.name}`,
       start: new Date(booking.checkInDate.seconds * 1000),
       end: new Date(booking.checkOutDate.seconds * 1000),
       roomType: booking.roomDetails.roomType,
@@ -76,7 +69,6 @@ export const BookingCalendar = ({ selectedRoom, searchQuery }) => {
       downpayment: booking.downpayment,
       paymentStatus: booking.paymentStatus,
       description: booking.roomDetails.description,
-      color: eventColors[index % eventColors.length],
     }));
 
   const handleEventClick = (event) => {

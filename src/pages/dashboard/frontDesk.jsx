@@ -12,6 +12,7 @@ const FrontDesk = () => {
   const [loading, setLoading] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [filterType, setFilterType] = useState("room");
 
   useEffect(() => {
     fetchCollection("rooms", setRooms, setLoading);
@@ -22,7 +23,11 @@ const FrontDesk = () => {
       <div className="container mx-auto pt-10 pb-20">
         <div className="flex justify-between items-center  p-5">
           <div>
-            <h1 className="text-2xl lg:text-4xl font-bold">Booking Calendar</h1>
+            <h1 className="text-2xl lg:text-4xl font-bold">
+              {filterType == "room"
+                ? "Rooms Booking Calendar"
+                : "Event Booking Calendar"}
+            </h1>
             <p className="mt-3 text-sm text-gray-500">
               Sophie Red Hotel Booking Calendar
             </p>
@@ -46,16 +51,33 @@ const FrontDesk = () => {
             ))}
           </Dropdown>
         </div>
-        <div className="w-5/12">
+
+        <div className="flex items-center justify-between">
+          <div className="flex">
+            <Button
+              color={filterType === "room" ? "failure" : "light"}
+              className="px-5 mr-5"
+              onClick={() => setFilterType("room")}
+            >
+              Rooms
+            </Button>
+            <Button
+              color={filterType === "event" ? "failure" : "light"}
+              onClick={() => setFilterType("event")}
+            >
+              Events
+            </Button>
+          </div>
           <CustomInput
             onChange={(event) => setSearchQuery(event.target.value)}
-            label={"Search Guest"}
             placeholder={"Search for a guest"}
           />
         </div>
+
         <BookingCalendar
           searchQuery={searchQuery}
           selectedRoom={selectedRoom}
+          filterType={filterType}
         />
       </div>
     </DashboardLayout>
