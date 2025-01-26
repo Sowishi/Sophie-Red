@@ -1,5 +1,6 @@
 import {
   Alert,
+  Badge,
   Button,
   Card,
   Dropdown,
@@ -26,6 +27,7 @@ import { IoReload } from "react-icons/io5";
 import { getCheckoutPaymongo } from "../utils/getCheckout";
 import DisplayRoomsSelection from "./displayRoomsSelection";
 import eventBG from "../assets/event.jpg";
+import useCrudVoucher from "../hooks/useCrudVoucher";
 
 const ClientHeaderEvent = () => {
   const [bookNowModal, setBookNowModal] = useState(false);
@@ -46,7 +48,8 @@ const ClientHeaderEvent = () => {
   const [paymentTerm, setPaymentTerm] = useState("down");
   const dropdownRef = useRef();
   const navigation = useNavigate();
-
+  const { validateVoucher } = useCrudVoucher();
+  const [discount, setDiscount] = useState(null);
   const { fetchAvailableRoom, checkEventAvailability, bookEvent } =
     useCrudBooking();
   const { currentUser } = useUserStore();
@@ -94,7 +97,13 @@ const ClientHeaderEvent = () => {
   const handleBook = async () => {
     if (checkout) {
       const sessionID = await createPaymongoCheckout(
-        paymentTerm == "down" ? 5000 : 10000,
+        discount !== null
+          ? paymentTerm == "down"
+            ? 5000 * (1 - parseInt(discount) / 100)
+            : 10000 * (1 - parseInt(discount) / 100)
+          : paymentTerm == "down"
+          ? 5000
+          : 10000,
         paymentTerm
       );
       setCheckoutID(sessionID);
@@ -104,6 +113,9 @@ const ClientHeaderEvent = () => {
     setCheckingLoading(true);
     try {
       const output = await checkEventAvailability(arrivalDate, departureDate);
+      const discount = await validateVoucher(voucher);
+      setDiscount(discount);
+
       if (!output) {
         toast.error("Room not available for the selected dates.");
         setCheckingLoading(false);
@@ -349,8 +361,17 @@ const ClientHeaderEvent = () => {
                         <td className="px-4 py-2 text-sm text-gray-600">
                           Promo Code Applied
                         </td>
-                        <td className="px-4 py-2 text-sm text-gray-800">
-                          {voucher ? voucher : "None"}
+                        <td className="px-4 py-2 text-sm text-gray-800 flex">
+                          <span> {voucher ? voucher : "None"} </span>
+                          {discount !== null ? (
+                            <Badge color="success" className="ml-3">
+                              You have {discount}% off
+                            </Badge>
+                          ) : (
+                            <Badge color="failure" className="ml-3">
+                              Voucher not found
+                            </Badge>
+                          )}
                         </td>
                       </tr>
                       <tr className="border-b">
@@ -398,7 +419,14 @@ const ClientHeaderEvent = () => {
                           Make payment for:
                         </td>
                         <td className="px-4 py-2  font-bold text-3xl text-green-800 flex items-center justify-start">
-                          ₱{paymentTerm == "down" ? 5000 : 10000}
+                          ₱
+                          {discount !== null
+                            ? paymentTerm == "down"
+                              ? 5000 * (1 - parseInt(discount) / 100)
+                              : 10000 * (1 - parseInt(discount) / 100)
+                            : paymentTerm == "down"
+                            ? 5000
+                            : 10000}
                         </td>
                       </tr>
                     </tbody>
