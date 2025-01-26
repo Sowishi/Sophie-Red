@@ -24,6 +24,7 @@ export function PaymentsTable() {
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
+  const [typeFilter, setTypeFilter] = useState("room");
   const { updateBookingPayment } = useCrudBooking();
 
   useEffect(() => {
@@ -36,10 +37,12 @@ export function PaymentsTable() {
   };
 
   const filteredBookings = bookings.filter((booking) => {
-    if (filter === "all") return true;
-    return filter === "paid"
-      ? booking.paymentStatus === "full"
-      : booking.paymentStatus !== "full";
+    if (filter !== "all") {
+      if (filter === "paid" && booking.paymentStatus !== "full") return false;
+      if (filter === "unpaid" && booking.paymentStatus === "full") return false;
+    }
+    if (typeFilter !== "all" && booking.bookType !== typeFilter) return false;
+    return true;
   });
 
   if (loading) {
@@ -64,6 +67,20 @@ export function PaymentsTable() {
 
   return (
     <div className="overflow-x-auto">
+      <div className="flex gap-3 mb-5">
+        <Button
+          onClick={() => setTypeFilter("room")}
+          color={typeFilter == "room" ? "failure" : "light"}
+        >
+          Room
+        </Button>
+        <Button
+          onClick={() => setTypeFilter("event")}
+          color={typeFilter == "event" ? "failure" : "light"}
+        >
+          Event
+        </Button>
+      </div>
       <div className="flex items-center justify-between mb-5">
         <TextInput
           onChange={(event) => setSearch(event.target.value)}
@@ -71,6 +88,7 @@ export function PaymentsTable() {
           placeholder="Search Here..."
           value={search}
         />
+
         <Select value={filter} onChange={(e) => setFilter(e.target.value)}>
           <option value="all">All</option>
           <option value="paid">Paid</option>
@@ -80,7 +98,8 @@ export function PaymentsTable() {
       <Table hoverable striped>
         <Table.Head>
           <Table.HeadCell>Guest Name</Table.HeadCell>
-          <Table.HeadCell>Room Number</Table.HeadCell>
+          {typeFilter == "room" && <Table.HeadCell>Room Number</Table.HeadCell>}
+
           <Table.HeadCell>Total Price</Table.HeadCell>
           <Table.HeadCell>Payment Status</Table.HeadCell>
           <Table.HeadCell>Balance</Table.HeadCell>
@@ -101,7 +120,10 @@ export function PaymentsTable() {
                 <Table.Cell className="font-bold text-lg text-red-500">
                   {booking.currentUser.name}
                 </Table.Cell>
-                <Table.Cell>{booking.roomDetails.roomNumber}</Table.Cell>
+
+                {booking?.bookType == "room" && (
+                  <Table.Cell>{booking.roomDetails.roomNumber}</Table.Cell>
+                )}
                 <Table.Cell>₱{booking.totalPrice}</Table.Cell>
                 <Table.Cell>
                   <Badge
