@@ -13,7 +13,6 @@ const FrontDesk = () => {
   const { fetchCollection } = useFetchCollection();
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [selectedRoom, setSelectedRoom] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterType, setFilterType] = useState("room");
 
@@ -59,28 +58,11 @@ const FrontDesk = () => {
           <SearchInput
             onChange={(event) => setSearchQuery(event.target.value)}
           />
-          {/* 
-          <Dropdown
-            color="failure"
-            label={selectedRoom ? `Room ${selectedRoom}` : "Check Room"}
-          >
-            <Dropdown.Item onClick={() => setSelectedRoom(null)}>
-              All Rooms
-            </Dropdown.Item>
-            {rooms.map((item) => (
-              <Dropdown.Item
-                key={item.id}
-                onClick={() => setSelectedRoom(item.roomNumber)}
-              >
-                Room {item.roomNumber}
-              </Dropdown.Item>
-            ))}
-          </Dropdown> */}
         </div>
 
         <BookingCalendar
+          rooms={rooms}
           searchQuery={searchQuery}
-          selectedRoom={selectedRoom}
           filterType={filterType}
         />
       </div>

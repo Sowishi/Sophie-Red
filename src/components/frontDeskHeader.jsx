@@ -188,7 +188,7 @@ const FrontDeskHeader = () => {
   console.log(currentUser);
 
   return (
-    <div className="header flex-col bg-red-800 p-5 px-10 flex items-start justify-start ">
+    <div className="header p-10 bg-red-800 h-full ">
       <Button
         onClick={() => setBookNowModal(true)}
         className="lg:hidden"

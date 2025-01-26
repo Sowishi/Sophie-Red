@@ -4,20 +4,23 @@ import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import useCrudBooking from "../hooks/useCrudBooking";
 import Loader from "../components/loader";
-import { Button, Modal, Tooltip } from "flowbite-react";
+import { Button, Drawer, Dropdown, Modal, Tooltip } from "flowbite-react";
 import FrontDeskHeader from "./frontDeskHeader";
 import { ConfirmModal } from "./confirmModal";
 import { toast } from "react-toastify";
+import { FaPlus } from "react-icons/fa6";
 
 const localizer = momentLocalizer(moment);
 
-export const BookingCalendar = ({ selectedRoom, searchQuery, filterType }) => {
+export const BookingCalendar = ({ searchQuery, filterType, rooms }) => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const { fetchAllBookings, deleteBooking, checkoutBooking } = useCrudBooking();
   const [deleteModal, setDeleteModal] = useState(false);
   const [confirmCheckout, setConfirmCheckout] = useState(false);
+  const [selectedRoom, setSelectedRoom] = useState(null);
+  const [bookModal, setBookModal] = useState(false);
 
   useEffect(() => {
     const loadBookings = async () => {
@@ -133,6 +136,32 @@ export const BookingCalendar = ({ selectedRoom, searchQuery, filterType }) => {
 
   return (
     <div className=" container mx-auto bg-white lg:p-10 rounded-lg shadow">
+      <div className="flex justify-end items-center mb-3">
+        <Dropdown
+          color="info"
+          label={selectedRoom ? `Room ${selectedRoom}` : "Filter Room Number"}
+        >
+          <Dropdown.Item onClick={() => setSelectedRoom(null)}>
+            All Rooms
+          </Dropdown.Item>
+          {rooms.map((item) => (
+            <Dropdown.Item
+              key={item.id}
+              onClick={() => setSelectedRoom(item.roomNumber)}
+            >
+              Room {item.roomNumber}
+            </Dropdown.Item>
+          ))}
+        </Dropdown>
+        <Button
+          onClick={() => setBookModal(true)}
+          className="ml-5"
+          gradientMonochrome="failure"
+        >
+          Book Guest
+          <FaPlus className="ml-3 mt-1" />
+        </Button>
+      </div>
       <div className="flex-1">
         {filterType == "all" ? (
           <Calendar
@@ -156,10 +185,6 @@ export const BookingCalendar = ({ selectedRoom, searchQuery, filterType }) => {
           />
         )}
       </div>
-
-      {/* <div className="hidden lg:flex">
-        <FrontDeskHeader />
-      </div> */}
 
       <Modal show={selectedEvent !== null} onClose={closeModal}>
         <Modal.Header>
@@ -238,6 +263,20 @@ export const BookingCalendar = ({ selectedRoom, searchQuery, filterType }) => {
         open={deleteModal}
         handleClose={() => setDeleteModal(false)}
       />
+
+      <Drawer
+        position="right"
+        className="w-[500px]" // Adjust as needed
+        open={bookModal}
+        onClose={() => setBookModal(false)}
+      >
+        <Drawer.Header title="Drawer" />
+        <Drawer.Items>
+          <div className="container h-full">
+            <FrontDeskHeader />
+          </div>
+        </Drawer.Items>
+      </Drawer>
     </div>
   );
 };
