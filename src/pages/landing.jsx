@@ -166,7 +166,7 @@ const Landing = () => {
                   gradientMonochrome="failure"
                   className="mt-5 px-10 py-2"
                 >
-                  <span className="text-sm font-bold">Book Now!</span>
+                  <span className="text-sm font-bold">Book Hotel Room</span>
                 </Button>
               </motion.div>
             </div>
