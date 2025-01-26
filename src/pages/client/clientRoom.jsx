@@ -16,11 +16,11 @@ import useFetchCollection from "../../hooks/useFetchCollection";
 import useCrudHousekeeping from "../../hooks/useCrudHousekeeping";
 import { toast } from "react-toastify";
 import { FaStar } from "react-icons/fa";
-import useCrudRatings from "../../hooks/useCrudHooks";
 import useCrudBooking from "../../hooks/useCrudBooking";
 import RatingLanding from "../../components/ratings";
 import Lottie from "react-lottie";
 import anim from "../../assets/rating.json";
+import useCrudRating from "../../hooks/useCrudRating";
 
 const ClientRoom = () => {
   const { currentUser, booking, setBooking } = useUserStore();
@@ -38,7 +38,7 @@ const ClientRoom = () => {
   const [loading, setLoading] = useState(false);
   const [rating, setRating] = useState(0);
   const [remarks, setRemarks] = useState("");
-  const { addRating } = useCrudRatings();
+  const { addRating } = useCrudRating();
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
