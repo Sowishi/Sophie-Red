@@ -1,4 +1,11 @@
-import { Alert, Button, Dropdown, Table, TextInput } from "flowbite-react";
+import {
+  Alert,
+  Badge,
+  Button,
+  Dropdown,
+  Table,
+  TextInput,
+} from "flowbite-react";
 import { CustomDatePicker } from "./datePicker";
 import logo from "../assets/logo.png";
 import { ImMenu } from "react-icons/im";
@@ -18,6 +25,7 @@ import { createPaymongoCheckout } from "../utils/paymongoCheckout";
 import { IoReload } from "react-icons/io5";
 import { getCheckoutPaymongo } from "../utils/getCheckout";
 import DisplayRoomsSelection from "./displayRoomsSelection";
+import useCrudVoucher from "../hooks/useCrudVoucher";
 
 const ClientHeader = () => {
   const [bookNowModal, setBookNowModal] = useState(false);
@@ -36,11 +44,13 @@ const ClientHeader = () => {
   const [checkoutID, setCheckoutID] = useState();
   const [paymentStatus, setPaymentStatus] = useState("Pending");
   const [paymentTerm, setPaymentTerm] = useState("down");
+  const [discount, setDiscount] = useState(null);
   const dropdownRef = useRef();
   const navigation = useNavigate();
 
   const { fetchAvailableRoom, checkRoomAvailability, bookRoom } =
     useCrudBooking();
+  const { validateVoucher } = useCrudVoucher();
   const { currentUser } = useUserStore();
 
   const handleSubmit = async () => {
@@ -90,7 +100,13 @@ const ClientHeader = () => {
   const handleBook = async () => {
     if (checkout) {
       const sessionID = await createPaymongoCheckout(
-        paymentTerm == "down" ? downpayment : totalPrice,
+        discount !== null
+          ? paymentTerm == "down"
+            ? downpayment * (1 - parseInt(discount) / 100)
+            : totalPrice * (1 - parseInt(discount) / 100)
+          : paymentTerm == "down"
+          ? downpayment
+          : totalPrice,
         paymentTerm
       );
       setCheckoutID(sessionID);
@@ -105,6 +121,8 @@ const ClientHeader = () => {
         departureDate,
         currentUser.uid
       );
+      const discount = await validateVoucher(voucher);
+      setDiscount(discount);
       if (!output) {
         toast.error("Room not available for the selected dates.");
         setCheckingLoading(false);
@@ -509,8 +527,17 @@ const ClientHeader = () => {
                         <td className="px-4 py-2 text-sm text-gray-600">
                           Promo Code Applied
                         </td>
-                        <td className="px-4 py-2 text-sm text-gray-800">
-                          {voucher ? voucher : "None"}
+                        <td className="px-4 py-2 text-sm text-gray-800 flex">
+                          <span> {voucher ? voucher : "None"} </span>
+                          {discount !== null ? (
+                            <Badge color="success" className="ml-3">
+                              You have {discount}% off
+                            </Badge>
+                          ) : (
+                            <Badge color="failure" className="ml-3">
+                              Voucher not found
+                            </Badge>
+                          )}
                         </td>
                       </tr>
                       <tr className="border-b">
@@ -573,7 +600,14 @@ const ClientHeader = () => {
                           Make payment for:
                         </td>
                         <td className="px-4 py-2  font-bold text-3xl text-green-800 flex items-center justify-start">
-                          ₱{paymentTerm == "down" ? downpayment : totalPrice}
+                          ₱
+                          {discount !== null
+                            ? paymentTerm == "down"
+                              ? downpayment * (1 - parseInt(discount) / 100)
+                              : totalPrice * (1 - parseInt(discount) / 100)
+                            : paymentTerm == "down"
+                            ? downpayment
+                            : totalPrice}
                         </td>
                       </tr>
                     </tbody>

@@ -21,6 +21,7 @@ export const CustomDatePicker = ({ label, onChange, value }) => {
         onChange={onChange}
         placeholderText="Select a date" // Placeholder text when no date is selected
         dateFormat="MMMM d, yyyy" // Ensures consistency in display format
+        minDate={new Date()} // Disable past dates by setting the minimum date to today
         customInput={
           <input
             className="rounded-2xl p-2 text-gray-900 bg-white w-full"
