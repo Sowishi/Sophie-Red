@@ -4,42 +4,38 @@ import hotel2 from "../assets/hotels/hotel2.webp";
 import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import google from "../assets/google (1).png";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../utils/firebase";
-import useAppContext from "../utils/zustand";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import useUserStore from "../utils/zustand";
 import { useState } from "react";
-import useAuth from "../hooks/useAuth";
+import { toast } from "react-toastify";
+import useCrudUsers from "../hooks/useCrudUsers";
 
-const Login = () => {
+const SignUp = () => {
   const router = useNavigate();
-  const { setCurrentAdmin, setCurrentUser, loginWithGoogle } = useUserStore();
-  const { login } = useAuth();
+  const { setCurrentUser } = useUserStore();
+  const { addUser } = useCrudUsers();
 
-  // State for email and password
+  // State for form fields
+  const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleSubmit = async () => {
-    const user = await login(email, password);
-    if (user.role == "user") {
-      setCurrentUser(user);
-    } else {
-      setCurrentAdmin(user);
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
     }
 
-    if (user.role !== "user") {
-      router("/dashboard");
-    } else {
-      router("/");
+    try {
+      const data = { fullName, email, password };
+      await addUser({ ...data, role: "user" });
+      toast.success("Successfully Sign up");
+      router("/login");
+    } catch (error) {
+      toast.error(error.message);
     }
-
-    // Navigate to the dashboard
-  };
-
-  const handleGoogleLogin = async () => {
-    await loginWithGoogle();
-    router("/");
   };
 
   return (
@@ -69,23 +65,34 @@ const Login = () => {
             </Carousel>
           </div>
 
-          {/* Right Side: Login Form */}
+          {/* Right Side: Sign Up Form */}
           <div className="basis-full md:basis-6/12 flex items-center justify-center p-10">
             <div className="w-full max-w-md">
               <img src={logo} alt="" />
               <h1 className="text-2xl font-bold text-center mb-6 mt-5">
-                Welcome to Sophie Red Hotel
+                Create Your Account
               </h1>
               <form className="space-y-4">
+                <div>
+                  <Label htmlFor="fullName" value="Full Name" />
+                  <TextInput
+                    id="fullName"
+                    type="fullName"
+                    placeholder="Enter your full name"
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    required
+                  />
+                </div>
                 <div>
                   <Label htmlFor="email" value="Email" />
                   <TextInput
                     id="email"
                     type="email"
                     placeholder="Enter your email"
-                    value={email} // Bind state
-                    onChange={(e) => setEmail(e.target.value)} // Update state
-                    required={true}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
                   />
                 </div>
                 <div>
@@ -94,35 +101,38 @@ const Login = () => {
                     id="password"
                     type="password"
                     placeholder="Enter your password"
-                    value={password} // Bind state
-                    onChange={(e) => setPassword(e.target.value)} // Update state
-                    required={true}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="confirmPassword" value="Confirm Password" />
+                  <TextInput
+                    id="confirmPassword"
+                    type="password"
+                    placeholder="Confirm your password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    required
                   />
                 </div>
                 <Button
                   onClick={(e) => {
-                    e.preventDefault(); // Prevent form submission refresh
+                    e.preventDefault();
                     handleSubmit();
                   }}
                   color="failure"
                   className="w-full py-2"
                 >
-                  Login
+                  Sign Up
                 </Button>
               </form>
-              <Button
-                onClick={handleGoogleLogin}
-                color="white"
-                className="w-full mt-3 shadow-sm py-2 border flex item-center justify-center"
-              >
-                <h1>Login With Google</h1>
-                <img className="ml-3" width={20} src={google} alt="" />
-              </Button>
 
               <p className="text-center mt-4 text-lg">
-                Don't have an account?{" "}
-                <a href="/signup" className="text-blue-600 hover:underline">
-                  Sign up
+                Already have an account?{" "}
+                <a href="/login" className="text-blue-600 hover:underline">
+                  Login
                 </a>
               </p>
             </div>
@@ -133,4 +143,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignUp;

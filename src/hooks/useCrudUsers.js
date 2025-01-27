@@ -3,9 +3,12 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDocs,
   onSnapshot,
+  query,
   serverTimestamp,
   updateDoc,
+  where,
 } from "firebase/firestore";
 import { db } from "../utils/firebase";
 
@@ -13,6 +16,16 @@ const useCrudUsers = () => {
   const addUser = async (data) => {
     try {
       const colRef = collection(db, "users");
+
+      // Check if email already exists
+      const q = query(colRef, where("email", "==", data.email));
+      const querySnapshot = await getDocs(q);
+
+      if (!querySnapshot.empty) {
+        throw new Error("Email already exists. Please use a different email.");
+      }
+
+      // Add new user if email doesn't exist
       await addDoc(colRef, {
         ...data,
         createdAt: serverTimestamp(),
@@ -20,6 +33,7 @@ const useCrudUsers = () => {
       });
     } catch (error) {
       console.log(error.message);
+      throw error; // Re-throw to handle it in the calling function if needed
     }
   };
 

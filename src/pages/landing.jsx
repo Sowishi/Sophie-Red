@@ -79,7 +79,9 @@ const Landing = () => {
                   }
                 >
                   <Dropdown.Item>
-                    <p className="font-medium">{currentUser.name}</p>
+                    <p className="font-medium text-nowrap">
+                      {currentUser.name || currentUser.fullName}
+                    </p>
                   </Dropdown.Item>
                   <Dropdown.Item>
                     <p className="text-gray-500">{currentUser.email}</p>

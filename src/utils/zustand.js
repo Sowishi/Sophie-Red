@@ -65,6 +65,10 @@ const useUserStore = create((set) => ({
     set({ currentAdmin: user });
   },
 
+  setCurrentUser: (user) => {
+    set({ currentUser: user });
+  },
+
   setBooking: (data) => {
     set({ booking: data });
   },
