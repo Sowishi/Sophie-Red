@@ -19,6 +19,8 @@ import EventBooking from "./pages/client/eventBooking";
 import Voucher from "./pages/dashboard/voucher";
 import Feedback from "./pages/dashboard/feedback";
 import SignUp from "./pages/signup";
+import Privacy from "./pages/privacy";
+import Terms from "./pages/terms";
 
 const App = () => {
   const { currentUser, currentAdmin, setCurrentAdmin } = useUserStore();
@@ -42,6 +44,8 @@ const App = () => {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/terms" element={<Terms />} />
 
         <Route path="/client-dashboard" element={<ClientDashboard />} />
         <Route path="/client-room" element={<ClientRoom />} />

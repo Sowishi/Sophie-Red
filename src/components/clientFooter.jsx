@@ -28,16 +28,22 @@ export function ClientFooter() {
             <div>
               <Footer.Title title="Follow us" />
               <Footer.LinkGroup col>
-                <Footer.Link href="#">Facebook</Footer.Link>
-                <Footer.Link href="#">Instagram</Footer.Link>
-                <Footer.Link href="#">Twitter</Footer.Link>
+                <Footer.Link href="https://www.facebook.com/SRHotelOfficialPage">
+                  Facebook
+                </Footer.Link>
+                <Footer.Link href="https://www.facebook.com/SRHotelOfficialPage">
+                  Instagram
+                </Footer.Link>
+                <Footer.Link href="https://www.facebook.com/SRHotelOfficialPage">
+                  Twitter
+                </Footer.Link>
               </Footer.LinkGroup>
             </div>
             <div>
               <Footer.Title title="Legal" />
               <Footer.LinkGroup col>
-                <Footer.Link href="#">Privacy Policy</Footer.Link>
-                <Footer.Link href="#">Terms &amp; Conditions</Footer.Link>
+                <Footer.Link href="/privacy">Privacy Policy</Footer.Link>
+                <Footer.Link href="/terms">Terms &amp; Conditions</Footer.Link>
               </Footer.LinkGroup>
             </div>
           </div>
