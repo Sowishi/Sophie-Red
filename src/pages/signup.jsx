@@ -23,6 +23,9 @@ const SignUp = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleSubmit = async () => {
+    const uid =
+      Math.random().toString(36).substring(2, 10) + Date.now().toString(36);
+
     if (password !== confirmPassword) {
       toast.error("Passwords do not match");
       return;
@@ -30,7 +33,7 @@ const SignUp = () => {
 
     try {
       const data = { fullName, email, password };
-      await addUser({ ...data, role: "user" });
+      await addUser({ ...data, role: "user", uid, name: fullName });
       toast.success("Successfully Sign up");
       router("/login");
     } catch (error) {

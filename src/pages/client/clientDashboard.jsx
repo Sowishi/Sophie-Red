@@ -30,14 +30,21 @@ const ClientDashboard = () => {
   useEffect(() => {
     const getBooking = async () => {
       if (currentUser) {
-        setLoading(true);
-        await fetchUserBooking(currentUser, setBooking);
-        setLoading(false);
+        try {
+          setLoading(true);
+          await fetchUserBooking(currentUser, setBooking);
+          setLoading(false);
+        } catch (error) {
+          toast.error(error.message);
+          setLoading(false);
+        }
       }
     };
 
     getBooking();
   }, [currentUser]);
+
+  console.log(booking);
 
   if (loading)
     return (
