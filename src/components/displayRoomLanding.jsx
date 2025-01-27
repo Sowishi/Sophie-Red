@@ -9,6 +9,7 @@ const DisplayRoomLanding = ({ rooms, selectedRoom, handleRoomSelection }) => {
   const [roomImages, setRoomImages] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRoomImages, setSelectedRoomImages] = useState([]);
+  const [priceRange, setPriceRange] = useState(null); // `null` means no filtering
 
   useEffect(() => {
     const fetchImagesForRooms = async () => {
@@ -36,64 +37,125 @@ const DisplayRoomLanding = ({ rooms, selectedRoom, handleRoomSelection }) => {
     setIsModalOpen(true);
   };
 
-  return (
-    <motion.div
-      className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-    >
-      {rooms.map((room, index) => (
-        <motion.div
-          key={room.id}
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.4, delay: index * 0.1 }}
-        >
-          <Card
-            className={`p-4 shadow-lg transition-transform transform hover:scale-105 ${
-              selectedRoom?.roomNumber === room.roomNumber
-                ? "border-2 border-green-500"
-                : "border border-gray-300 dark:border-gray-700"
-            }`}
-          >
-            {/* ✅ Room Image Carousel */}
-            <motion.div
-              className="h-40 w-full cursor-pointer"
-              onClick={() => openModal(roomImages[room.id] || [])}
-              whileHover={{ scale: 1.02 }}
-            >
-              <Carousel slideInterval={3000} indicators={false}>
-                {roomImages[room.id]?.map((img, idx) => (
-                  <motion.img
-                    key={idx}
-                    src={img}
-                    alt={`Room ${room.roomNumber} - Image ${idx + 1}`}
-                    className="h-40 w-full object-cover rounded-md"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.5 }}
-                  />
-                ))}
-              </Carousel>
-            </motion.div>
+  // Filter rooms based on the selected price range
+  const filteredRooms =
+    priceRange === null
+      ? rooms // Show all rooms when no range is selected
+      : rooms.filter(
+          (room) =>
+            room.pricePerNight >= priceRange[0] &&
+            room.pricePerNight <= priceRange[1]
+        );
 
-            <h3 className="text-xl font-semibold text-red-500 mt-3">
-              Room {room.roomNumber}
-            </h3>
-            <p className="text-gray-600 dark:text-gray-300">
-              <strong>Type:</strong> {room.roomType}
-            </p>
-            <p className="text-gray-600 dark:text-gray-300">
-              <strong>Price Per Night:</strong> ₱{room.pricePerNight}
-            </p>
-            <p className="text-gray-600 dark:text-gray-300">
-              <strong>Guest Allowed:</strong> {room.adultCount} Adult &{" "}
-              {room.childCount} Kids
-            </p>
-          </Card>
-        </motion.div>
-      ))}
+  const handlePriceRangeChange = (range) => {
+    setPriceRange(range);
+  };
+
+  return (
+    <>
+      {/* ✅ Price Range Buttons */}
+      <div className="flex flex-wrap justify-center gap-4 p-4 sm:gap-6 sm:p-6 mb-6">
+        <Button
+          onClick={() => handlePriceRangeChange(null)}
+          color={priceRange === null ? "success" : "gray"}
+          outline={priceRange !== null}
+          className="sm:px-6 sm:py-2"
+        >
+          All Prices
+        </Button>
+        {[
+          [1001, 3000],
+          [3001, 5000],
+          [5001, 10000],
+        ].map((range, index) => (
+          <Button
+            key={index}
+            onClick={() => handlePriceRangeChange(range)}
+            color={
+              priceRange &&
+              priceRange[0] === range[0] &&
+              priceRange[1] === range[1]
+                ? "success"
+                : "gray"
+            }
+            outline={
+              !(
+                priceRange &&
+                priceRange[0] === range[0] &&
+                priceRange[1] === range[1]
+              )
+            }
+            className="sm:px-6 sm:py-2"
+          >
+            ₱{range[0]} - ₱{range[1]}
+          </Button>
+        ))}
+      </div>
+
+      <motion.div
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        {filteredRooms.map((room, index) => (
+          <motion.div
+            key={room.id}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.4, delay: index * 0.1 }}
+          >
+            <Card
+              className={`p-4 shadow-lg transition-transform transform hover:scale-105 ${
+                selectedRoom?.roomNumber === room.roomNumber
+                  ? "border-2 border-green-500"
+                  : "border border-gray-300 dark:border-gray-700"
+              }`}
+            >
+              {/* ✅ Room Image Carousel */}
+              <motion.div
+                className="h-40 w-full cursor-pointer"
+                onClick={() => openModal(roomImages[room.id] || [])}
+                whileHover={{ scale: 1.02 }}
+              >
+                <Carousel slideInterval={3000} indicators={false}>
+                  {roomImages[room.id]?.map((img, idx) => (
+                    <motion.img
+                      key={idx}
+                      src={img}
+                      alt={`Room ${room.roomNumber} - Image ${idx + 1}`}
+                      className="h-40 w-full object-cover rounded-md"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.5 }}
+                    />
+                  ))}
+                </Carousel>
+              </motion.div>
+
+              <h3 className="text-xl font-semibold text-red-500 mt-3">
+                Room {room.roomNumber}
+              </h3>
+              <p className="text-gray-600 dark:text-gray-300">
+                <strong>Type:</strong> {room.roomType}
+              </p>
+              <p className="text-gray-600 dark:text-gray-300">
+                <strong>Price Per Night:</strong> ₱{room.pricePerNight}
+              </p>
+              <p className="text-gray-600 dark:text-gray-300">
+                <strong>Guest Allowed:</strong> {room.adultCount} Adult &{" "}
+                {room.childCount} Kids
+              </p>
+            </Card>
+          </motion.div>
+        ))}
+
+        {filteredRooms.length <= 0 && (
+          <>
+            <h1>There's no room for this price range</h1>
+          </>
+        )}
+      </motion.div>
 
       {/* ✅ Large Image Modal */}
       <Modal
@@ -125,7 +187,7 @@ const DisplayRoomLanding = ({ rooms, selectedRoom, handleRoomSelection }) => {
           </motion.div>
         </Modal.Body>
       </Modal>
-    </motion.div>
+    </>
   );
 };
 

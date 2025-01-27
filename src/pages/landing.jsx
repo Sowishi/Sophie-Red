@@ -10,6 +10,9 @@ import { useEffect, useState } from "react";
 import useFetchCollection from "../hooks/useFetchCollection";
 import DisplayRoomLanding from "../components/displayRoomLanding";
 import eventBg from "../assets/event.jpg";
+import red from "../assets/red.jpg";
+import red2 from "../assets/reddd.jpg";
+
 const Landing = () => {
   const navigation = useNavigate();
   const { currentUser, logout } = useUserStore();
@@ -24,10 +27,15 @@ const Landing = () => {
 
   return (
     <motion.div
+      style={{
+        backgroundImage: ` url(${red})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
-      className=" min-h-screen"
+      className=" min-h-screen "
     >
       <div
         style={{
@@ -176,7 +184,7 @@ const Landing = () => {
         </div>
       </div>
 
-      <div className="container mx-auto p-10 lg:p-20">
+      <div className="container mx-auto p-10 lg:p-20 rounded-lg">
         <div id="rooms" className="mx-auto max-w-screen-sm text-center">
           <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
             Sophie Room Hotels
@@ -195,7 +203,7 @@ const Landing = () => {
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
-        className="w-full h-screen bg-red-500 flex justify-center items-center"
+        className="w-full h-screen bg-red-500 flex justify-center items-center mt-20"
       >
         <div className="wrapper text-center flex flex-col justify-center items-center">
           <h1 className="text-white text-5xl font-extrabold">
