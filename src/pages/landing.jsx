@@ -267,6 +267,7 @@ const Landing = () => {
       <div id="testimonials">
         <Testimonials />
       </div>
+
       <div id="ameneties" className="bg-white my-10">
         <div className="mx-auto max-w-screen-sm text-center pt-10">
           <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
@@ -341,6 +342,7 @@ const Landing = () => {
             <Amenities />
             <Facilities />
           </div>
+
           <div className="basis-full md:basis-5/12 flex flex-col items-center justify-center">
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3944.287762941997!2d124.73801817494206!3d8.664159191383336!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x32ffe45d368a3333%3A0xaae58833c816e934!2sSophie%20Red%20Hotel%20and%20Onshore%20Restaurant!5e0!3m2!1sen!2sph!4v1736693142618!5m2!1sen!2sph"
@@ -356,6 +358,7 @@ const Landing = () => {
           </div>
         </motion.div>
       </div>
+
       <iframe
         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3944.287762941997!2d124.73801817494206!3d8.664159191383336!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x32ffe45d368a3333%3A0xaae58833c816e934!2sSophie%20Red%20Hotel%20and%20Onshore%20Restaurant!5e0!3m2!1sen!2sph!4v1736693142618!5m2!1sen!2sph"
         width="100%"

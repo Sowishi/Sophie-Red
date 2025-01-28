@@ -1,5 +1,8 @@
 import React from "react";
 import { Button, Avatar } from "flowbite-react";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const Testimonials = () => {
   const testimonials = [
@@ -46,6 +49,19 @@ const Testimonials = () => {
     },
   ];
 
+  // Settings for the carousel
+  const settings = {
+    dots: true, // Show dots for navigation
+    infinite: true, // Infinite looping
+    speed: 500, // Transition speed
+    slidesToShow: 1, // Number of slides to show at once
+    slidesToScroll: 1, // Number of slides to scroll
+    autoplay: true, // Enable autoplay
+    autoplaySpeed: 2000, // Autoplay interval (5 seconds)
+    pauseOnHover: true, // Pause autoplay on hover
+    arrows: true, // Show navigation arrows
+  };
+
   return (
     <section className="bg-white dark:bg-gray-900">
       <div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-6">
@@ -58,36 +74,38 @@ const Testimonials = () => {
             Sophie Red Hotel in Cagayan de Oro, Philippines.
           </p>
         </div>
-        <div className="grid mb-8 lg:mb-12 lg:grid-cols-2">
-          {testimonials.map((testimonial, index) => (
-            <figure
-              key={index}
-              className={`flex flex-col justify-center items-center p-8 text-center bg-gray-50 border-b border-gray-200 md:p-12 dark:bg-gray-800 dark:border-gray-700 ${
-                index % 2 === 0 ? "lg:border-r" : ""
-              }`}
-            >
-              <blockquote className="mx-auto mb-8 max-w-2xl text-gray-500 dark:text-gray-400">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  {testimonial.title}
-                </h3>
-                {testimonial.content.map((paragraph, idx) => (
-                  <p key={idx} className="my-4">
-                    {paragraph}
-                  </p>
-                ))}
-              </blockquote>
-              <figcaption className="flex justify-center items-center space-x-3">
-                <Avatar img={testimonial.img} rounded={true} />
-                <div className="space-y-0.5 font-medium dark:text-white text-left">
-                  <div>{testimonial.name}</div>
-                  <div className="text-sm font-light text-gray-500 dark:text-gray-400">
-                    {testimonial.role}
-                  </div>
-                </div>
-              </figcaption>
-            </figure>
-          ))}
+        <div className="mb-8 lg:mb-12">
+          <Slider {...settings}>
+            {testimonials.map((testimonial, index) => (
+              <div key={index} className="p-8 bg-gray-50 dark:bg-gray-800">
+                <figure className="flex flex-col justify-center items-center text-center">
+                  <blockquote className="mx-auto mb-8 max-w-2xl text-gray-500 dark:text-gray-400">
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                      {testimonial.title}
+                    </h3>
+                    {testimonial.content.map((paragraph, idx) => (
+                      <p key={idx} className="my-4">
+                        {paragraph}
+                      </p>
+                    ))}
+                  </blockquote>
+                  <figcaption className="flex justify-center items-center space-x-3">
+                    <Avatar img={testimonial.img} rounded={true} />
+                    <div className="space-y-0.5 font-medium dark:text-white text-left">
+                      <div>{testimonial.name}</div>
+                      <div className="text-sm font-light text-gray-500 dark:text-gray-400">
+                        {testimonial.role}
+                      </div>
+                    </div>
+                  </figcaption>
+                </figure>
+              </div>
+            ))}
+          </Slider>
         </div>
+      </div>
+      <div className="flex justify-center items-center py-10 pb-44">
+        <div className="line bg-[#E94040] h-[10px] w-[300px]"></div>
       </div>
     </section>
   );
