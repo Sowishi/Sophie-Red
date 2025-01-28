@@ -94,11 +94,18 @@ const Landing = () => {
             >
               Testimonials
             </Navbar.Link>
+
             <Navbar.Link
               className="text-white text-lg opacity-80 hover:bg-red-500"
               href="#rooms"
             >
               Rooms
+            </Navbar.Link>
+            <Navbar.Link
+              className="text-white text-lg opacity-80 hover:bg-red-500"
+              href="#ameneties"
+            >
+              Ameneties
             </Navbar.Link>
             {currentUser && (
               <div className="relative  flex items-center justify-center">
