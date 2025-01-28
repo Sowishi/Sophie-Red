@@ -146,6 +146,12 @@ const DisplayRoomLanding = ({ rooms, selectedRoom, handleRoomSelection }) => {
                 <strong>Guest Allowed:</strong> {room.adultCount} Adult &{" "}
                 {room.childCount} Kids
               </p>
+              <Button
+                onClick={() => openModal(roomImages[room.id] || [])}
+                gradientMonochrome="failure"
+              >
+                View Room
+              </Button>
             </Card>
           </motion.div>
         ))}
