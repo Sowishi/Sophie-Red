@@ -7,13 +7,13 @@ import moment from "moment";
 import { toast } from "react-toastify";
 
 const HousekeeperTable = () => {
-  const { fetchUserTasks, updateTaskStatus } = useCrudHousekeeping();
+  const { fetchAllTasks, updateTaskStatus } = useCrudHousekeeping();
   const [tasks, setTasks] = useState(null);
   const [filter, setFilter] = useState("All");
   const { currentAdmin } = useUserStore();
 
   useEffect(() => {
-    fetchUserTasks(currentAdmin?.id, setTasks);
+    fetchAllTasks(setTasks);
   }, []);
 
   const handleStatusUpdate = async (taskId, newStatus, roomID) => {

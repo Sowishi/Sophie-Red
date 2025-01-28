@@ -56,6 +56,20 @@ const useCrudHousekeeping = () => {
     }
   };
 
+  const fetchAllTasks = async (setTasks) => {
+    try {
+      const colRef = collection(db, "housekeeping");
+      const snapshot = await getDocs(colRef);
+      const output = snapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      setTasks(output);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   const updateTaskStatus = async (taskID, newStatus, roomID) => {
     try {
       const taskRef = doc(db, "housekeeping", taskID);
@@ -82,7 +96,13 @@ const useCrudHousekeeping = () => {
     }
   };
 
-  return { addTask, fetchRoomTasks, fetchUserTasks, updateTaskStatus };
+  return {
+    addTask,
+    fetchRoomTasks,
+    fetchUserTasks,
+    updateTaskStatus,
+    fetchAllTasks,
+  };
 };
 
 export default useCrudHousekeeping;

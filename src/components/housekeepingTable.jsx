@@ -79,7 +79,11 @@ export function HousekeepingTable() {
     );
   }
 
-  const houseKeepers = users.filter((user) => user.role === "Housekeeping");
+  const houseKeepers = [
+    { fullName: "Juan Dela Cruz" },
+    { fullName: "Yasmin Chan" },
+    { fullName: "Jean Monica" },
+  ];
 
   const handleFormSubmit = (e) => {
     e.preventDefault();

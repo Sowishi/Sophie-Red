@@ -174,7 +174,11 @@ const Header = () => {
         />
         <div className="div text-white mx-5">
           <h1>{currentAdmin.fullName}</h1>
-          <h1 className="font-extralight opacity-70">{currentAdmin.role}</h1>
+          <h1 className="font-extralight opacity-70">
+            {currentAdmin.role == "Housekeeping"
+              ? "Housekeeping Supervisor"
+              : currentAdmin?.role}
+          </h1>
         </div>
         <Dropdown gradientMonochrome="failure" label="">
           <Dropdown.Header>
