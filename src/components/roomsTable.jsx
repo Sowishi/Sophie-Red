@@ -170,7 +170,9 @@ export function RoomsTable() {
             <h1 className="text-3xl font-bold flex items-center justify-start">
               Room Number: #{selectedRoom?.roomNumber}{" "}
               <Badge size="lg" className="ml-3 p-1 px-4">
-                {selectedRoom?.status}
+                {selectedRoom?.status == "vacant"
+                  ? "Completed"
+                  : selectedRoom?.status}
               </Badge>
             </h1>
             <Button

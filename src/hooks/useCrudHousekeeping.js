@@ -20,7 +20,7 @@ const useCrudHousekeeping = () => {
         status: "Pending",
       });
       const docRef = doc(db, "rooms", data.selectedRoom.id);
-      await updateDoc(docRef, { status: "assigned" });
+      await updateDoc(docRef, { status: "ongoing" });
     } catch (error) {
       console.log(error.message);
     }
