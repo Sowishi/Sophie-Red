@@ -84,7 +84,7 @@ const ClientHeader = () => {
     setBookingModal(true);
 
     // Fetch available rooms
-    await fetchAvailableRoom(persons, setRooms);
+    await fetchAvailableRoom(persons, setRooms, arrivalDate, departureDate);
 
     setLoading(false);
   };
@@ -658,7 +658,7 @@ const ClientHeader = () => {
               gradientMonochrome="failure"
               className="w-full mt-2 py-1"
             >
-              {checkout ? "Pay Now" : "Check Availability"}
+              {checkout ? "Pay Now" : "Proceed"}
             </Button>
           </div>
         )}

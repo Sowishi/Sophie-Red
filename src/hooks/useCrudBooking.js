@@ -15,7 +15,12 @@ import moment from "moment/moment";
 import { calculateStayDuration } from "../utils/calculateStay";
 
 const useCrudBooking = () => {
-  const fetchAvailableRoom = async (persons, setRooms) => {
+  const fetchAvailableRoom = async (
+    persons,
+    setRooms,
+    arrivalDate,
+    departureDate
+  ) => {
     if (
       !persons ||
       typeof persons.adults !== "number" ||
@@ -39,12 +44,26 @@ const useCrudBooking = () => {
 
       if (snapshot.empty) {
         setRooms([]);
+        return;
       }
 
-      const availableRooms = snapshot.docs.map((doc) => ({
+      const allRooms = snapshot.docs.map((doc) => ({
         id: doc.id, // Include document ID if needed
         ...doc.data(),
       }));
+
+      // Filter rooms based on availability for the selected dates
+      const availableRooms = [];
+      for (const room of allRooms) {
+        const isAvailable = await checkRoomAvailability(
+          room.id,
+          arrivalDate,
+          departureDate
+        );
+        if (isAvailable) {
+          availableRooms.push(room);
+        }
+      }
 
       setRooms(availableRooms);
     } catch (error) {
