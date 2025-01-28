@@ -1,119 +1,34 @@
 import { Alert, Badge, Button, Table, Modal } from "flowbite-react";
 import DashboardLayout from "./dashboardLayout";
 import { FaPlus } from "react-icons/fa";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import moment from "moment";
-import {
-  PDFViewer,
-  Page,
-  Text,
-  View,
-  Document,
-  StyleSheet,
-  PDFDownloadLink,
-  Image,
-} from "@react-pdf/renderer";
+import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
 import useCrudBooking from "../../hooks/useCrudBooking";
 import logo from "../../assets/logo.png";
-
-const styles = StyleSheet.create({
-  page: { padding: 20 },
-  title: {
-    fontSize: 25,
-    marginBottom: 10,
-    textAlign: "center",
-    fontWeight: "bold",
-  },
-  section: { marginBottom: 10, padding: 10, borderBottom: "1px solid #000" },
-  text: { fontSize: 12, marginBottom: 5 },
-  image: { width: 130, height: 130, marginBottom: 10, objectFit: "contain" }, // Adjust size as needed\
-  header: { justifyContent: "center", alignItems: "center" },
-  date: { justifyContent: "end", alignItems: "end", width: "100%" },
-  dateText: { fontSize: 12, marginBottom: 10 },
-});
-
-const ReportsPDF = ({ bookings }) => (
-  <Document>
-    <Page size="A4" style={styles.page}>
-      <View style={styles.header}>
-        <Image style={styles.image} src={logo} />
-        <Text style={styles.title}>Bookings Report</Text>
-      </View>
-
-      <View style={styles.date}>
-        <Text style={styles.dateText}>Date: {new Date().toDateString()}</Text>
-      </View>
-
-      {bookings.map((booking, index) => (
-        <View key={index} style={styles.section}>
-          {/* Add Image */}
-
-          <Text style={styles.text}>
-            Guest Name: {booking.currentUser.name}
-          </Text>
-          <Text style={styles.text}>
-            Room Number: {booking.roomDetails.roomNumber}
-          </Text>
-          <Text style={styles.text}>Total Price: ₱{booking.totalPrice}</Text>
-          <Text style={styles.text}>
-            Payment Status:{" "}
-            {booking.paymentStatus === "full" ? "Fully Paid" : "Unpaid"}
-          </Text>
-          <Text style={styles.text}>
-            Balance: ₱
-            {booking.paymentStatus === "full"
-              ? "0"
-              : booking.totalPrice - booking.downpayment}
-          </Text>
-          <Text style={styles.text}>
-            Check-In Date:{" "}
-            {booking.checkInDate
-              ? moment(booking.checkInDate.toDate()).format("LLL")
-              : "Invalid Date"}
-          </Text>
-          <Text style={styles.text}>
-            Check-Out Date:{" "}
-            {booking.checkOutDate
-              ? moment(booking.checkOutDate.toDate()).format("LLL")
-              : "Invalid Date"}
-          </Text>
-        </View>
-      ))}
-    </Page>
-  </Document>
-);
+import { usePDF } from "react-to-pdf";
 
 const Reports = () => {
   const [bookings, setBookings] = useState([]);
   const [filteredBookings, setFilteredBookings] = useState([]);
-  const [filter, setFilter] = useState("all");
+  const [startDate, setStartDate] = useState(moment().startOf("day").toDate()); // Default to today's start
+  const [endDate, setEndDate] = useState(moment().endOf("day").toDate()); // Default to today's end
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
   const { fetchAllBookings } = useCrudBooking();
+  const { toPDF, targetRef } = usePDF({ filename: "bookings_report.pdf" });
 
   useEffect(() => {
     fetchAllBookings(setBookings);
   }, []);
 
   useEffect(() => {
-    if (filter === "all") {
-      setFilteredBookings(bookings);
-    } else if (filter === "daily") {
-      const today = moment().startOf("day");
-      setFilteredBookings(
-        bookings.filter((booking) =>
-          moment(booking.createdAt.toDate()).isSame(today, "day")
-        )
-      );
-    } else if (filter === "monthly") {
-      const currentMonth = moment().month();
-      setFilteredBookings(
-        bookings.filter(
-          (booking) =>
-            moment(booking.createdAt.toDate()).month() === currentMonth
-        )
-      );
-    }
-  }, [filter, bookings]);
+    // Filter bookings based on the selected date range
+    const filtered = bookings.filter((booking) => {
+      const bookingDate = moment(booking.createdAt.toDate());
+      return bookingDate.isBetween(startDate, endDate, null, "[]"); // Inclusive of start and end dates
+    });
+    setFilteredBookings(filtered);
+  }, [startDate, endDate, bookings]);
 
   return (
     <DashboardLayout>
@@ -127,36 +42,6 @@ const Reports = () => {
           </div>
           <div className="flex space-x-4">
             <Button
-              className={`${
-                filter === "all"
-                  ? "bg-red-500 text-white"
-                  : "bg-white text-red-500"
-              } border border-red-500`}
-              onClick={() => setFilter("all")}
-            >
-              All
-            </Button>
-            <Button
-              className={`${
-                filter === "daily"
-                  ? "bg-red-500 text-white"
-                  : "bg-white text-red-500"
-              } border border-red-500`}
-              onClick={() => setFilter("daily")}
-            >
-              Daily
-            </Button>
-            <Button
-              className={`${
-                filter === "monthly"
-                  ? "bg-red-500 text-white"
-                  : "bg-white text-red-500"
-              } border border-red-500`}
-              onClick={() => setFilter("monthly")}
-            >
-              Monthly
-            </Button>
-            <Button
               gradientMonochrome="failure"
               icon={FaPlus}
               onClick={() => setIsModalOpen(true)}
@@ -165,60 +50,99 @@ const Reports = () => {
             </Button>
           </div>
         </div>
-        <Table hoverable striped>
-          <Table.Head>
-            <Table.HeadCell>Guest Name</Table.HeadCell>
-            <Table.HeadCell>Room Number</Table.HeadCell>
-            <Table.HeadCell>Total Price</Table.HeadCell>
-            <Table.HeadCell>Payment Status</Table.HeadCell>
-            <Table.HeadCell>Balance</Table.HeadCell>
-            <Table.HeadCell>Check-In Date</Table.HeadCell>
-            <Table.HeadCell>Check-Out Date</Table.HeadCell>
-          </Table.Head>
-          <Table.Body className="divide-y">
-            {filteredBookings.map((booking, index) => {
-              const date = booking.checkOutDate
-                ? moment(booking.checkOutDate.toDate()).format("LLL")
-                : "Invalid Date";
-              const checkIn = booking.checkInDate
-                ? moment(booking.checkInDate.toDate()).format("LLL")
-                : "Invalid Date";
 
-              return (
-                <Table.Row
-                  key={index}
-                  className="bg-white dark:border-gray-700 dark:bg-gray-800"
-                >
-                  <Table.Cell className="font-bold text-lg text-red-500">
-                    {booking.currentUser.name}
-                  </Table.Cell>
-                  <Table.Cell>{booking.roomDetails.roomNumber}</Table.Cell>
-                  <Table.Cell>₱{booking.totalPrice}</Table.Cell>
-                  <Table.Cell>
-                    <Badge
-                      color={
-                        booking.paymentStatus === "full" ? "success" : "failure"
-                      }
-                    >
-                      {booking.paymentStatus === "full"
-                        ? "Fully Paid"
-                        : "Unpaid"}
-                    </Badge>
-                  </Table.Cell>
-                  <Table.Cell>
-                    {booking.paymentStatus === "full" ? (
-                      <Badge color="success">No Balance</Badge>
-                    ) : (
-                      <h1>₱{booking.totalPrice - booking.downpayment}</h1>
-                    )}
-                  </Table.Cell>
-                  <Table.Cell>{checkIn}</Table.Cell>
-                  <Table.Cell>{date}</Table.Cell>
-                </Table.Row>
-              );
-            })}
-          </Table.Body>
-        </Table>
+        {/* Date Range Inputs */}
+        <div className="flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-4 mb-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Start Date
+            </label>
+            <input
+              type="date"
+              value={moment(startDate).format("YYYY-MM-DD")}
+              onChange={(e) => setStartDate(new Date(e.target.value))}
+              className="mt-1 p-2 border rounded-lg"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              End Date
+            </label>
+            <input
+              type="date"
+              value={moment(endDate).format("YYYY-MM-DD")}
+              onChange={(e) => setEndDate(new Date(e.target.value))}
+              className="mt-1 p-2 border rounded-lg"
+            />
+          </div>
+        </div>
+
+        {/* Table with Title */}
+        <div ref={targetRef} className="bg-white p-6 rounded-lg shadow-md">
+          <h2 className="text-xl font-bold mb-4">
+            Booking Report {""}{" "}
+            <span className="ml-3 text-red-500 opacity-85">
+              {moment(startDate.toDateString()).format("LL")} -{" "}
+              {moment(endDate.toDateString()).format("LL")}
+            </span>
+          </h2>
+          <Table hoverable striped>
+            <Table.Head>
+              <Table.HeadCell>Guest Name</Table.HeadCell>
+              <Table.HeadCell>Room Number</Table.HeadCell>
+              <Table.HeadCell>Total Price</Table.HeadCell>
+              <Table.HeadCell>Payment Status</Table.HeadCell>
+              <Table.HeadCell>Balance</Table.HeadCell>
+              <Table.HeadCell>Check-In Date</Table.HeadCell>
+              <Table.HeadCell>Check-Out Date</Table.HeadCell>
+            </Table.Head>
+            <Table.Body className="divide-y">
+              {filteredBookings.map((booking, index) => {
+                const date = booking.checkOutDate
+                  ? moment(booking.checkOutDate.toDate()).format("LLL")
+                  : "Invalid Date";
+                const checkIn = booking.checkInDate
+                  ? moment(booking.checkInDate.toDate()).format("LLL")
+                  : "Invalid Date";
+
+                return (
+                  <Table.Row
+                    key={index}
+                    className="bg-white dark:border-gray-700 dark:bg-gray-800"
+                  >
+                    <Table.Cell className="font-bold text-lg text-red-500">
+                      {booking.currentUser.name}
+                    </Table.Cell>
+                    <Table.Cell>{booking.roomDetails.roomNumber}</Table.Cell>
+                    <Table.Cell>₱{booking.totalPrice}</Table.Cell>
+                    <Table.Cell>
+                      <Badge
+                        color={
+                          booking.paymentStatus === "full"
+                            ? "success"
+                            : "failure"
+                        }
+                      >
+                        {booking.paymentStatus === "full"
+                          ? "Fully Paid"
+                          : "Unpaid"}
+                      </Badge>
+                    </Table.Cell>
+                    <Table.Cell>
+                      {booking.paymentStatus === "full" ? (
+                        <Badge color="success">No Balance</Badge>
+                      ) : (
+                        <h1>₱{booking.totalPrice - booking.downpayment}</h1>
+                      )}
+                    </Table.Cell>
+                    <Table.Cell>{checkIn}</Table.Cell>
+                    <Table.Cell>{date}</Table.Cell>
+                  </Table.Row>
+                );
+              })}
+            </Table.Body>
+          </Table>
+        </div>
       </div>
 
       {/* Modal for PDF Preview */}
@@ -229,29 +153,75 @@ const Reports = () => {
       >
         <Modal.Header>PDF Preview</Modal.Header>
         <Modal.Body>
-          <PDFViewer style={{ width: "100%", height: "700px" }}>
-            <ReportsPDF bookings={filteredBookings} />
-          </PDFViewer>
+          <h2 className="text-xl font-bold mb-4">
+            Booking Report {""}{" "}
+            <span className="ml-3 text-red-500 opacity-85">
+              {moment(startDate.toDateString()).format("LL")} -{" "}
+              {moment(endDate.toDateString()).format("LL")}
+            </span>
+          </h2>
+          <Table hoverable striped>
+            <Table.Head>
+              <Table.HeadCell>Guest Name</Table.HeadCell>
+              <Table.HeadCell>Room Number</Table.HeadCell>
+              <Table.HeadCell>Total Price</Table.HeadCell>
+              <Table.HeadCell>Payment Status</Table.HeadCell>
+              <Table.HeadCell>Balance</Table.HeadCell>
+              <Table.HeadCell>Check-In Date</Table.HeadCell>
+              <Table.HeadCell>Check-Out Date</Table.HeadCell>
+            </Table.Head>
+            <Table.Body className="divide-y">
+              {filteredBookings.map((booking, index) => {
+                const date = booking.checkOutDate
+                  ? moment(booking.checkOutDate.toDate()).format("LLL")
+                  : "Invalid Date";
+                const checkIn = booking.checkInDate
+                  ? moment(booking.checkInDate.toDate()).format("LLL")
+                  : "Invalid Date";
+
+                return (
+                  <Table.Row
+                    key={index}
+                    className="bg-white dark:border-gray-700 dark:bg-gray-800"
+                  >
+                    <Table.Cell className="font-bold text-lg text-red-500">
+                      {booking.currentUser.name}
+                    </Table.Cell>
+                    <Table.Cell>{booking.roomDetails.roomNumber}</Table.Cell>
+                    <Table.Cell>₱{booking.totalPrice}</Table.Cell>
+                    <Table.Cell>
+                      <Badge
+                        color={
+                          booking.paymentStatus === "full"
+                            ? "success"
+                            : "failure"
+                        }
+                      >
+                        {booking.paymentStatus === "full"
+                          ? "Fully Paid"
+                          : "Unpaid"}
+                      </Badge>
+                    </Table.Cell>
+                    <Table.Cell>
+                      {booking.paymentStatus === "full" ? (
+                        <Badge color="success">No Balance</Badge>
+                      ) : (
+                        <h1>₱{booking.totalPrice - booking.downpayment}</h1>
+                      )}
+                    </Table.Cell>
+                    <Table.Cell>{checkIn}</Table.Cell>
+                    <Table.Cell>{date}</Table.Cell>
+                  </Table.Row>
+                );
+              })}
+            </Table.Body>
+          </Table>
         </Modal.Body>
         <Modal.Footer className="flex justify-end items-center">
-          <Button
-            gradientMonochrome="info"
-            onClick={() => setIsModalOpen(false)}
-          >
-            Print
+          <Button gradientMonochrome="info">Cancel</Button>
+          <Button gradientMonochrome="failure" onClick={() => toPDF()}>
+            Download PDF
           </Button>
-          <PDFDownloadLink
-            document={<ReportsPDF bookings={filteredBookings} />}
-            fileName="bookings_report.pdf"
-          >
-            {({ loading }) =>
-              loading ? (
-                <Button disabled>Generating PDF...</Button>
-              ) : (
-                <Button gradientMonochrome="failure">Download PDF</Button>
-              )
-            }
-          </PDFDownloadLink>
         </Modal.Footer>
       </Modal>
     </DashboardLayout>
