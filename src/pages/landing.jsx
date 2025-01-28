@@ -12,7 +12,20 @@ import DisplayRoomLanding from "../components/displayRoomLanding";
 import eventBg from "../assets/event.jpg";
 import red from "../assets/red.jpg";
 import red2 from "../assets/reddd.jpg";
-
+import Amenities from "../components/amenities";
+import Facilities from "../components/facilities";
+import {
+  HiOutlineViewList,
+  HiOutlineLocationMarker,
+  HiOutlineLightBulb,
+  HiOutlineDocumentText,
+  HiOutlineSparkles,
+  HiOutlineTruck,
+  HiOutlineClock,
+  HiOutlineWifi,
+  HiUser,
+} from "react-icons/hi";
+import ParkingAndLandmarks from "../components/parkingAndLandmarks";
 const Landing = () => {
   const navigation = useNavigate();
   const { currentUser, logout } = useUserStore();
@@ -24,6 +37,22 @@ const Landing = () => {
   useEffect(() => {
     fetchCollection("rooms", setRooms, setLoading);
   }, []);
+
+  // Animation Variants
+  const fadeIn = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { duration: 1 } },
+  };
+
+  const slideInFromLeft = {
+    hidden: { x: -100, opacity: 0 },
+    visible: { x: 0, opacity: 1, transition: { duration: 0.8 } },
+  };
+
+  const slideInFromRight = {
+    hidden: { x: 100, opacity: 0 },
+    visible: { x: 0, opacity: 1, transition: { duration: 0.8 } },
+  };
 
   return (
     <motion.div
@@ -230,6 +259,95 @@ const Landing = () => {
 
       <div id="testimonials">
         <Testimonials />
+      </div>
+      <div id="ameneties" className="bg-white my-10">
+        <div className="mx-auto max-w-screen-sm text-center pt-10">
+          <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
+            Ameneties
+          </h2>
+          <p className="mb-8 font-light text-gray-500 lg:mb-16 sm:text-xl dark:text-gray-400">
+            Sophie Red Hotel in Cagayan de Oro, Philippines.
+          </p>
+        </div>
+        <motion.div
+          className="flex mt-10 flex-wrap"
+          variants={slideInFromRight}
+          initial="hidden"
+          animate="visible"
+        >
+          <div className="basis-full  md:basis-7/12">
+            <div className="wrapper mt-5 p-3 md:mx-10">
+              <h1 className="text-2xl md:text-3xl font-semibold">
+                Sophie Red Hotel and Onshore Restaurant
+              </h1>
+              <p className="text-xs md:text-sm">
+                Butuan - Cagayan de Oro - Iligan Road, Jasaan, Jasaan,
+                Philippines, 9003 - See map
+              </p>
+              <hr className="mt-5 mb-3" />
+              <p className="text-xs md:text-sm">
+                The car parking and the Wi-Fi are always free, so you can stay
+                in touch and come and go as you please. Conveniently situated in
+                the Jasaan part of Jasaan, this property puts you close to
+                attractions and interesting dining options. Rated with 4 stars,
+                this high-quality property provides guests with access to
+                massage and outdoor pool on-site.
+              </p>
+            </div>
+            {/* Highlights */}
+            <div className="wrapper mt-5 md:mx-10 border p-5 shadow-sm rounded">
+              <h1 className="font-semibold text-2xl">Highlights</h1>
+              <div className="flex flex-wrap items-center justify-start mt-5 gap-5">
+                <div className="flex items-center flex-col justify-center w-full sm:w-auto mx-3">
+                  <HiOutlineSparkles className="text-blue-500 h-6 w-6" />
+                  <span className="text-sm text-center mt-2">
+                    Great for activities
+                  </span>
+                </div>
+                <div className="flex items-center flex-col justify-center w-full sm:w-auto mx-3">
+                  <HiOutlineTruck className="text-blue-500 h-6 w-6" />
+                  <span className="text-sm text-center mt-2">
+                    Airport transfer
+                  </span>
+                </div>
+                <div className="flex items-center flex-col justify-center w-full sm:w-auto mx-3">
+                  <HiOutlineClock className="text-blue-500 h-6 w-6" />
+                  <span className="text-sm text-center mt-2">
+                    Check-in [24-hour]
+                  </span>
+                </div>
+                <div className="flex items-center flex-col justify-center w-full sm:w-auto mx-3">
+                  <HiOutlineWifi className="text-blue-500 h-6 w-6" />
+                  <span className="text-sm text-center mt-2">
+                    Free Wi-Fi in all rooms!
+                  </span>
+                </div>
+                <div className="flex items-center flex-col justify-center w-full sm:w-auto mx-3">
+                  <HiUser className="text-blue-500 h-6 w-6" />
+                  <span className="text-sm text-center mt-2">
+                    Room service [24-hour]
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <Amenities />
+            <Facilities />
+          </div>
+          <div className="basis-full md:basis-5/12 flex flex-col items-center justify-center">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3944.287762941997!2d124.73801817494206!3d8.664159191383336!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x32ffe45d368a3333%3A0xaae58833c816e934!2sSophie%20Red%20Hotel%20and%20Onshore%20Restaurant!5e0!3m2!1sen!2sph!4v1736693142618!5m2!1sen!2sph"
+              width="100%"
+              height="450"
+              style={{ border: 0 }}
+              allowFullScreen=""
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            ></iframe>
+            <hr />
+            <ParkingAndLandmarks />
+          </div>
+        </motion.div>
       </div>
       <iframe
         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3944.287762941997!2d124.73801817494206!3d8.664159191383336!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x32ffe45d368a3333%3A0xaae58833c816e934!2sSophie%20Red%20Hotel%20and%20Onshore%20Restaurant!5e0!3m2!1sen!2sph!4v1736693142618!5m2!1sen!2sph"

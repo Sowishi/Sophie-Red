@@ -114,7 +114,7 @@ const DisplayRoomLanding = ({ rooms, selectedRoom, handleRoomSelection }) => {
             >
               {/* ✅ Room Image Carousel */}
               <motion.div
-                className="h-40 w-full cursor-pointer"
+                className="h-[300px] w-full cursor-pointer"
                 onClick={() => openModal(roomImages[room.id] || [])}
                 whileHover={{ scale: 1.02 }}
               >
@@ -124,7 +124,7 @@ const DisplayRoomLanding = ({ rooms, selectedRoom, handleRoomSelection }) => {
                       key={idx}
                       src={img}
                       alt={`Room ${room.roomNumber} - Image ${idx + 1}`}
-                      className="h-40 w-full object-cover rounded-md"
+                      className="h-[300px] w-full object-cover rounded-md"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ duration: 0.5 }}
