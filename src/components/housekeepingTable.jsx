@@ -24,6 +24,7 @@ import { toast } from "react-toastify";
 import useCrudHousekeeping from "../hooks/useCrudHousekeeping";
 import moment from "moment/moment";
 import useUserStore from "../utils/zustand";
+import CustomModal from "./customModal";
 
 export function HousekeepingTable() {
   const { fetchCollection } = useFetchCollection();
@@ -225,11 +226,13 @@ export function HousekeepingTable() {
       </Modal>
 
       {/* Bottom Drawer for Assigning Housekeeper */}
-      <BottomDrawer
+      <CustomModal
+        title={"Add Housekeeper Task"}
+        onSubmit={handleFormSubmit}
         open={!!selectedRoom}
         handleClose={() => setSelectedRoom(null)}
       >
-        <form onSubmit={handleFormSubmit} className="container p-10 mx-auto">
+        <form className="container p-10 mx-auto">
           <div className="header flex justify-between items-center mb-5">
             <h1 className="text-3xl font-bold flex items-center justify-start">
               Room Number: #{selectedRoom?.roomNumber}{" "}
@@ -284,7 +287,7 @@ export function HousekeepingTable() {
               />
             </div>
           </div>
-          <div className="mt-5 flex justify-end items-center">
+          {/* <div className="mt-5 flex justify-end items-center">
             <Button
               type="button"
               gradientMonochrome="failure"
@@ -295,9 +298,9 @@ export function HousekeepingTable() {
             <Button className="ml-3" type="submit" gradientMonochrome="success">
               Assign Task
             </Button>
-          </div>
+          </div> */}
         </form>
-      </BottomDrawer>
+      </CustomModal>
     </div>
   );
 }
