@@ -23,6 +23,7 @@ import { BottomDrawer } from "./bottomDrawer";
 import { toast } from "react-toastify";
 import useCrudHousekeeping from "../hooks/useCrudHousekeeping";
 import moment from "moment/moment";
+import useUserStore from "../utils/zustand";
 
 export function HousekeepingTable() {
   const { fetchCollection } = useFetchCollection();
@@ -37,7 +38,7 @@ export function HousekeepingTable() {
   const [description, setDescription] = useState("");
   const [isLogsModalOpen, setIsLogsModalOpen] = useState(false);
   const [housekeepingLogs, setHousekeepingLogs] = useState([]);
-
+  const { currentAdmin } = useUserStore();
   useEffect(() => {
     fetchCollection("rooms", setRooms, setLoading);
     fetchCollection("users", setUsers, setLoading);
@@ -146,22 +147,26 @@ export function HousekeepingTable() {
                 >
                   View Logs
                 </Button>
-                <Tooltip
-                  content={
-                    room.status !== "vacant"
-                      ? "Already assigned a housekeeper"
-                      : "Assign a housekeeper"
-                  }
-                >
-                  <Button
-                    disabled={room.status !== "vacant"}
-                    gradientMonochrome="failure"
-                    onClick={() => setSelectedRoom(room)}
-                    color="info"
+
+                {currentAdmin?.role == "Housekeeping" && (
+                  <Tooltip
+                    content={
+                      room.status !== "vacant"
+                        ? "Already assigned a housekeeper"
+                        : "Assign a housekeeper"
+                    }
                   >
-                    Assign Housekeeper <FaArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
-                </Tooltip>
+                    <Button
+                      disabled={room.status !== "vacant"}
+                      gradientMonochrome="failure"
+                      onClick={() => setSelectedRoom(room)}
+                      color="info"
+                    >
+                      Assign Housekeeper{" "}
+                      <FaArrowRight className="ml-2 h-5 w-5" />
+                    </Button>
+                  </Tooltip>
+                )}
               </Table.Cell>
             </Table.Row>
           ))}

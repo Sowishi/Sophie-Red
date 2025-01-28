@@ -29,7 +29,11 @@ const Login = () => {
     }
 
     if (user.role !== "user") {
-      router("/dashboard");
+      if (user.role == "Housekeeping") {
+        router("/housekeeping");
+      } else {
+        router("/dashboard");
+      }
     } else {
       router("/");
     }
@@ -40,6 +44,14 @@ const Login = () => {
   const handleGoogleLogin = async () => {
     await loginWithGoogle();
     router("/");
+  };
+
+  // Handle "Enter" key press
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault(); // Prevent form submission refresh
+      handleSubmit();
+    }
   };
 
   return (
@@ -76,7 +88,7 @@ const Login = () => {
               <h1 className="text-2xl font-bold text-center mb-6 mt-5">
                 Welcome to Sophie Red Hotel
               </h1>
-              <form className="space-y-4">
+              <form className="space-y-4" onKeyDown={handleKeyDown}>
                 <div>
                   <Label htmlFor="email" value="Email" />
                   <TextInput
