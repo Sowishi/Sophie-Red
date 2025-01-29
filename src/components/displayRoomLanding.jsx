@@ -192,6 +192,9 @@ const DisplayRoomLanding = ({ rooms, selectedRoom, handleRoomSelection }) => {
             </Carousel>
           </motion.div>
         </Modal.Body>
+        <Modal.Footer className="justify-end items-center">
+          <Button onClick={() => setIsModalOpen(false)}>CLose</Button> z
+        </Modal.Footer>
       </Modal>
     </>
   );
