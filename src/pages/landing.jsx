@@ -103,9 +103,9 @@ const Landing = () => {
             </Navbar.Link>
             <Navbar.Link
               className="text-white text-lg opacity-80 hover:bg-red-500"
-              href="#ameneties"
+              href="#Amenities"
             >
-              Ameneties
+              Amenities
             </Navbar.Link>
             {currentUser && (
               <div className="relative  flex items-center justify-center">
@@ -315,10 +315,10 @@ const Landing = () => {
         <Testimonials />
       </div>
 
-      <div id="ameneties" className="bg-white my-10">
+      <div id="Amenities" className="bg-white my-10">
         <div className="mx-auto max-w-screen-sm text-center pt-10">
           <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
-            Ameneties
+            Amenities
           </h2>
           <p className="mb-8 font-light text-gray-500 lg:mb-16 sm:text-xl dark:text-gray-400">
             Sophie Red Hotel in Cagayan de Oro, Philippines.

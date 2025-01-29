@@ -10,6 +10,9 @@ import {
   FaBroom,
   FaCalendarAlt,
   FaPlus,
+  FaTasks,
+  FaUserAlt,
+  FaUsers,
 } from "react-icons/fa";
 import { Button, Dropdown } from "flowbite-react";
 import useUserStore from "../utils/zustand";
@@ -129,6 +132,24 @@ const Header = () => {
           <FaBroom color="white" className="mr-3" />
           <h1 className="text-sm font-extralight">Housekeeping</h1>
         </Link>
+        <Link
+          to="/housekeeping"
+          className={`flex px-5 cursor-pointer mx-2 py-3 rounded-lg justify-start items-center ${
+            isCurrentPath("/guest-request") ? "bg-red-800" : "bg-slate-700"
+          }`}
+        >
+          <FaUserAlt color="white" className="mr-3" />
+          <h1 className="text-sm font-extralight">Guest Request</h1>
+        </Link>
+        <Link
+          to="/housekeeping"
+          className={`flex px-5 cursor-pointer mx-2 py-3 rounded-lg justify-start items-center ${
+            isCurrentPath("/housekeepers") ? "bg-red-800" : "bg-slate-700"
+          }`}
+        >
+          <FaUsers color="white" className="mr-3" />
+          <h1 className="text-sm font-extralight">Housekeepers</h1>
+        </Link>
 
         <Link
           to="/housekeeper"
@@ -136,7 +157,7 @@ const Header = () => {
             isCurrentPath("/housekeeper") ? "bg-red-800" : "bg-slate-700"
           }`}
         >
-          <FaPlus color="white" className="mr-3" />
+          <FaTasks color="white" className="mr-3" />
           <h1 className="text-sm font-extralight">Housekeeper Tasks</h1>
         </Link>
       </div>
