@@ -45,6 +45,8 @@ const ClientHeader = () => {
   const [paymentStatus, setPaymentStatus] = useState("Pending");
   const [paymentTerm, setPaymentTerm] = useState("down");
   const [discount, setDiscount] = useState(null);
+  const [paymongoModal, setPaymongoModal] = useState(false);
+  const [paymongoURL, setPaymongoURL] = useState();
   const dropdownRef = useRef();
   const navigation = useNavigate();
 
@@ -99,7 +101,7 @@ const ClientHeader = () => {
 
   const handleBook = async () => {
     if (checkout) {
-      const sessionID = await createPaymongoCheckout(
+      const res = await createPaymongoCheckout(
         discount !== null
           ? paymentTerm == "down"
             ? downpayment * (1 - parseInt(discount) / 100)
@@ -109,7 +111,9 @@ const ClientHeader = () => {
           : totalPrice,
         paymentTerm
       );
-      setCheckoutID(sessionID);
+      setCheckoutID(res.id);
+      setPaymongoModal(true);
+      setPaymongoURL(res.url);
       return;
     }
 
@@ -444,11 +448,18 @@ const ClientHeader = () => {
                   />
                 )}
                 {rooms !== null && rooms.length >= 1 && !checkingLoading && (
-                  <DisplayRoomsSelection
-                    selectedRoom={selectedRoom}
-                    handleRoomSelection={handleRoomSelection}
-                    rooms={rooms}
-                  />
+                  <>
+                    <Alert>
+                      Here's the availabe room availabe for{" "}
+                      {moment(arrivalDate.toString()).format("LL")} -{" "}
+                      {moment(departureDate.toString()).format("LL")}
+                    </Alert>
+                    <DisplayRoomsSelection
+                      selectedRoom={selectedRoom}
+                      handleRoomSelection={handleRoomSelection}
+                      rooms={rooms}
+                    />
+                  </>
                 )}
 
                 {rooms && rooms.length <= 0 && (
@@ -662,6 +673,20 @@ const ClientHeader = () => {
             </Button>
           </div>
         )}
+      </CustomModal>
+
+      <CustomModal
+        hideFooter={true}
+        title={"Checkout Page"}
+        size="6xl"
+        open={paymongoModal}
+        handleClose={() => setPaymongoModal(false)}
+      >
+        <iframe
+          style={{ width: "100%", height: "100vh" }}
+          src={paymongoURL}
+          frameborder="0"
+        ></iframe>
       </CustomModal>
     </div>
   );

@@ -51,8 +51,8 @@ export const createPaymongoCheckout = async (amount, paymentTerm) => {
 
     if (response.ok && result.data) {
       const checkoutUrl = result.data.attributes.checkout_url;
-      window.open(checkoutUrl, "_blank");
-      return result.data.id;
+      // window.open(checkoutUrl, "_blank");
+      return { id: result.data.id, url: checkoutUrl };
     } else {
       console.error(
         "Error creating checkout session:",
