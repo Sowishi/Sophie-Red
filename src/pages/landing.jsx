@@ -28,7 +28,7 @@ import {
 import ParkingAndLandmarks from "../components/parkingAndLandmarks";
 const Landing = () => {
   const navigation = useNavigate();
-  const { currentUser, logout } = useUserStore();
+  const { currentUser, logout, currentAdmin } = useUserStore();
 
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -152,7 +152,54 @@ const Landing = () => {
                 </Dropdown>
               </div>
             )}
-            {!currentUser && (
+
+            {currentAdmin && (
+              <div className="relative  flex items-center justify-center">
+                <p className="font-medium text-white mr-5 text-lg">
+                  {currentAdmin.fullName}
+                </p>
+
+                <Dropdown
+                  inline
+                  label={
+                    <img
+                      className="w-[50px] h-[50px] rounded-full cursor-pointer"
+                      src={currentAdmin.photoURL}
+                      alt="User Avatar"
+                    />
+                  }
+                >
+                  <Dropdown.Item>
+                    <p className="font-medium text-nowrap">
+                      {currentAdmin.name || currentAdmin.fullName}
+                    </p>
+                  </Dropdown.Item>
+                  <Dropdown.Item>
+                    <p className="text-gray-500">{currentAdmin.email}</p>
+                  </Dropdown.Item>
+                  <Dropdown.Item>
+                    <Button
+                      color="info"
+                      className="w-full text-left"
+                      onClick={() => navigation("/dashboard")}
+                    >
+                      Dashboard
+                    </Button>
+                  </Dropdown.Item>
+                  <Dropdown.Divider />
+                  <Dropdown.Item>
+                    <Button
+                      color="failure"
+                      className="w-full text-left"
+                      onClick={logout}
+                    >
+                      Logout
+                    </Button>
+                  </Dropdown.Item>
+                </Dropdown>
+              </div>
+            )}
+            {!currentUser && !currentAdmin && (
               <Button
                 onClick={() => navigation("/login")}
                 className="px-5"
