@@ -633,8 +633,7 @@ const ClientHeader = () => {
           <>
             <div className="div flex items-center justify-center flex-col p-5">
               <h1 className="text-3xl font-bold text-center">
-                Thank you for booking with{" "}
-                <span className="text-red-500">Sophie Red Hotel</span>
+                Payment Successfull
               </h1>
               <div className="bg-green-500 p-10 rounded-full mt-3">
                 <FaCheck color="white" size={40} />
