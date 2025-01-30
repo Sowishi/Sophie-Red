@@ -141,7 +141,7 @@ export function HousekeepingTable() {
               <Table.Cell>{room.description}</Table.Cell>
               <Table.Cell>
                 {room.status === "vacant" ? (
-                  <Badge color="success">Completed</Badge>
+                  <Badge color="success">Operational</Badge>
                 ) : (
                   <Badge>{room.status}</Badge>
                 )}
@@ -239,7 +239,7 @@ export function HousekeepingTable() {
               Room Number: #{selectedRoom?.roomNumber}{" "}
               <Badge size="lg" className="ml-3 p-1 px-4">
                 {selectedRoom?.status == "vacant"
-                  ? "Completed"
+                  ? "Operational"
                   : selectedRoom?.status}
               </Badge>
             </h1>
