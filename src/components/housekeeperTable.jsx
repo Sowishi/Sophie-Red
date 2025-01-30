@@ -16,9 +16,9 @@ const HousekeeperTable = () => {
     fetchAllTasks(setTasks);
   }, []);
 
-  const handleStatusUpdate = async (taskId, newStatus, roomID) => {
-    console.log(`Updating Task ID: ${taskId} to Status: ${newStatus}`);
-    await updateTaskStatus(taskId, newStatus, roomID);
+  const handleStatusUpdate = async (taskId, newStatus, roomID, task) => {
+    console.log(task);
+    await updateTaskStatus(taskId, newStatus, roomID, task.housekeeper);
     toast.success("Successfully updated the task status");
     window.location.reload();
   };
@@ -107,7 +107,8 @@ const HousekeeperTable = () => {
                         handleStatusUpdate(
                           task.id,
                           "Ongoing",
-                          task.selectedRoom.id
+                          task.selectedRoom.id,
+                          task
                         )
                       }
                     >
@@ -118,7 +119,8 @@ const HousekeeperTable = () => {
                         handleStatusUpdate(
                           task.id,
                           "Completed",
-                          task.selectedRoom.id
+                          task.selectedRoom.id,
+                          task
                         )
                       }
                     >

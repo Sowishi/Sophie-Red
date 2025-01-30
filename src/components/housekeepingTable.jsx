@@ -187,42 +187,48 @@ export function HousekeepingTable() {
       >
         <Modal.Header>Housekeeping Logs</Modal.Header>
         <Modal.Body>
-          <Table hoverable striped>
-            <Table.Head>
-              <Table.HeadCell>Assign Date</Table.HeadCell>
-              <Table.HeadCell>Housekeeper</Table.HeadCell>
-              <Table.HeadCell>Service Type</Table.HeadCell>
-              <Table.HeadCell>Description</Table.HeadCell>
-              <Table.HeadCell>Completed At</Table.HeadCell>
-              <Table.HeadCell>Status</Table.HeadCell>
-            </Table.Head>
-            <Table.Body className="divide-y">
-              {housekeepingLogs.map((log) => {
-                const assignDate = log.createdAt
-                  ? moment(log.createdAt.toDate()).format("LLL")
-                  : "invalid";
+          {housekeepingLogs.length >= 1 ? (
+            <Table hoverable striped>
+              <Table.Head>
+                <Table.HeadCell>Assign Date</Table.HeadCell>
+                <Table.HeadCell>Housekeeper</Table.HeadCell>
+                <Table.HeadCell>Service Type</Table.HeadCell>
+                <Table.HeadCell>Description</Table.HeadCell>
+                <Table.HeadCell>Completed At</Table.HeadCell>
+                <Table.HeadCell>Status</Table.HeadCell>
+              </Table.Head>
+              <Table.Body className="divide-y">
+                {housekeepingLogs.map((log) => {
+                  const assignDate = log.createdAt
+                    ? moment(log.createdAt.toDate()).format("LLL")
+                    : "invalid";
 
-                const completedDate = log.completedAt
-                  ? moment(log.completedAt.toDate()).format("LLL")
-                  : "invalid";
-                return (
-                  <Table.Row key={log.id}>
-                    <Table.Cell>{assignDate}</Table.Cell>
-                    <Table.Cell>{log.housekeeper.fullName}</Table.Cell>
-                    <Table.Cell>{log.serviceType}</Table.Cell>
-                    <Table.Cell>{log.description}</Table.Cell>
+                  const completedDate = log.completedAt
+                    ? moment(log.completedAt.toDate()).format("LLL")
+                    : "invalid";
+                  return (
+                    <Table.Row key={log.id}>
+                      <Table.Cell>{assignDate}</Table.Cell>
+                      <Table.Cell>{log.housekeeper.fullName}</Table.Cell>
+                      <Table.Cell>{log.serviceType}</Table.Cell>
+                      <Table.Cell>{log.description}</Table.Cell>
 
-                    <Table.Cell>
-                      {log.completedAt ? completedDate : "---"}
-                    </Table.Cell>
-                    <Table.Cell>
-                      <Badge>{log.status}</Badge>
-                    </Table.Cell>
-                  </Table.Row>
-                );
-              })}
-            </Table.Body>
-          </Table>
+                      <Table.Cell>
+                        {log.completedAt ? completedDate : "---"}
+                      </Table.Cell>
+                      <Table.Cell>
+                        <Badge>{log.status}</Badge>
+                      </Table.Cell>
+                    </Table.Row>
+                  );
+                })}
+              </Table.Body>
+            </Table>
+          ) : (
+            <>
+              <Alert color="failure">There's no logs to show</Alert>
+            </>
+          )}
         </Modal.Body>
       </Modal>
 
@@ -237,11 +243,6 @@ export function HousekeepingTable() {
           <div className="header flex justify-between items-center mb-5">
             <h1 className="text-3xl font-bold flex items-center justify-start">
               Room Number: #{selectedRoom?.roomNumber}{" "}
-              <Badge size="lg" className="ml-3 p-1 px-4">
-                {selectedRoom?.status == "vacant"
-                  ? "Operational"
-                  : selectedRoom?.status}
-              </Badge>
             </h1>
           </div>
           <div className="space-y-4">
