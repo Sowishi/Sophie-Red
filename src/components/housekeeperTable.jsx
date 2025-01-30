@@ -43,6 +43,8 @@ const HousekeeperTable = () => {
     }
   };
 
+  const validTasks = filteredTasks.filter((task) => task.housekeeper !== null);
+
   return (
     <div>
       <div className="flex justify-start mb-4 space-x-2">
@@ -72,7 +74,7 @@ const HousekeeperTable = () => {
           <Table.HeadCell>Action</Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
-          {filteredTasks.map((task) => {
+          {validTasks.map((task) => {
             const assignDate = task.createdAt
               ? moment(task.createdAt.toDate()).format("LLL")
               : "Invalid";
@@ -87,7 +89,7 @@ const HousekeeperTable = () => {
                   {task.selectedRoom.roomNumber}
                 </Table.Cell>
                 <Table.Cell>{assignDate}</Table.Cell>
-                <Table.Cell>{task.housekeeper.fullName}</Table.Cell>
+                <Table.Cell>{task.housekeeper?.fullName}</Table.Cell>
                 <Table.Cell>{task.serviceType}</Table.Cell>
                 <Table.Cell>{task.description}</Table.Cell>
                 <Table.Cell>{completedDate}</Table.Cell>

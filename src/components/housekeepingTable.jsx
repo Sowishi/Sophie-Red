@@ -151,7 +151,7 @@ export function HousekeepingTable() {
                   className="mr-5"
                   onClick={() => handleViewLogs(room.id)}
                 >
-                  View Logs
+                  View
                 </Button>
 
                 {currentAdmin?.role == "Housekeeping" && (
@@ -168,7 +168,7 @@ export function HousekeepingTable() {
                       onClick={() => setSelectedRoom(room)}
                       color="info"
                     >
-                      Assign Housekeeper{" "}
+                      Assign
                       <FaArrowRight className="ml-2 h-5 w-5" />
                     </Button>
                   </Tooltip>

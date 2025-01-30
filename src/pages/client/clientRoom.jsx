@@ -45,7 +45,7 @@ const ClientRoom = () => {
     e.preventDefault();
     addTask({
       selectedRoom: booking.roomDetails,
-      housekeeper,
+      housekeeper: null,
       serviceType,
       description,
     });
@@ -200,22 +200,6 @@ const ClientRoom = () => {
             </h1>
           </div>
           <div className="space-y-4">
-            <div>
-              <Label htmlFor="housekeeper" value="Select Housekeeper" />
-              <Dropdown
-                label={
-                  housekeeper == null
-                    ? "Please Select Housekeeper"
-                    : housekeeper.fullName
-                }
-              >
-                {houseKeepers.map((user) => (
-                  <Dropdown.Item onClick={() => setHousekeeper(user)}>
-                    {user.fullName}
-                  </Dropdown.Item>
-                ))}
-              </Dropdown>
-            </div>
             <div>
               <Label htmlFor="serviceType" value="Select Service Type" />
               <Select

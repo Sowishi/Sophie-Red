@@ -13,8 +13,11 @@ import { db } from "../utils/firebase";
 
 const useCrudHousekeeping = () => {
   const addTask = async (data) => {
-    const docRef = doc(db, "housekeepers", data.housekeeper.id);
-    await updateDoc(docRef, { status: "Unavailable" });
+    if (data.housekeeper) {
+      const docRef = doc(db, "housekeepers", data.housekeeper.id);
+      await updateDoc(docRef, { status: "Unavailable" });
+    }
+
     try {
       const colRef = collection(db, "housekeeping");
       await addDoc(colRef, {
