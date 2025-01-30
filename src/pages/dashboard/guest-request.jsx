@@ -76,62 +76,69 @@ const GuestRequest = () => {
             <p className="mt-3 text-gray-500">Here's your guest request</p>
           </div>
         </div>
-        <Table hoverable striped>
-          <Table.Head>
-            <Table.HeadCell>Room Number</Table.HeadCell>
-            <Table.HeadCell>Requested Date</Table.HeadCell>
-            <Table.HeadCell>Housekeeper</Table.HeadCell>
-            <Table.HeadCell>Service Type</Table.HeadCell>
-            <Table.HeadCell>Description</Table.HeadCell>
-            <Table.HeadCell>Status</Table.HeadCell>
-            <Table.HeadCell>Action</Table.HeadCell>
-          </Table.Head>
-          <Table.Body className="divide-y">
-            {guestRequest.map((task) => {
-              const assignDate = task.createdAt
-                ? moment(task.createdAt.toDate()).format("LLL")
-                : "Invalid";
+        {guestRequest.length >= 1 ? (
+          <Table hoverable striped>
+            <Table.Head>
+              <Table.HeadCell>Room Number</Table.HeadCell>
+              <Table.HeadCell>Requested Date</Table.HeadCell>
+              <Table.HeadCell>Housekeeper</Table.HeadCell>
+              <Table.HeadCell>Service Type</Table.HeadCell>
+              <Table.HeadCell>Description</Table.HeadCell>
+              <Table.HeadCell>Status</Table.HeadCell>
+              <Table.HeadCell>Action</Table.HeadCell>
+            </Table.Head>
+            <Table.Body className="divide-y">
+              {guestRequest.map((task) => {
+                const assignDate = task.createdAt
+                  ? moment(task.createdAt.toDate()).format("LLL")
+                  : "Invalid";
 
-              const completedDate = task.completedAt
-                ? moment(task.completedAt.toDate()).format("LLL")
-                : "---";
+                const completedDate = task.completedAt
+                  ? moment(task.completedAt.toDate()).format("LLL")
+                  : "---";
 
-              return (
-                <Table.Row key={task.id}>
-                  <Table.Cell className="text-red-500 font-bold text-3xl">
-                    {task.selectedRoom.roomNumber}
-                  </Table.Cell>
-                  <Table.Cell>{assignDate}</Table.Cell>
-                  <Table.Cell>
-                    {task.housekeeper?.fullName || "Not Assigned"}
-                  </Table.Cell>
-                  <Table.Cell>{task.serviceType}</Table.Cell>
-                  <Table.Cell>{task.description}</Table.Cell>
-                  <Table.Cell>
-                    <span
-                      className={`px-3 py-1 rounded-md ${getBadgeColor(
-                        task.status
-                      )}`}
-                    >
-                      {task.status}
-                    </span>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <Button
-                      onClick={() => {
-                        setSelectedRoom(task.selectedRoom);
-                        setSelectedTask(task.id);
-                      }}
-                      gradientMonochrome="failure"
-                    >
-                      Assign{" "}
-                    </Button>
-                  </Table.Cell>
-                </Table.Row>
-              );
-            })}
-          </Table.Body>
-        </Table>
+                return (
+                  <Table.Row key={task.id}>
+                    <Table.Cell className="text-red-500 font-bold text-3xl">
+                      {task.selectedRoom.roomNumber}
+                    </Table.Cell>
+                    <Table.Cell>{assignDate}</Table.Cell>
+                    <Table.Cell>
+                      {task.housekeeper?.fullName || "Not Assigned"}
+                    </Table.Cell>
+                    <Table.Cell>{task.serviceType}</Table.Cell>
+                    <Table.Cell>{task.description}</Table.Cell>
+                    <Table.Cell>
+                      <span
+                        className={`px-3 py-1 rounded-md ${getBadgeColor(
+                          task.status
+                        )}`}
+                      >
+                        {task.status}
+                      </span>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <Button
+                        onClick={() => {
+                          setSelectedRoom(task.selectedRoom);
+                          setSelectedTask(task.id);
+                        }}
+                        gradientMonochrome="failure"
+                      >
+                        Assign{" "}
+                      </Button>
+                    </Table.Cell>
+                  </Table.Row>
+                );
+              })}
+            </Table.Body>
+          </Table>
+        ) : (
+          <>
+            {" "}
+            <Alert color="failure">There's no guest request yet</Alert>
+          </>
+        )}
       </div>
 
       {/* Bottom Drawer for Assigning Housekeeper */}

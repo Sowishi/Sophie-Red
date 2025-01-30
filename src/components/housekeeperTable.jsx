@@ -48,18 +48,32 @@ const HousekeeperTable = () => {
   return (
     <div>
       <div className="flex justify-start mb-4 space-x-2">
-        <Button color="info" onClick={() => setFilter("All")}>
-          All
-        </Button>
-        <Button color="failure" onClick={() => setFilter("Pending")}>
-          Pending
-        </Button>
-        <Button color="warning" onClick={() => setFilter("Ongoing")}>
-          Ongoing
-        </Button>
-        <Button color="success" onClick={() => setFilter("Completed")}>
-          Completed
-        </Button>
+        <Button.Group>
+          <Button
+            color={filter == "All" ? "failure" : "light"}
+            onClick={() => setFilter("All")}
+          >
+            All
+          </Button>
+          <Button
+            color={filter == "Pending" ? "failure" : "light"}
+            onClick={() => setFilter("Pending")}
+          >
+            Pending
+          </Button>
+          <Button
+            color={filter == "Ongoing" ? "failure" : "light"}
+            onClick={() => setFilter("Ongoing")}
+          >
+            Ongoing
+          </Button>
+          <Button
+            color={filter == "Completed" ? "failure" : "light"}
+            onClick={() => setFilter("Completed")}
+          >
+            Completed
+          </Button>
+        </Button.Group>
       </div>
 
       <Table hoverable striped>

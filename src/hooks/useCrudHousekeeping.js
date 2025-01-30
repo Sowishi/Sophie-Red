@@ -8,6 +8,7 @@ import {
   query,
   serverTimestamp,
   deleteDoc,
+  orderBy,
 } from "firebase/firestore";
 import { db } from "../utils/firebase";
 
@@ -74,7 +75,9 @@ const useCrudHousekeeping = () => {
   const fetchAllTasks = async (setTasks) => {
     try {
       const colRef = collection(db, "housekeeping");
-      const snapshot = await getDocs(colRef);
+      // Create a query to order by createdAt in descending order
+      const q = query(colRef, orderBy("createdAt", "desc"));
+      const snapshot = await getDocs(q);
       const output = snapshot.docs.map((doc) => ({
         ...doc.data(),
         id: doc.id,
