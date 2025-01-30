@@ -28,7 +28,7 @@ import {
 import ParkingAndLandmarks from "../components/parkingAndLandmarks";
 const Landing = () => {
   const navigation = useNavigate();
-  const { currentUser, logout, currentAdmin } = useUserStore();
+  const { currentUser, logout, currentAdmin, setCurrentAdmin } = useUserStore();
 
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -191,7 +191,7 @@ const Landing = () => {
                     <Button
                       color="failure"
                       className="w-full text-left"
-                      onClick={logout}
+                      onClick={() => setCurrentAdmin(null)}
                     >
                       Logout
                     </Button>
