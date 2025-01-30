@@ -6,15 +6,16 @@ import { CiWarning } from "react-icons/ci";
 import { FaBed, FaList } from "react-icons/fa6";
 import { useState } from "react";
 import SearchInput from "../../components/searchInput";
+import { BookingHistoryTable } from "../../components/bookingHistoryTable";
 
-const Payments = () => {
+const BookingHistory = () => {
   const [filterType, setFilterType] = useState("room");
   return (
     <DashboardLayout>
       <div className="container mx-auto lg:p-10 rounded-3xl min-h-[600px] pt-10 ">
         <div className="flex flex-col lg:flex-row justify-between items-center">
           <div className="div p-5">
-            <h1 className="text-2xl lg:text-4xl font-bold">Booking Payments</h1>
+            <h1 className="text-2xl lg:text-4xl font-bold">BookingHistory</h1>
             <div className="flex mt-2">
               <Button.Group color="failure">
                 <Button
@@ -34,10 +35,10 @@ const Payments = () => {
           </div>
           <SearchInput />
         </div>{" "}
-        <PaymentsTable typeFilter={filterType} />
+        <BookingHistoryTable typeFilter={filterType} />
       </div>
     </DashboardLayout>
   );
 };
 
-export default Payments;
+export default BookingHistory;

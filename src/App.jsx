@@ -23,6 +23,7 @@ import Privacy from "./pages/privacy";
 import Terms from "./pages/terms";
 import HousekeeperList from "./pages/dashboard/housekeepersList";
 import GuestRequest from "./pages/dashboard/guest-request";
+import BookingHistory from "./pages/dashboard/bookingHistory";
 
 const App = () => {
   const { currentUser, currentAdmin, setCurrentAdmin } = useUserStore();
@@ -48,7 +49,6 @@ const App = () => {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/terms" element={<Terms />} />
-
         <Route path="/client-dashboard" element={<ClientDashboard />} />
         <Route path="/client-room" element={<ClientRoom />} />
         <Route
@@ -59,7 +59,6 @@ const App = () => {
           path="/event-booking"
           element={currentUser ? <EventBooking /> : <Landing />}
         />
-
         <Route
           path="/dashboard"
           element={currentAdmin ? <Index /> : <Landing />}
@@ -81,6 +80,10 @@ const App = () => {
         <Route
           path="/payments"
           element={currentAdmin ? <Payments /> : <Landing />}
+        />{" "}
+        <Route
+          path="/booking-history"
+          element={currentAdmin ? <BookingHistory /> : <Landing />}
         />
         <Route
           path="/reports"

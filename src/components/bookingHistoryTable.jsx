@@ -18,7 +18,7 @@ import moment from "moment/moment";
 import useCrudBooking from "../hooks/useCrudBooking";
 import { toast } from "react-toastify";
 
-export function PaymentsTable({ typeFilter }) {
+export function BookingHistoryTable({ typeFilter }) {
   const { fetchCollection } = useFetchCollection();
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -66,13 +66,6 @@ export function PaymentsTable({ typeFilter }) {
 
   return (
     <div className="overflow-x-auto">
-      {/* <div className="flex items-center justify-between mb-5">
-        <Select value={filter} onChange={(e) => setFilter(e.target.value)}>
-          <option value="all">All</option>
-          <option value="paid">Paid</option>
-          <option value="unpaid">Unpaid</option>
-        </Select>
-      </div> */}
       <Table hoverable striped>
         <Table.Head>
           <Table.HeadCell>Guest Name</Table.HeadCell>
@@ -81,12 +74,18 @@ export function PaymentsTable({ typeFilter }) {
           <Table.HeadCell>Total Price</Table.HeadCell>
           <Table.HeadCell>Payment Status</Table.HeadCell>
           <Table.HeadCell>Balance</Table.HeadCell>
-          <Table.HeadCell>Actions</Table.HeadCell>
+          <Table.HeadCell>Check In Date</Table.HeadCell>
+
+          <Table.HeadCell>Check Out Date</Table.HeadCell>
+          <Table.HeadCell>Status</Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
           {filteredBookings.map((booking, index) => {
             const date = booking.checkOutDate
               ? moment(booking.checkOutDate.toDate()).format("LLL")
+              : "Invalid Date";
+            const date2 = booking.checkInDate
+              ? moment(booking.checkInDate.toDate()).format("LLL")
               : "Invalid Date";
 
             return (
@@ -118,17 +117,10 @@ export function PaymentsTable({ typeFilter }) {
                     <h1>₱{booking?.totalPrice - booking?.downpayment}</h1>
                   )}
                 </Table.Cell>
-                <Table.Cell>
-                  <Dropdown label="Actions">
-                    <Dropdown.Item
-                      onClick={() =>
-                        handlePaymentStatusChange(booking.id, "full")
-                      }
-                    >
-                      Mark as Paid
-                    </Dropdown.Item>
-                  </Dropdown>
-                </Table.Cell>
+                <Table.Cell>{date2}</Table.Cell>
+
+                <Table.Cell>{date}</Table.Cell>
+                <Table.Cell>{booking.status}</Table.Cell>
               </Table.Row>
             );
           })}

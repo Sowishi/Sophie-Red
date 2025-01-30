@@ -44,8 +44,6 @@ const ClientDashboard = () => {
     getBooking();
   }, [currentUser]);
 
-  console.log(booking);
-
   if (loading)
     return (
       <>
