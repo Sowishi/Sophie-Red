@@ -50,6 +50,8 @@ const ClientHeaderEvent = () => {
   const navigation = useNavigate();
   const { validateVoucher } = useCrudVoucher();
   const [discount, setDiscount] = useState(null);
+  const [paymongoModal, setPaymongoModal] = useState(false);
+  const [paymongoURL, setPaymongoURL] = useState();
   const { fetchAvailableRoom, checkEventAvailability, bookEvent } =
     useCrudBooking();
   const { currentUser } = useUserStore();
@@ -96,7 +98,7 @@ const ClientHeaderEvent = () => {
 
   const handleBook = async () => {
     if (checkout) {
-      const sessionID = await createPaymongoCheckout(
+      const res = await createPaymongoCheckout(
         discount !== null
           ? paymentTerm == "down"
             ? 5000 * (1 - parseInt(discount) / 100)
@@ -106,7 +108,9 @@ const ClientHeaderEvent = () => {
           : 10000,
         paymentTerm
       );
-      setCheckoutID(sessionID);
+      setCheckoutID(res.id);
+      setPaymongoModal(true);
+      setPaymongoURL(res.url);
       return;
     }
 
@@ -441,8 +445,7 @@ const ClientHeaderEvent = () => {
           <>
             <div className="div flex items-center justify-center flex-col p-5">
               <h1 className="text-3xl font-bold text-center">
-                Thank you for booking with{" "}
-                <span className="text-red-500">Sophie Red Hotel</span>
+                Payment Successfull
               </h1>
               <div className="bg-green-500 p-10 rounded-full mt-3">
                 <FaCheck color="white" size={40} />
@@ -481,6 +484,19 @@ const ClientHeaderEvent = () => {
             </Button>
           </div>
         )}
+      </CustomModal>
+      <CustomModal
+        hideFooter={true}
+        title={"Checkout Page"}
+        size="6xl"
+        open={paymongoModal}
+        handleClose={() => setPaymongoModal(false)}
+      >
+        <iframe
+          style={{ width: "100%", height: "100vh" }}
+          src={paymongoURL}
+          frameborder="0"
+        ></iframe>
       </CustomModal>
     </div>
   );

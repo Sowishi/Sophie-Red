@@ -12,6 +12,7 @@ import {
 } from "chart.js";
 import { ButtonGroup, Button } from "flowbite-react";
 import useCrudBooking from "../hooks/useCrudBooking";
+import moment from "moment"; // Import moment.js
 
 // Register Chart.js components
 ChartJS.register(
@@ -38,10 +39,8 @@ const ChartComponent = () => {
     const checkInDate = new Date(booking.checkInDate.seconds * 1000);
     const key =
       filter === "day"
-        ? checkInDate.toISOString().split("T")[0] // "YYYY-MM-DD" for daily
-        : `${checkInDate.getFullYear()}-${String(
-            checkInDate.getMonth() + 1
-          ).padStart(2, "0")}`; // "YYYY-MM" for monthly
+        ? moment(checkInDate).format("LL") // Format as "LLL" for daily
+        : moment(checkInDate).format("YYYY-MM"); // Format as "YYYY-MM" for monthly
 
     acc[key] = (acc[key] || 0) + booking.totalPrice; // Sum sales for the key
     return acc;

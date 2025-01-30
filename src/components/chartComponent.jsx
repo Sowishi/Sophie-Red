@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
+import moment from "moment";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -36,10 +37,8 @@ const ChartComponent = () => {
     const checkInDate = new Date(booking.createdAt.seconds * 1000);
     const dateKey =
       filter === "day"
-        ? checkInDate.toISOString().split("T")[0] // Format as "YYYY-MM-DD" for daily
-        : `${checkInDate.getFullYear()}-${String(
-            checkInDate.getMonth() + 1
-          ).padStart(2, "0")}`; // Format as "YYYY-MM" for monthly
+        ? moment(checkInDate).format("LL") // Format as "YYYY-MM-DD" for daily
+        : moment(checkInDate).format("YYYY-MM"); // Format as "YYYY-MM" for monthly
 
     acc[dateKey] = (acc[dateKey] || 0) + 1; // Increment count for the period
     return acc;
