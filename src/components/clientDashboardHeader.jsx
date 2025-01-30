@@ -9,10 +9,13 @@ import { Button, Dropdown } from "flowbite-react";
 import useUserStore from "../utils/zustand";
 import { CiMenuBurger } from "react-icons/ci";
 import { ClientSidebar } from "./clientSidebar";
+import CustomModal from "./customModal";
+import Profile from "../pages/profile";
 
 const ClientDashboardHeader = () => {
   const location = useLocation();
   const navigation = useNavigate();
+  const [profileModal, setProfileModal] = useState(false);
 
   const isCurrentPath = (path) => location.pathname === path;
   const [isOpen, setIsOpen] = useState(false);
@@ -77,14 +80,25 @@ const ClientDashboardHeader = () => {
               {currentUser?.email}
             </span>
           </Dropdown.Header>
-
           <Dropdown.Item
+            className="w-full"
             onClick={() => {
-              navigation("/");
-              logout();
+              setProfileModal(true);
             }}
           >
-            Sign out
+            <Button className="w-full">Manage Profile</Button>
+          </Dropdown.Item>
+          <Dropdown.Item>
+            <Button
+              onClick={() => {
+                navigation("/");
+                logout();
+              }}
+              className="w-full"
+              color="failure"
+            >
+              Log out
+            </Button>
           </Dropdown.Item>
         </Dropdown>
       </div>
@@ -94,6 +108,16 @@ const ClientDashboardHeader = () => {
         size={25}
         color="white"
       />
+
+      <CustomModal
+        hideFooter={true}
+        size={"3xl"}
+        title={"Manage Profile"}
+        open={profileModal}
+        handleClose={() => setProfileModal(false)}
+      >
+        <Profile />
+      </CustomModal>
     </div>
   );
 };
