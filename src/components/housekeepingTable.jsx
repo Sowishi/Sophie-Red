@@ -11,6 +11,7 @@ import {
   Modal,
   Dropdown,
   Tooltip,
+  Alert,
 } from "flowbite-react";
 import { useEffect, useState } from "react";
 import useFetchCollection from "../hooks/useFetchCollection";
@@ -102,6 +103,10 @@ export function HousekeepingTable() {
 
     setIsLogsModalOpen(true);
   };
+
+  const availableHousekeepers = housekeepers.filter(
+    (user) => user.status == "Available"
+  );
 
   return (
     <div className="overflow-x-auto">
@@ -242,19 +247,27 @@ export function HousekeepingTable() {
           <div className="space-y-4">
             <div>
               <Label htmlFor="housekeeper" value="Select Housekeeper" />
-              <Dropdown
-                label={
-                  housekeeper == null
-                    ? "Please Select Housekeeper"
-                    : housekeeper.fullName
-                }
-              >
-                {housekeepers.map((user) => (
-                  <Dropdown.Item onClick={() => setHousekeeper(user)}>
-                    {user.fullName}
-                  </Dropdown.Item>
-                ))}
-              </Dropdown>
+              {availableHousekeepers.length >= 1 ? (
+                <Dropdown
+                  label={
+                    housekeeper == null
+                      ? "Please Select Housekeeper"
+                      : housekeeper.fullName
+                  }
+                >
+                  {availableHousekeepers.map((user) => (
+                    <Dropdown.Item onClick={() => setHousekeeper(user)}>
+                      {user.fullName}
+                    </Dropdown.Item>
+                  ))}
+                </Dropdown>
+              ) : (
+                <>
+                  <Alert color="failure">
+                    There's no available housekeepers as of the moment
+                  </Alert>
+                </>
+              )}
             </div>
             <div>
               <Label htmlFor="serviceType" value="Select Service Type" />
