@@ -144,7 +144,10 @@ const Landing = () => {
                     <Button
                       color="failure"
                       className="w-full text-left"
-                      onClick={logout}
+                      onClick={() => {
+                        logout();
+                        localStorage.removeItem("user");
+                      }}
                     >
                       Logout
                     </Button>
@@ -191,7 +194,10 @@ const Landing = () => {
                     <Button
                       color="failure"
                       className="w-full text-left"
-                      onClick={() => setCurrentAdmin(null)}
+                      onClick={() => {
+                        setCurrentAdmin(null);
+                        localStorage.removeItem("user");
+                      }}
                     >
                       Logout
                     </Button>
