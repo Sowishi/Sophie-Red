@@ -1,13 +1,18 @@
-import { Badge, Dropdown, Table } from "flowbite-react";
+import { Badge, Button, Table } from "flowbite-react";
 import { useEffect, useState } from "react";
 import moment from "moment";
 import useFetchCollection from "../hooks/useFetchCollection";
 import Loader from "./loader";
+import { toast } from "react-toastify";
+import useCrudHousekeeping from "../hooks/useCrudHousekeeping";
+import { ConfirmModal } from "./confirmModal";
 
 const HousekeeperListTable = () => {
   const [housekeepers, setHousekeepers] = useState([]);
   const { fetchCollection } = useFetchCollection();
   const [loading, setLoading] = useState(false);
+  const { deleteHousekeeper } = useCrudHousekeeping();
+  const [selectedUser, setSelectedUser] = useState(null);
 
   useEffect(() => {
     fetchCollection("housekeepers", setHousekeepers, setLoading);
@@ -25,10 +30,16 @@ const HousekeeperListTable = () => {
     }
   };
 
-  // Handle status update (you can implement this logic)
-  const handleStatusUpdate = (id, status) => {
-    console.log(`Updating status of ${id} to ${status}`);
-    // Add your logic here to update the status
+  // Handle delete housekeeper
+  const handleDelete = async () => {
+    try {
+      await deleteHousekeeper(selectedUser);
+      setSelectedUser(null);
+      toast.success("Successfully Deleted");
+    } catch (error) {
+      toast.error("Failed to delete housekeeper.");
+      console.error(error);
+    }
   };
 
   if (loading) {
@@ -58,7 +69,11 @@ const HousekeeperListTable = () => {
 
             return (
               <Table.Row key={housekeeper.id}>
-                <Table.Cell>{housekeeper.name}</Table.Cell>
+                <Table.Cell>
+                  <span className="text-red-500 font-bold text-lg">
+                    {housekeeper.name}
+                  </span>
+                </Table.Cell>
                 <Table.Cell>{housekeeper.email}</Table.Cell>
                 <Table.Cell>{housekeeper.housekeeperId}</Table.Cell>
                 <Table.Cell>{createdAt}</Table.Cell>
@@ -72,28 +87,27 @@ const HousekeeperListTable = () => {
                   </span>
                 </Table.Cell>
                 <Table.Cell>
-                  <Dropdown gradientMonochrome="failure" label="Action">
-                    <Dropdown.Item
-                      onClick={() =>
-                        handleStatusUpdate(housekeeper.id, "Available")
-                      }
-                    >
-                      Set as Available
-                    </Dropdown.Item>
-                    <Dropdown.Item
-                      onClick={() =>
-                        handleStatusUpdate(housekeeper.id, "Unavailable")
-                      }
-                    >
-                      Set as Unavailable
-                    </Dropdown.Item>
-                  </Dropdown>
+                  <Button
+                    gradientMonochrome="failure"
+                    onClick={() => {
+                      setSelectedUser(housekeeper.id);
+                    }}
+                  >
+                    Delete
+                  </Button>
                 </Table.Cell>
               </Table.Row>
             );
           })}
         </Table.Body>
       </Table>
+
+      <ConfirmModal
+        title={"Are you sure you want to delete this user?"}
+        open={selectedUser}
+        handleSubmit={handleDelete}
+        handleClose={() => setSelectedUser(false)}
+      />
     </div>
   );
 };

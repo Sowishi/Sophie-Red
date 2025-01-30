@@ -144,7 +144,7 @@ const Header = () => {
         <Link
           to="/housekeeper-list"
           className={`flex px-5 cursor-pointer mx-2 py-3 rounded-lg justify-start items-center ${
-            isCurrentPath("/housekeepers") ? "bg-red-800" : "bg-slate-700"
+            isCurrentPath("/housekeeper-list") ? "bg-red-800" : "bg-slate-700"
           }`}
         >
           <FaUsers color="white" className="mr-3" />

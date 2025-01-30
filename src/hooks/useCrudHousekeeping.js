@@ -7,6 +7,7 @@ import {
   where,
   query,
   serverTimestamp,
+  deleteDoc,
 } from "firebase/firestore";
 import { db } from "../utils/firebase";
 
@@ -109,6 +110,15 @@ const useCrudHousekeeping = () => {
     }
   };
 
+  const deleteHousekeeper = async (id) => {
+    try {
+      const docRef = doc(db, "housekeepers", id);
+      await deleteDoc(docRef);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   return {
     addTask,
     fetchRoomTasks,
@@ -116,6 +126,7 @@ const useCrudHousekeeping = () => {
     updateTaskStatus,
     fetchAllTasks,
     addHousekeeper,
+    deleteHousekeeper,
   };
 };
 
