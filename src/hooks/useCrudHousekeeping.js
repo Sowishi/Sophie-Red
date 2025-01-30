@@ -32,6 +32,15 @@ const useCrudHousekeeping = () => {
     }
   };
 
+  const deleteTask = async (id) => {
+    try {
+      const docRef = doc(db, "housekeeping", id);
+      await deleteDoc(docRef);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   const fetchRoomTasks = async (roomID, setLogs) => {
     try {
       const colRef = collection(db, "housekeeping");
@@ -136,6 +145,7 @@ const useCrudHousekeeping = () => {
     fetchAllTasks,
     addHousekeeper,
     deleteHousekeeper,
+    deleteTask,
   };
 };
 

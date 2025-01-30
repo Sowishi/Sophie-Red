@@ -40,7 +40,7 @@ export function HousekeepingTable() {
   const [description, setDescription] = useState("");
   const [isLogsModalOpen, setIsLogsModalOpen] = useState(false);
   const [housekeepingLogs, setHousekeepingLogs] = useState([]);
-  const [housekeepers, setHousekeepers] = useState(null);
+  const [housekeepers, setHousekeepers] = useState([]);
   const { currentAdmin } = useUserStore();
   useEffect(() => {
     fetchCollection("rooms", setRooms, setLoading);

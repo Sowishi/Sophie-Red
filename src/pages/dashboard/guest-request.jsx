@@ -1,16 +1,34 @@
 import { useEffect, useState } from "react";
 import DashboardLayout from "./dashboardLayout";
-import { Table, Dropdown } from "flowbite-react";
+import {
+  Table,
+  Dropdown,
+  Button,
+  Label,
+  Alert,
+  Select,
+  Textarea,
+} from "flowbite-react";
 import { toast } from "react-toastify";
 import useCrudHousekeeping from "../../hooks/useCrudHousekeeping";
 import moment from "moment";
+import CustomModal from "../../components/customModal";
+import useFetchCollection from "../../hooks/useFetchCollection";
 
 const GuestRequest = () => {
-  const { fetchAllTasks, updateTaskStatus } = useCrudHousekeeping();
+  const { fetchAllTasks, addTask, deleteTask } = useCrudHousekeeping();
+  const { fetchCollection } = useFetchCollection();
   const [tasks, setTasks] = useState([]);
-
+  const [selectedRoom, setSelectedRoom] = useState(null);
+  const [housekeepers, setHousekeepers] = useState([]);
+  const [serviceType, setServiceType] = useState("");
+  const [description, setDescription] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [housekeeper, setHousekeeper] = useState(null);
+  const [selectedTask, setSelectedTask] = useState(null);
   useEffect(() => {
     fetchAllTasks(setTasks);
+    fetchCollection("housekeepers", setHousekeepers, setLoading);
   }, []);
 
   const guestRequest = tasks.filter((task) => task.housekeeper == null);
@@ -29,19 +47,25 @@ const GuestRequest = () => {
     }
   };
 
-  // Function to handle status update
-  const handleStatusUpdate = (taskId, status, roomId, task) => {
-    updateTaskStatus(taskId, status, roomId, task)
-      .then(() => {
-        toast.success(`Status updated to ${status}`);
-        fetchAllTasks(setTasks); // Refresh the task list
-      })
-      .catch((error) => {
-        toast.error("Failed to update status");
-        console.error(error);
-      });
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    await addTask({
+      selectedRoom,
+      housekeeper,
+      serviceType,
+      description,
+    });
+    deleteTask(selectedTask);
+    toast.success("Assignment task successfully!");
+    setSelectedRoom(null);
+    setHousekeeper("");
+    setServiceType("");
+    setDescription("");
   };
 
+  const availableHousekeepers = housekeepers.filter(
+    (user) => user.status == "Available"
+  );
   return (
     <DashboardLayout>
       {/* Header */}
@@ -93,32 +117,15 @@ const GuestRequest = () => {
                     </span>
                   </Table.Cell>
                   <Table.Cell>
-                    <Dropdown gradientMonochrome="failure" label="Action">
-                      <Dropdown.Item
-                        onClick={() =>
-                          handleStatusUpdate(
-                            task.id,
-                            "Ongoing",
-                            task.selectedRoom.id,
-                            task
-                          )
-                        }
-                      >
-                        Ongoing
-                      </Dropdown.Item>
-                      <Dropdown.Item
-                        onClick={() =>
-                          handleStatusUpdate(
-                            task.id,
-                            "Completed",
-                            task.selectedRoom.id,
-                            task
-                          )
-                        }
-                      >
-                        Completed
-                      </Dropdown.Item>
-                    </Dropdown>
+                    <Button
+                      onClick={() => {
+                        setSelectedRoom(task.selectedRoom);
+                        setSelectedTask(task.id);
+                      }}
+                      gradientMonochrome="failure"
+                    >
+                      Assign{" "}
+                    </Button>
                   </Table.Cell>
                 </Table.Row>
               );
@@ -126,6 +133,74 @@ const GuestRequest = () => {
           </Table.Body>
         </Table>
       </div>
+
+      {/* Bottom Drawer for Assigning Housekeeper */}
+      <CustomModal
+        title={"Add Housekeeper Task"}
+        onSubmit={handleFormSubmit}
+        open={selectedRoom}
+        handleClose={() => setSelectedRoom(null)}
+      >
+        <form className="container p-10 mx-auto">
+          <div className="header flex justify-between items-center mb-5">
+            <h1 className="text-3xl font-bold flex items-center justify-start">
+              Room Number: #{selectedRoom?.roomNumber}{" "}
+            </h1>
+          </div>
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="housekeeper" value="Select Housekeeper" />
+              {availableHousekeepers.length >= 1 ? (
+                <Dropdown
+                  label={
+                    housekeeper == null
+                      ? "Please Select Housekeeper"
+                      : housekeeper.fullName
+                  }
+                >
+                  {availableHousekeepers.map((user) => (
+                    <Dropdown.Item onClick={() => setHousekeeper(user)}>
+                      {user.fullName}
+                    </Dropdown.Item>
+                  ))}
+                </Dropdown>
+              ) : (
+                <>
+                  <Alert color="failure">
+                    There's no available housekeepers as of the moment
+                  </Alert>
+                </>
+              )}
+            </div>
+            <div>
+              <Label htmlFor="serviceType" value="Select Service Type" />
+              <Select
+                id="serviceType"
+                value={serviceType}
+                onChange={(e) => setServiceType(e.target.value)}
+                required
+              >
+                <option value="" disabled>
+                  Choose service type
+                </option>
+                <option value="cleaning">Cleaning</option>
+                <option value="maintenance">Maintenance</option>
+              </Select>
+            </div>
+            <div>
+              <Label htmlFor="description" value="Description" />
+              <Textarea
+                rows={5}
+                id="description"
+                placeholder="Provide additional details..."
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                required
+              />
+            </div>
+          </div>
+        </form>
+      </CustomModal>
     </DashboardLayout>
   );
 };
