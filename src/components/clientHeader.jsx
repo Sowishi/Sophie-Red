@@ -581,8 +581,12 @@ const ClientHeader = () => {
                         </td>
                         <td className="px-4 py-2 text-sm text-gray-800 flex items-center justify-start">
                           {paymentStatus}
-                          <Button className="ml-3">
-                            <IoReload onClick={getCheckout} />
+                          <Button
+                            size="xs"
+                            onClick={getCheckout}
+                            className="ml-3"
+                          >
+                            Refresh Payment Status
                           </Button>
                         </td>
                       </tr>
