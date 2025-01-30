@@ -22,6 +22,7 @@ import SignUp from "./pages/signup";
 import Privacy from "./pages/privacy";
 import Terms from "./pages/terms";
 import HousekeeperList from "./pages/dashboard/housekeepersList";
+import GuestRequest from "./pages/dashboard/guest-request";
 
 const App = () => {
   const { currentUser, currentAdmin, setCurrentAdmin } = useUserStore();
@@ -96,6 +97,10 @@ const App = () => {
         <Route
           path="/housekeeper-list"
           element={currentAdmin ? <HousekeeperList /> : <Landing />}
+        />
+        <Route
+          path="/guest-request"
+          element={currentAdmin ? <GuestRequest /> : <Landing />}
         />
         <Route path="/" element={<Landing />} />
       </Routes>

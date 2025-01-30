@@ -133,7 +133,7 @@ const Header = () => {
           <h1 className="text-sm font-extralight">Housekeeping</h1>
         </Link>
         <Link
-          to="/housekeeping"
+          to="/guest-request"
           className={`flex px-5 cursor-pointer mx-2 py-3 rounded-lg justify-start items-center ${
             isCurrentPath("/guest-request") ? "bg-red-800" : "bg-slate-700"
           }`}
