@@ -5,6 +5,8 @@ import CustomModal from "../../components/customModal";
 import CustomInput from "../../components/customInput";
 import { FaPlus } from "react-icons/fa";
 import { toast } from "react-toastify";
+import useCrudHousekeeping from "../../hooks/useCrudHousekeeping";
+import HousekeeperListTable from "../../components/housekeeperListTable";
 
 const HousekeeperList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -12,6 +14,8 @@ const HousekeeperList = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [errors, setErrors] = useState({});
+
+  const { addHousekeeper } = useCrudHousekeeping();
 
   // Validate the form fields
   const validateForm = () => {
@@ -33,33 +37,29 @@ const HousekeeperList = () => {
     return Object.keys(newErrors).length === 0; // Return true if no errors
   };
 
-  const handleAddHousekeeper = () => {
+  const handleAddHousekeeper = async () => {
     // Validate the form before proceeding
     if (!validateForm()) {
-      toast.error("There's an empty field, please fill it out");
+      // Display specific toast messages for each error
+      if (errors.housekeeperId) {
+        toast.error(errors.housekeeperId);
+      }
+      if (errors.name) {
+        toast.error(errors.name);
+      }
+      if (errors.email) {
+        toast.error(errors.email);
+      }
       return; // Stop if validation fails
     }
 
     // Log the data
-    console.log({
+    await addHousekeeper({
       housekeeperId,
       name,
       email,
     });
 
-    // Logic to add a housekeeper (e.g., send data to an API)
-    // Example:
-    // addHousekeeper({ housekeeperId, name, email })
-    //   .then(() => {
-    //     toast.success("Housekeeper added successfully!");
-    //     setIsModalOpen(false);
-    //   })
-    //   .catch((error) => {
-    //     toast.error("Failed to add housekeeper");
-    //     console.error(error);
-    //   });
-
-    // For now, just show a success message and close the modal
     toast.success("Housekeeper added successfully!");
     setIsModalOpen(false);
 
@@ -87,6 +87,8 @@ const HousekeeperList = () => {
             Add Housekeeper
           </Button>
         </div>
+
+        <HousekeeperListTable />
 
         {/* Modal for adding a housekeeper */}
         <CustomModal

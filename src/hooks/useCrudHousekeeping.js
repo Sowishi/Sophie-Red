@@ -96,12 +96,26 @@ const useCrudHousekeeping = () => {
     }
   };
 
+  const addHousekeeper = async (data) => {
+    try {
+      const colRef = collection(db, "housekeepers");
+      await addDoc(colRef, {
+        ...data,
+        createdAt: serverTimestamp(),
+        status: "Available",
+      });
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   return {
     addTask,
     fetchRoomTasks,
     fetchUserTasks,
     updateTaskStatus,
     fetchAllTasks,
+    addHousekeeper,
   };
 };
 
