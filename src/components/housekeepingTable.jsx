@@ -39,9 +39,11 @@ export function HousekeepingTable() {
   const [description, setDescription] = useState("");
   const [isLogsModalOpen, setIsLogsModalOpen] = useState(false);
   const [housekeepingLogs, setHousekeepingLogs] = useState([]);
+  const [housekeepers, setHousekeepers] = useState(null);
   const { currentAdmin } = useUserStore();
   useEffect(() => {
     fetchCollection("rooms", setRooms, setLoading);
+    fetchCollection("housekeepers", setHousekeepers, setLoading);
     fetchCollection("users", setUsers, setLoading);
   }, []);
 
@@ -79,12 +81,6 @@ export function HousekeepingTable() {
       </div>
     );
   }
-
-  const houseKeepers = [
-    { fullName: "Juan Dela Cruz" },
-    { fullName: "Yasmin Chan" },
-    { fullName: "Jean Monica" },
-  ];
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -253,7 +249,7 @@ export function HousekeepingTable() {
                     : housekeeper.fullName
                 }
               >
-                {houseKeepers.map((user) => (
+                {housekeepers.map((user) => (
                   <Dropdown.Item onClick={() => setHousekeeper(user)}>
                     {user.fullName}
                   </Dropdown.Item>

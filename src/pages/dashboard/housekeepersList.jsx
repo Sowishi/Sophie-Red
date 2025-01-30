@@ -56,7 +56,7 @@ const HousekeeperList = () => {
     // Log the data
     await addHousekeeper({
       housekeeperId,
-      name,
+      fullName: name,
       email,
     });
 

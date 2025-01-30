@@ -71,7 +71,7 @@ const HousekeeperListTable = () => {
               <Table.Row key={housekeeper.id}>
                 <Table.Cell>
                   <span className="text-red-500 font-bold text-lg">
-                    {housekeeper.name}
+                    {housekeeper.fullName}
                   </span>
                 </Table.Cell>
                 <Table.Cell>{housekeeper.email}</Table.Cell>
