@@ -91,6 +91,13 @@ const ClientHeader = () => {
     setLoading(false);
   };
 
+  const listenCheckout = async () => {
+    getCheckout();
+    setTimeout(() => {
+      listenCheckout();
+    }, 5000);
+  };
+
   const handleRoomSelection = (room) => {
     if (selectedRoom?.roomNumber === room.roomNumber) {
       setSelectedRoom(null); // Deselect if the same room is clicked again
@@ -148,7 +155,12 @@ const ClientHeader = () => {
   const getCheckout = async () => {
     if (checkoutID) {
       const res = await getCheckoutPaymongo(checkoutID);
-      setPaymentStatus(res);
+      console.log(res);
+      if (res == "succeeded") {
+        handleConfirmBook();
+        setPaymentStatus(res);
+        setPaymongoModal(false);
+      }
     }
   };
 
@@ -167,12 +179,10 @@ const ClientHeader = () => {
   };
 
   useEffect(() => {
-    if (paymentStatus == "succeeded") {
-      setTimeout(() => {
-        handleConfirmBook();
-      }, 1000);
+    if (checkoutID) {
+      listenCheckout();
     }
-  }, [paymentStatus]);
+  }, [checkoutID]);
 
   return (
     <div
