@@ -141,7 +141,12 @@ const ClientHeaderEvent = () => {
   const getCheckout = async () => {
     if (checkoutID) {
       const res = await getCheckoutPaymongo(checkoutID);
-      setPaymentStatus(res);
+      console.log(res);
+      if (res == "succeeded") {
+        handleConfirmBook();
+        setPaymentStatus(res);
+        setPaymongoModal(false);
+      }
     }
   };
 
@@ -166,7 +171,18 @@ const ClientHeaderEvent = () => {
     }
   }, [paymentStatus]);
 
-  console.log(selectedRoom);
+  const listenCheckout = async () => {
+    getCheckout();
+    setTimeout(() => {
+      listenCheckout();
+    }, 5000);
+  };
+
+  useEffect(() => {
+    if (checkoutID) {
+      listenCheckout();
+    }
+  }, [checkoutID]);
   return (
     <div
       style={{
