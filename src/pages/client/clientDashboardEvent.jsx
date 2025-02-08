@@ -13,6 +13,8 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import nodata from "../../assets/nodata.json";
 import Lottie from "react-lottie";
+import { HiOutlineCalendar, HiOutlineXCircle } from "react-icons/hi";
+
 const ClientDashboardEvent = ({ booking, currentUser }) => {
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
   const [dateModal, setDateModal] = useState(false);
@@ -288,6 +290,23 @@ const ClientDashboardEvent = ({ booking, currentUser }) => {
           </Button>
         </div>
       </CustomModal>
+      <div className="bottom-navs fixed bottom-0 left-0 bg-white w-full p-5 flex lg:hidden justify-center items-center">
+        <Button
+          className="w-full flex items-center space-x-2"
+          onClick={() => setDateModal(true)}
+        >
+          <HiOutlineCalendar size={20} />
+          <span className="ml-3">Reschedule Booking</span>
+        </Button>
+        <Button
+          onClick={() => setIsCancelModalOpen(true)}
+          gradientMonochrome="failure"
+          className="w-full ml-3 flex items-center space-x-2"
+        >
+          <HiOutlineXCircle size={20} />
+          <span className="ml-3">Cancel Booking</span>
+        </Button>
+      </div>
     </>
   );
 };

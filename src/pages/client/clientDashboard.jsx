@@ -127,11 +127,6 @@ const ClientDashboard = () => {
               />
             ))}
         </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={() => setIsModalOpen(false)} color="gray">
-            Close
-          </Button>
-        </Modal.Footer>
       </Modal>
       <div className="flex lg:hidden justify-around items-center space-x-3 fixed bottom-0 left-0 bg-red-400 p-5 w-full">
         <Button
