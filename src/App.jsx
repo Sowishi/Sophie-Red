@@ -1,13 +1,13 @@
-import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { useEffect } from "react";
+import { ToastContainer } from "react-toastify";
+import useUserStore from "./utils/zustand";
 import Login from "./pages/login";
 import Index from "./pages/dashboard";
 import Room from "./pages/dashboard/room";
 import FrontDesk from "./pages/dashboard/frontDesk";
-import { ToastContainer } from "react-toastify";
 import Booking from "./pages/client/booking";
 import Landing from "./pages/landing";
-import useUserStore from "./utils/zustand";
-import { useEffect } from "react";
 import Users from "./pages/dashboard/users";
 import Payments from "./pages/dashboard/payments";
 import Housekeeping from "./pages/dashboard/housekeeping";
@@ -28,8 +28,8 @@ import ClientDashboard from "./pages/client/clientDashboard";
 
 const App = () => {
   const { currentUser, currentAdmin, setCurrentAdmin } = useUserStore();
-
   const initializeUser = useUserStore((state) => state.initializeUser);
+
   const getUserFromStorage = async () => {
     const res = localStorage.getItem("user");
     const user = await JSON.parse(res);
@@ -47,18 +47,21 @@ const App = () => {
     const handleBackButton = (event) => {
       event.preventDefault();
       window.history.pushState(null, "", window.location.href);
+      window.history.go(1); // Keeps the user on the current page
     };
 
-    if (window.innerWidth <= 768) {
-      // Check if it's mobile view
-      window.history.pushState(null, "", window.location.href);
-      window.addEventListener("popstate", handleBackButton);
-    }
+    window.history.pushState(null, "", window.location.href);
+    window.addEventListener("popstate", handleBackButton);
 
     return () => {
       window.removeEventListener("popstate", handleBackButton);
     };
   }, []);
+
+  const renderRoute = (path, element, condition = true) => (
+    <Route path={path} element={condition ? element : <Landing />} />
+  );
+
   return (
     <BrowserRouter>
       <Routes>
@@ -72,60 +75,21 @@ const App = () => {
         />
         <Route path="/client-dashboard" element={<ClientDashboard />} />
         <Route path="/client-room" element={<ClientRoom />} />
-        <Route
-          path="/booking"
-          element={currentUser ? <Booking /> : <Landing />}
-        />
-        <Route
-          path="/event-booking"
-          element={currentUser ? <EventBooking /> : <Landing />}
-        />
-        <Route
-          path="/dashboard"
-          element={currentAdmin ? <Index /> : <Landing />}
-        />
-        <Route
-          path="/voucher"
-          element={currentAdmin ? <Voucher /> : <Landing />}
-        />
-        <Route
-          path="/feedback"
-          element={currentAdmin ? <Feedback /> : <Landing />}
-        />
-        <Route path="/room" element={currentAdmin ? <Room /> : <Landing />} />
-        <Route path="/users" element={currentAdmin ? <Users /> : <Landing />} />
-        <Route
-          path="/front-desk"
-          element={currentAdmin ? <FrontDesk /> : <Landing />}
-        />
-        <Route
-          path="/payments"
-          element={currentAdmin ? <Payments /> : <Landing />}
-        />{" "}
-        <Route
-          path="/booking-history"
-          element={currentAdmin ? <BookingHistory /> : <Landing />}
-        />
-        <Route
-          path="/reports"
-          element={currentAdmin ? <Reports /> : <Landing />}
-        />
-        <Route
-          path="/housekeeping"
-          element={currentAdmin ? <Housekeeping /> : <Landing />}
-        />
-        <Route
-          path="/housekeeper"
-          element={currentAdmin ? <Housekeeper /> : <Landing />}
-        />
-        <Route
-          path="/housekeeper-list"
-          element={currentAdmin ? <HousekeeperList /> : <Landing />}
-        />
-        <Route
-          path="/guest-request"
-          element={currentAdmin ? <GuestRequest /> : <Landing />}
-        />
+        {renderRoute("/booking", <Booking />, currentUser)}
+        {renderRoute("/event-booking", <EventBooking />, currentUser)}
+        {renderRoute("/dashboard", <Index />, currentAdmin)}
+        {renderRoute("/voucher", <Voucher />, currentAdmin)}
+        {renderRoute("/feedback", <Feedback />, currentAdmin)}
+        {renderRoute("/room", <Room />, currentAdmin)}
+        {renderRoute("/users", <Users />, currentAdmin)}
+        {renderRoute("/front-desk", <FrontDesk />, currentAdmin)}
+        {renderRoute("/payments", <Payments />, currentAdmin)}
+        {renderRoute("/booking-history", <BookingHistory />, currentAdmin)}
+        {renderRoute("/reports", <Reports />, currentAdmin)}
+        {renderRoute("/housekeeping", <Housekeeping />, currentAdmin)}
+        {renderRoute("/housekeeper", <Housekeeper />, currentAdmin)}
+        {renderRoute("/housekeeper-list", <HousekeeperList />, currentAdmin)}
+        {renderRoute("/guest-request", <GuestRequest />, currentAdmin)}
         <Route path="/" element={<Landing />} />
       </Routes>
       <ToastContainer position="top-right" theme="light" />
