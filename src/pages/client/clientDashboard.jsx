@@ -1,4 +1,4 @@
-import { Badge, Button, Card, Modal } from "flowbite-react";
+import { Badge, Button, Card, Modal, Spinner } from "flowbite-react";
 import ClientDashboardLayout from "./clientDashboardLayout";
 import { useNavigate } from "react-router-dom";
 import useUserStore from "../../utils/zustand";
@@ -15,10 +15,15 @@ const ClientDashboard = () => {
   const [bookings, setBookings] = useState(null);
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (currentUser) {
-      fetchUserBooking(currentUser, setBookings);
+      setIsLoading(true);
+      fetchUserBooking(currentUser, (data) => {
+        setBookings(data);
+        setIsLoading(false);
+      });
     }
   }, [currentUser]);
 
@@ -48,15 +53,24 @@ const ClientDashboard = () => {
             </Button>
           </div>
         </div>
+
         <div className="flex mt-10">
           <div className="basis-full lg:basis-4/12">
-            {bookings?.map((booking) => (
-              <BookingCard
-                key={booking.id}
-                booking={booking}
-                onViewDetails={handleViewDetails}
-              />
-            ))}
+            {isLoading ? (
+              <div className="flex justify-center items-center h-40">
+                <Spinner size="xl" />
+              </div>
+            ) : bookings?.length > 0 ? (
+              bookings.map((booking) => (
+                <BookingCard
+                  key={booking.id}
+                  booking={booking}
+                  onViewDetails={handleViewDetails}
+                />
+              ))
+            ) : (
+              <p className="text-center text-gray-500">No bookings found.</p>
+            )}
           </div>
         </div>
       </div>
@@ -69,21 +83,18 @@ const ClientDashboard = () => {
       >
         <Modal.Header>Booking Details</Modal.Header>
         <Modal.Body>
-          {selectedBooking && (
-            <>
-              {selectedBooking?.bookType == "room" ? (
-                <ClientDashboardRoom
-                  currentUser={currentUser}
-                  booking={selectedBooking}
-                />
-              ) : (
-                <ClientDashboardEvent
-                  currentUser={currentUser}
-                  booking={selectedBooking}
-                />
-              )}
-            </>
-          )}
+          {selectedBooking &&
+            (selectedBooking?.bookType === "room" ? (
+              <ClientDashboardRoom
+                currentUser={currentUser}
+                booking={selectedBooking}
+              />
+            ) : (
+              <ClientDashboardEvent
+                currentUser={currentUser}
+                booking={selectedBooking}
+              />
+            ))}
         </Modal.Body>
         <Modal.Footer>
           <Button onClick={() => setIsModalOpen(false)} color="gray">

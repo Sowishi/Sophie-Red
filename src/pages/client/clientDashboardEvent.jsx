@@ -19,6 +19,7 @@ const ClientDashboardEvent = ({ booking, currentUser }) => {
   const [arrivalDate, setArrivalDate] = useState();
   const [departureDate, setDepartureDate] = useState();
   const navigation = useNavigate();
+  const { cancelBooking } = useCrudBooking();
 
   const handleCancelBooking = async () => {
     await cancelBooking(booking.id);
