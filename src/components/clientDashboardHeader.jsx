@@ -44,15 +44,6 @@ const ClientDashboardHeader = () => {
           <HiHome color="white" className="mr-3" />
           <h1 className="text-sm font-extralight">Dashboard</h1>
         </Link>
-        <Link
-          to="/client-room"
-          className={`flex px-5 cursor-pointer mx-2 py-3 rounded-lg justify-start items-center ${
-            isCurrentPath("/client-room") ? "bg-red-800" : "bg-slate-700"
-          }`}
-        >
-          <FaBed color="white" className="mr-3" />
-          <h1 className="text-sm font-extralight">Room</h1>
-        </Link>
       </div>
       <div className="hidden lg:flex items-center justify-start cursor-pointer">
         <img

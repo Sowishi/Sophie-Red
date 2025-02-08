@@ -23,8 +23,8 @@ import anim from "../../assets/rating.json";
 import useCrudRating from "../../hooks/useCrudRating";
 import NoData from "../../components/noData";
 
-const ClientRoom = ({ booking }) => {
-  const { currentUser } = useUserStore();
+const ClientRoom = () => {
+  const { currentUser, booking } = useUserStore();
 
   const { fetchCollectin } = useFetchCollection();
   const { addTask } = useCrudHousekeeping();
@@ -63,7 +63,7 @@ const ClientRoom = ({ booking }) => {
   };
 
   return (
-    <ClientDashboardLayout>
+    <>
       {!booking && <NoData />}
       {roomDetails && booking && (
         <div className="container mx-auto h-screen p-7 lg:p-0">
@@ -240,7 +240,7 @@ const ClientRoom = ({ booking }) => {
           </p>
         </div>
       </CustomModal>
-    </ClientDashboardLayout>
+    </>
   );
 };
 

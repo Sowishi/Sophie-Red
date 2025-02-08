@@ -9,6 +9,7 @@ import ClientDashboardRoom from "./clientDashboardRoom";
 import ClientDashboardEvent from "./clientDashboardEvent";
 import Loader from "../../components/loader";
 import NoData from "../../components/noData";
+import ClientRoom from "./clientRoom";
 
 const ClientDashboard = () => {
   const navigation = useNavigate();
@@ -97,7 +98,6 @@ const ClientDashboard = () => {
           )}
         </div>
       </div>
-
       {/* Modal */}
       <Modal
         size="9xl"
