@@ -1,4 +1,4 @@
-import { Badge, Button, Card, Modal, Spinner } from "flowbite-react";
+import { Badge, Button, Card, Modal } from "flowbite-react";
 import ClientDashboardLayout from "./clientDashboardLayout";
 import { useNavigate } from "react-router-dom";
 import useUserStore from "../../utils/zustand";
@@ -17,6 +17,7 @@ const ClientDashboard = () => {
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [filter, setFilter] = useState("all"); // "all", "room", "event"
 
   const handleViewDetails = (booking) => {
     setSelectedBooking(booking);
@@ -27,31 +28,43 @@ const ClientDashboard = () => {
     setIsLoading(true);
     await fetchUserBooking(currentUser, setBookings);
     setIsLoading(false);
-    console.log("Fldkj");
   };
 
   useEffect(() => {
     getBooking();
   }, [currentUser]);
 
+  // Filtered bookings based on selected filter
+  const filteredBookings = bookings
+    ? bookings.filter(
+        (booking) => filter === "all" || booking.bookType === filter
+      )
+    : [];
+
   return (
     <ClientDashboardLayout>
       <div className="container mx-auto min-h-screen">
         <div className="header px-3 flex flex-col lg:flex-row justify-between items-center">
           <h1 className="text-2xl lg:text-3xl font-bold mb-3">Your Bookings</h1>
-          <div className="wrapper flex items-center justify-center">
+
+          <div className="flex items-center space-x-3">
             <Button
-              onClick={() => navigation("/booking")}
-              gradientMonochrome="failure"
-              className="mr-3"
+              onClick={() => setFilter("all")}
+              color={filter === "all" ? "failure" : "gray"}
             >
-              Book Room
+              All
             </Button>
             <Button
-              onClick={() => navigation("/event-booking")}
-              gradientMonochrome="info"
+              onClick={() => setFilter("room")}
+              color={filter === "room" ? "failure" : "gray"}
             >
-              Book Event
+              Room
+            </Button>
+            <Button
+              onClick={() => setFilter("event")}
+              color={filter === "event" ? "failure" : "gray"}
+            >
+              Event
             </Button>
           </div>
         </div>
@@ -61,8 +74,8 @@ const ClientDashboard = () => {
             <div className="flex mt-10 w-full items-center justify-center">
               <Loader />
             </div>
-          ) : bookings && bookings.length > 0 ? (
-            bookings.map((booking) => (
+          ) : filteredBookings.length > 0 ? (
+            filteredBookings.map((booking) => (
               <div key={booking.id} className="basis-full lg:basis-4/12 w-full">
                 <BookingCard
                   booking={booking}
@@ -85,7 +98,7 @@ const ClientDashboard = () => {
         onClose={() => setIsModalOpen(false)}
       >
         <Modal.Header>
-          {selectedBooking?.bookType == "event"
+          {selectedBooking?.bookType === "event"
             ? "Event Details"
             : "Room Details"}
         </Modal.Header>
