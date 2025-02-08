@@ -23,11 +23,6 @@ const BookingCard = ({ booking, onViewDetails }) => {
               <ClientRoom />
             )}
           </Modal.Body>
-          <Modal.Footer>
-            <Button onClick={() => setIsModalOpen(false)} color="gray">
-              Close
-            </Button>
-          </Modal.Footer>
         </Modal>
       )}
       <Card className="max-w-sm my-3 h-[360px] mx-3">

@@ -77,6 +77,7 @@ const ClientRoom = () => {
               </p>
             </div>
             <Button
+              className="hidden lg:flex"
               gradientMonochrome="info"
               onClick={() => setRatingModal(true)}
             >
@@ -138,15 +139,19 @@ const ClientRoom = () => {
                     </div>
                   </div>
                   <hr />
-                  <h1 className="text-2xl font-semibold my-5">Accomodation</h1>
-                  <hr />
-                  <Button
-                    onClick={() => setRequestModal(true)}
-                    gradientMonochrome="failure"
-                    className="w-full"
-                  >
-                    Request Service
-                  </Button>
+                  <div className="wrapper hidden lg:flex flex-col  items-center justify-center">
+                    <h1 className="text-2xl font-semibold my-5">
+                      Accomodation
+                    </h1>
+                    <hr />
+                    <Button
+                      onClick={() => setRequestModal(true)}
+                      gradientMonochrome="failure"
+                      className="w-full"
+                    >
+                      Request Service
+                    </Button>
+                  </div>
                 </div>
               </div>
             )}
@@ -242,6 +247,22 @@ const ClientRoom = () => {
           </p>
         </div>
       </CustomModal>
+      <div className="bottom-navs fixed bottom-0 left-0 bg-white w-full p-5  flex lg:hidden justify-center items-center ">
+        <Button
+          gradientMonochrome="info"
+          className="w-full mr-5"
+          onClick={() => setRatingModal(true)}
+        >
+          Leave A Review
+        </Button>
+        <Button
+          onClick={() => setRequestModal(true)}
+          gradientMonochrome="failure"
+          className="w-full"
+        >
+          Request Service
+        </Button>
+      </div>
     </>
   );
 };
