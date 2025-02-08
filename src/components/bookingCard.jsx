@@ -2,7 +2,7 @@ import { Badge, Card, Dropdown } from "flowbite-react";
 import moment from "moment";
 import { BsThreeDots } from "react-icons/bs";
 
-const BookingCard = ({ booking }) => {
+const BookingCard = ({ booking, onViewDetails }) => {
   return (
     <Card className="max-w-sm my-3">
       <div className="header flex items-center justify-between">
@@ -17,7 +17,7 @@ const BookingCard = ({ booking }) => {
           inline
           label={<BsThreeDots className="cursor-pointer text-xl" />}
         >
-          <Dropdown.Item onClick={() => console.log("View Details")}>
+          <Dropdown.Item onClick={() => onViewDetails(booking)}>
             View Details
           </Dropdown.Item>
 

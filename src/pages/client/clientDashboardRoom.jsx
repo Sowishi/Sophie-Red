@@ -13,45 +13,12 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import nodata from "../../assets/nodata.json";
 import Lottie from "react-lottie";
-const ClientDashboardRoom = () => {
-  const { currentUser, booking, setBooking } = useUserStore();
-  const {
-    fetchUserBooking,
-    cancelBooking,
-    checkRoomAvailability,
-    reschedBooking,
-  } = useCrudBooking();
-  const [loading, setLoading] = useState(true);
+const ClientDashboardRoom = ({ booking, currentUser }) => {
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
   const [dateModal, setDateModal] = useState(false);
   const [arrivalDate, setArrivalDate] = useState();
   const [departureDate, setDepartureDate] = useState();
   const navigation = useNavigate();
-  useEffect(() => {
-    const getBooking = async () => {
-      if (currentUser) {
-        try {
-          setLoading(true);
-          await fetchUserBooking(currentUser, setBooking);
-          setLoading(false);
-        } catch (error) {
-          toast.error(error.message);
-          setLoading(false);
-        }
-      }
-    };
-
-    getBooking();
-  }, [currentUser]);
-
-  if (loading)
-    return (
-      <>
-        <div className="container mx-auto h-screen flex items-center justify-center">
-          <Loader />
-        </div>
-      </>
-    );
 
   const handleCancelBooking = async () => {
     await cancelBooking(booking.id);
@@ -104,7 +71,7 @@ const ClientDashboardRoom = () => {
     }
   };
   return (
-    <ClientDashboardLayout>
+    <>
       {booking ? (
         <>
           <div className="lg:flex items-center justify-start mx-10">
@@ -346,7 +313,7 @@ const ClientDashboardRoom = () => {
           </Button>
         </div>
       </CustomModal>
-    </ClientDashboardLayout>
+    </>
   );
 };
 
