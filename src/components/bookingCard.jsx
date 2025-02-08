@@ -41,10 +41,6 @@ const BookingCard = ({ booking, onViewDetails }) => {
             <Dropdown.Item onClick={() => onViewDetails(booking)}>
               View Details
             </Dropdown.Item>
-
-            <Dropdown.Item onClick={() => console.log("Cancel Booking")}>
-              Cancel Booking
-            </Dropdown.Item>
           </Dropdown>
         </div>
         <div className="content h-[100px] overflow-hidden">
