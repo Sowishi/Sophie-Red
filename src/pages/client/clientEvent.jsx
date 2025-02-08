@@ -25,6 +25,7 @@ import useCrudRating from "../../hooks/useCrudRating";
 import NoData from "../../components/noData";
 import event from "../../assets/event.jpg";
 import event1 from "../../assets/event1.jpg";
+import { HiOutlineStar, HiOutlineClipboardList } from "react-icons/hi";
 
 const ClientEvent = () => {
   const { currentUser, booking } = useUserStore();
@@ -81,6 +82,7 @@ const ClientEvent = () => {
               </p>
             </div>
             <Button
+              className="hidden lg:flex"
               gradientMonochrome="info"
               onClick={() => setRatingModal(true)}
             >
@@ -261,6 +263,16 @@ const ClientEvent = () => {
           </p>
         </div>
       </CustomModal>
+      <div className="bottom-navs fixed bottom-0 left-0 bg-white w-full p-5  flex lg:hidden justify-center items-center ">
+        <Button
+          gradientMonochrome="info"
+          className="w-full mr-5 flex items-center space-x-2"
+          onClick={() => setRatingModal(true)}
+        >
+          <HiOutlineStar size={20} />
+          <span className="ml-3">Leave A Review</span>
+        </Button>
+      </div>
     </>
   );
 };

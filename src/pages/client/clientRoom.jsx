@@ -22,6 +22,7 @@ import Lottie from "react-lottie";
 import anim from "../../assets/rating.json";
 import useCrudRating from "../../hooks/useCrudRating";
 import NoData from "../../components/noData";
+import { HiOutlineStar, HiOutlineClipboardList } from "react-icons/hi";
 
 const ClientRoom = () => {
   const { currentUser, booking } = useUserStore();
@@ -247,20 +248,22 @@ const ClientRoom = () => {
           </p>
         </div>
       </CustomModal>
-      <div className="bottom-navs fixed bottom-0 left-0 bg-white w-full p-5  flex lg:hidden justify-center items-center ">
+      <div className="bottom-navs fixed bottom-0 left-0 bg-white w-full p-5 flex lg:hidden justify-center items-center">
         <Button
           gradientMonochrome="info"
-          className="w-full mr-5"
+          className="w-full mr-5 flex items-center space-x-2"
           onClick={() => setRatingModal(true)}
         >
-          Leave A Review
+          <HiOutlineStar size={20} />
+          <span className="ml-3">Leave A Review</span>
         </Button>
         <Button
           onClick={() => setRequestModal(true)}
           gradientMonochrome="failure"
-          className="w-full"
+          className="w-full flex items-center space-x-2"
         >
-          Request Service
+          <HiOutlineClipboardList size={20} />
+          <span className="ml-3">Request Service</span>
         </Button>
       </div>
     </>
