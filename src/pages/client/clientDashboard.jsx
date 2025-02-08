@@ -10,7 +10,11 @@ import ClientDashboardEvent from "./clientDashboardEvent";
 import Loader from "../../components/loader";
 import NoData from "../../components/noData";
 import ClientRoom from "./clientRoom";
-
+import {
+  HiOutlineViewGrid,
+  HiOutlineHome,
+  HiOutlineCalendar,
+} from "react-icons/hi";
 const ClientDashboard = () => {
   const navigation = useNavigate();
   const { currentUser } = useUserStore();
@@ -46,7 +50,7 @@ const ClientDashboard = () => {
   return (
     <ClientDashboardLayout>
       <div className="container mx-auto min-h-screen">
-        <div className="header px-3 flex flex-col lg:flex-row justify-between items-center">
+        <div className="header  px-3 flex flex-col lg:flex-row justify-between items-center">
           <div className="wrapper  mb-3">
             <h1 className="text-2xl lg:text-3xl font-bold">
               Your Bookings ({bookings?.length || <Spinner />})
@@ -57,7 +61,7 @@ const ClientDashboard = () => {
               efficiently.
             </p>
           </div>
-          <div className="flex items-center space-x-3">
+          <div className="flex hidden lg:flex items-center space-x-3">
             <Button
               onClick={() => setFilter("all")}
               color={filter === "all" ? "failure" : "gray"}
@@ -129,6 +133,32 @@ const ClientDashboard = () => {
           </Button>
         </Modal.Footer>
       </Modal>
+      <div className="flex lg:hidden justify-around items-center space-x-3 fixed bottom-0 left-0 bg-red-400 p-5 w-full">
+        <Button
+          onClick={() => setFilter("all")}
+          color={filter === "all" ? "failure" : "gray"}
+          className="flex items-center space-x-2"
+        >
+          <HiOutlineViewGrid size={20} />
+          <span className="ml-2">All</span>
+        </Button>
+        <Button
+          onClick={() => setFilter("room")}
+          color={filter === "room" ? "failure" : "gray"}
+          className="flex items-center space-x-2"
+        >
+          <HiOutlineHome size={20} />
+          <span className="ml-2">Room</span>
+        </Button>
+        <Button
+          onClick={() => setFilter("event")}
+          color={filter === "event" ? "failure" : "gray"}
+          className="flex items-center space-x-2"
+        >
+          <HiOutlineCalendar size={20} />
+          <span className="ml-2">Event</span>
+        </Button>
+      </div>
     </ClientDashboardLayout>
   );
 };

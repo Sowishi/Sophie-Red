@@ -15,7 +15,7 @@ const BookingCard = ({ booking, onViewDetails }) => {
     <>
       {openModal && (
         <Modal size="9xl" show={openModal} onClose={() => setOpenModal(false)}>
-          <Modal.Header>Your Hotel</Modal.Header>
+          <Modal.Header>Booking Details</Modal.Header>
           <Modal.Body>
             {selectedBooking?.bookType == "event" ? (
               <ClientEvent />

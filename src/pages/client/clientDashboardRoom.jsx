@@ -84,13 +84,6 @@ const ClientDashboardRoom = ({ booking, currentUser }) => {
                 This is where you can view all the details about your booking
               </p>
             </div>
-            <Button
-              onClick={() => navigation("/client-room")}
-              className="ml-10 px-3 mt-5 lg:mt-0"
-              gradientMonochrome="failure"
-            >
-              View Your Room
-            </Button>
           </div>
           <div className="flex w-full flex-wrap">
             <div className="basis-full lg:basis-7/12">
