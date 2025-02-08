@@ -414,26 +414,7 @@ const ClientHeaderEvent = () => {
                           </Button>
                         </td>
                       </tr>
-                      <tr className="border-b">
-                        <td className="px-4 py-2 text-sm text-gray-600">
-                          Payment Term
-                        </td>
-                        <td className="px-4 py-2 text-sm text-gray-800 flex items-center justify-start">
-                          <Button
-                            onClick={() => setPaymentTerm("down")}
-                            color={paymentTerm == "down" ? "success" : "light"}
-                          >
-                            Downpayment
-                          </Button>
-                          <Button
-                            onClick={() => setPaymentTerm("full")}
-                            className="ml-3"
-                            color={paymentTerm == "full" ? "success" : "light"}
-                          >
-                            Full Payment
-                          </Button>
-                        </td>
-                      </tr>
+
                       <tr className="border-b">
                         <td className="px-4 py-2 text-sm text-gray-600">
                           Make payment for:
@@ -451,6 +432,21 @@ const ClientHeaderEvent = () => {
                       </tr>
                     </tbody>
                   </table>
+                  <div className="flex justify-center items-center">
+                    <Button
+                      onClick={() => setPaymentTerm("down")}
+                      color={paymentTerm == "down" ? "success" : "light"}
+                    >
+                      Downpayment
+                    </Button>
+                    <Button
+                      onClick={() => setPaymentTerm("full")}
+                      className="ml-3"
+                      color={paymentTerm == "full" ? "success" : "light"}
+                    >
+                      Full Payment
+                    </Button>
+                  </div>
                 </div>
               </div>
             )}
@@ -478,7 +474,7 @@ const ClientHeaderEvent = () => {
         )}
 
         {paymentStatus !== "succeeded" && (
-          <div className="buttons flex items-center justify-center w-full mt-10">
+          <div className="buttons fixed bottom-0 left-0 flex items-center justify-center w-full bg-white p-3 rounded">
             <Button
               onClick={() => {
                 setBookingModal(false);

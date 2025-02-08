@@ -589,37 +589,8 @@ const ClientHeader = () => {
                         <td className="px-4 py-2 text-sm text-gray-600">
                           Status
                         </td>
-                        <td className="px-4 py-2 text-sm text-gray-800 flex items-center justify-start">
-                          {paymentStatus}
-                          <Button
-                            size="xs"
-                            onClick={getCheckout}
-                            className="ml-3"
-                          >
-                            Refresh Payment Status
-                          </Button>
-                        </td>
                       </tr>
-                      <tr className="border-b">
-                        <td className="px-4 py-2 text-sm text-gray-600">
-                          Payment Term
-                        </td>
-                        <td className="px-4 py-2 text-sm text-gray-800 flex items-center justify-start">
-                          <Button
-                            onClick={() => setPaymentTerm("down")}
-                            color={paymentTerm == "down" ? "success" : "light"}
-                          >
-                            Downpayment
-                          </Button>
-                          <Button
-                            onClick={() => setPaymentTerm("full")}
-                            className="ml-3"
-                            color={paymentTerm == "full" ? "success" : "light"}
-                          >
-                            Full Payment
-                          </Button>
-                        </td>
-                      </tr>
+
                       <tr className="border-b">
                         <td className="px-4 py-2 text-sm text-gray-600">
                           Make payment for:
@@ -637,6 +608,21 @@ const ClientHeader = () => {
                       </tr>
                     </tbody>
                   </table>
+                  <div className="w-full flex items-center justify-center">
+                    <Button
+                      onClick={() => setPaymentTerm("down")}
+                      color={paymentTerm == "down" ? "success" : "light"}
+                    >
+                      Downpayment
+                    </Button>
+                    <Button
+                      onClick={() => setPaymentTerm("full")}
+                      className="ml-3"
+                      color={paymentTerm == "full" ? "success" : "light"}
+                    >
+                      Full Payment
+                    </Button>
+                  </div>
                 </div>
               </div>
             )}
@@ -664,7 +650,7 @@ const ClientHeader = () => {
         )}
 
         {paymentStatus !== "succeeded" && (
-          <div className="buttons flex items-center justify-center w-full mt-10">
+          <div className="buttons fixed bottom-0 left-0 flex items-center justify-center w-full bg-white p-3 rounded">
             <Button
               onClick={() => {
                 setBookingModal(false);
