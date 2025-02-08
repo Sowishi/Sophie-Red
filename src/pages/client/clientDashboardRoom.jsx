@@ -160,7 +160,7 @@ const ClientDashboardRoom = () => {
                 <h1 className="text-lg lg:text-2xl font-semibold">
                   Check In & Check Out Dates
                 </h1>
-                <div className="flex flex-wrap gap-5 mt-5">
+                {/* <div className="flex flex-wrap gap-5 mt-5">
                   <div className="w-full lg:w-4/12">
                     <h1>Check In</h1>
                     <h1 className="text-lg font-bold">
@@ -178,7 +178,7 @@ const ClientDashboardRoom = () => {
                       Reschedule Booking
                     </Button>
                   </div>
-                </div>
+                </div> */}
               </div>
               <div className="bg-white p-5 lg:p-10 rounded-lg shadow-sm mt-5 flex flex-col lg:flex-row items-start gap-5">
                 <FcCancel size={50} className="hidden lg:block" />

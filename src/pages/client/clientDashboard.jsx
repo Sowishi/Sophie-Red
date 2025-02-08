@@ -1,9 +1,10 @@
-import { Button } from "flowbite-react";
+import { Badge, Button, Card } from "flowbite-react";
 import ClientDashboardLayout from "./clientDashboardLayout";
 import { useNavigate } from "react-router-dom";
 import useUserStore from "../../utils/zustand";
 import { useEffect, useState } from "react";
 import useCrudBooking from "../../hooks/useCrudBooking";
+import BookingCard from "../../components/bookingCard";
 
 const ClientDashboard = () => {
   const navigation = useNavigate();
@@ -17,7 +18,6 @@ const ClientDashboard = () => {
     }
   }, [currentUser]);
 
-  console.log(bookings);
   return (
     <ClientDashboardLayout>
       <div className="container mx-auto min-h-screen">
@@ -41,6 +41,13 @@ const ClientDashboard = () => {
             >
               Book Event{" "}
             </Button>
+          </div>
+        </div>
+        <div className="flex mt-10">
+          <div className="basis-full lg:basis-4/12">
+            {bookings?.map((booking) => {
+              return <BookingCard booking={booking} />;
+            })}
           </div>
         </div>
       </div>
