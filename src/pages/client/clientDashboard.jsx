@@ -8,6 +8,7 @@ import BookingCard from "../../components/bookingCard";
 import ClientDashboardRoom from "./clientDashboardRoom";
 import ClientDashboardEvent from "./clientDashboardEvent";
 import Loader from "../../components/loader";
+import NoData from "../../components/noData";
 
 const ClientDashboard = () => {
   const navigation = useNavigate();
@@ -84,9 +85,7 @@ const ClientDashboard = () => {
               </div>
             ))
           ) : (
-            <div className="w-full text-center text-gray-500 mt-5">
-              <p>No bookings found.</p>
-            </div>
+            <NoData />
           )}
         </div>
       </div>
