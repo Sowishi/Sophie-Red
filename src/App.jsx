@@ -8,7 +8,6 @@ import Booking from "./pages/client/booking";
 import Landing from "./pages/landing";
 import useUserStore from "./utils/zustand";
 import { useEffect } from "react";
-import ClientDashboard from "./pages/client/clientDashboard";
 import Users from "./pages/dashboard/users";
 import Payments from "./pages/dashboard/payments";
 import Housekeeping from "./pages/dashboard/housekeeping";
@@ -24,6 +23,8 @@ import Terms from "./pages/terms";
 import HousekeeperList from "./pages/dashboard/housekeepersList";
 import GuestRequest from "./pages/dashboard/guest-request";
 import BookingHistory from "./pages/dashboard/bookingHistory";
+import ClientDashboardRoom from "./pages/client/clientDashboardRoom";
+import ClientDashboard from "./pages/client/clientDashboard";
 
 const App = () => {
   const { currentUser, currentAdmin, setCurrentAdmin } = useUserStore();
@@ -49,6 +50,10 @@ const App = () => {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/terms" element={<Terms />} />
+        <Route
+          path="/client-dashboard-room"
+          element={<ClientDashboardRoom />}
+        />
         <Route path="/client-dashboard" element={<ClientDashboard />} />
         <Route path="/client-room" element={<ClientRoom />} />
         <Route

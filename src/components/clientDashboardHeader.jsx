@@ -36,15 +36,6 @@ const ClientDashboardHeader = () => {
       </div>
       <div className="navigation hidden lg:flex flex-1  mx-10 text-white px-5">
         <Link
-          to="/"
-          className={`flex px-5 cursor-pointer mx-2 py-3 rounded-lg justify-start items-center ${
-            isCurrentPath("/") ? "bg-red-800" : "bg-slate-700"
-          }`}
-        >
-          <HiHome color="white" className="mr-3" />
-          <h1 className="text-sm font-extralight">Landing</h1>
-        </Link>
-        <Link
           to="/client-dashboard"
           className={`flex px-5 cursor-pointer mx-2 py-3 rounded-lg justify-start items-center ${
             isCurrentPath("/client-dashboard") ? "bg-red-800" : "bg-slate-700"
@@ -61,22 +52,6 @@ const ClientDashboardHeader = () => {
         >
           <FaBed color="white" className="mr-3" />
           <h1 className="text-sm font-extralight">Room</h1>
-        </Link>
-        <Link
-          to="/booking"
-          className={`flex px-5 cursor-pointer mx-2 py-3 rounded-lg justify-start items-center ${
-            isCurrentPath() ? "bg-red-800" : "bg-slate-700"
-          }`}
-        >
-          <h1 className="text-sm font-extralight">Book Room</h1>
-        </Link>
-        <Link
-          to="/event-booking"
-          className={`flex px-5 cursor-pointer mx-2 py-3 rounded-lg justify-start items-center ${
-            isCurrentPath() ? "bg-red-800" : "bg-slate-700"
-          }`}
-        >
-          <h1 className="text-sm font-extralight">Book Event</h1>
         </Link>
       </div>
       <div className="hidden lg:flex items-center justify-start cursor-pointer">
