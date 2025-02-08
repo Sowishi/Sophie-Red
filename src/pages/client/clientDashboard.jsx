@@ -81,7 +81,11 @@ const ClientDashboard = () => {
         show={isModalOpen}
         onClose={() => setIsModalOpen(false)}
       >
-        <Modal.Header>Booking Details</Modal.Header>
+        <Modal.Header>
+          {selectedBooking?.bookType == "event"
+            ? "Event Details"
+            : "Room Details"}
+        </Modal.Header>
         <Modal.Body>
           {selectedBooking &&
             (selectedBooking?.bookType === "room" ? (

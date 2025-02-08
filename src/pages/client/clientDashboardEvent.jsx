@@ -1,4 +1,4 @@
-import { Alert, Button, Datepicker, Modal } from "flowbite-react";
+import { Alert, Badge, Button, Datepicker, Modal } from "flowbite-react";
 import useUserStore from "../../utils/zustand";
 import ClientDashboardLayout from "./clientDashboardLayout";
 import useCrudBooking from "../../hooks/useCrudBooking";
@@ -84,13 +84,6 @@ const ClientDashboardEvent = ({ booking, currentUser }) => {
                 This is where you can view all the details about your booking
               </p>
             </div>
-            <Button
-              onClick={() => navigation("/client-room")}
-              className="ml-10 px-3 mt-5 lg:mt-0"
-              gradientMonochrome="failure"
-            >
-              View Your Room
-            </Button>
           </div>
           <div className="flex w-full flex-wrap">
             <div className="basis-full lg:basis-7/12">
@@ -178,29 +171,12 @@ const ClientDashboardEvent = ({ booking, currentUser }) => {
                     <h1>Customer Name</h1>
                     <h1 className="font-bold">{booking.currentUser.name}</h1>
                   </div>
-                  <div className="flex justify-between">
-                    <h1>Room Number</h1>
-                    <h1 className="font-bold">
-                      {booking.roomDetails.roomNumber}
-                    </h1>
-                  </div>
-                  <div className="flex justify-between">
-                    <h1>Room Type</h1>
-                    <h1 className="font-bold">
-                      {booking.roomDetails.roomType}
-                    </h1>
-                  </div>
-                  <div className="flex justify-between">
-                    <h1>Room Description</h1>
-                    <h1 className="font-bold">
-                      {booking.roomDetails.description}
-                    </h1>
-                  </div>
-                  <div className="flex justify-between">
-                    <h1>Total Guest Allowed</h1>
-                    <h1 className="font-bold">
-                      {booking.roomDetails.adultCount} Adults &{" "}
-                      {booking.roomDetails.childCount} Kids
+                  <div className="flex justify-between items-start flex-col">
+                    <h1>Description</h1>
+                    <h1 className="opacity-50">
+                      Lights & Sounds P3,500.00 (White screen projector w/
+                      microphone 4 hours usage additional P2,000/hr for the
+                      exceeding hours)
                     </h1>
                   </div>
                 </div>
@@ -210,9 +186,7 @@ const ClientDashboardEvent = ({ booking, currentUser }) => {
                 <div className="p-5 space-y-3">
                   <div className="flex justify-between">
                     <h1>Price Per Night</h1>
-                    <h1 className="font-bold">
-                      ₱{booking.roomDetails.pricePerNight}
-                    </h1>
+                    <h1 className="font-bold">₱10,000</h1>
                   </div>
                   <div className="flex justify-between">
                     <h1>Stay Duration</h1>
