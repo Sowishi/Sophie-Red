@@ -1,9 +1,23 @@
 import { Button } from "flowbite-react";
 import ClientDashboardLayout from "./clientDashboardLayout";
 import { useNavigate } from "react-router-dom";
+import useUserStore from "../../utils/zustand";
+import { useEffect, useState } from "react";
+import useCrudBooking from "../../hooks/useCrudBooking";
 
 const ClientDashboard = () => {
   const navigation = useNavigate();
+  const { currentUser } = useUserStore();
+  const { fetchUserBooking } = useCrudBooking();
+  const [bookings, setBookings] = useState(null);
+
+  useEffect(() => {
+    if (currentUser) {
+      fetchUserBooking(currentUser, setBookings);
+    }
+  }, [currentUser]);
+
+  console.log(bookings);
   return (
     <ClientDashboardLayout>
       <div className="container mx-auto min-h-screen">

@@ -221,8 +221,7 @@ const useCrudBooking = () => {
     const q = query(
       colRef,
       where("currentUser.uid", "==", user.uid),
-      where("status", "==", "Booked"),
-      where("bookType", "==", "room")
+      where("status", "==", "Booked")
     );
     const snapshot = await getDocs(q);
     const output = [];
@@ -230,7 +229,7 @@ const useCrudBooking = () => {
       output.push({ ...doc.data(), id: doc.id });
     });
 
-    setBooking(output[0]);
+    setBooking(output);
   };
 
   const cancelBooking = async (id) => {
