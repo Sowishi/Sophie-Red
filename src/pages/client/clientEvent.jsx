@@ -270,7 +270,7 @@ const ClientEvent = () => {
           onClick={() => setRatingModal(true)}
         >
           <HiOutlineStar size={20} />
-          <span className="ml-3">Leave A Review</span>
+          <span className="ml-3">Review</span>
         </Button>
       </div>
     </>

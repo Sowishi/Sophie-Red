@@ -255,7 +255,7 @@ const ClientRoom = () => {
           onClick={() => setRatingModal(true)}
         >
           <HiOutlineStar size={20} />
-          <span className="ml-3">Leave A Review</span>
+          <span className="ml-3">Review</span>
         </Button>
         <Button
           onClick={() => setRequestModal(true)}
@@ -263,7 +263,7 @@ const ClientRoom = () => {
           className="w-full flex items-center space-x-2"
         >
           <HiOutlineClipboardList size={20} />
-          <span className="ml-3">Request Service</span>
+          <span className="ml-3">Request </span>
         </Button>
       </div>
     </>

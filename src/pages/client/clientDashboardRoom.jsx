@@ -314,7 +314,7 @@ const ClientDashboardRoom = ({ booking, currentUser }) => {
           onClick={() => setDateModal(true)}
         >
           <HiOutlineCalendar size={20} />
-          <span className="ml-3">Reschedule Booking</span>
+          <span className="ml-3">Reschedule</span>
         </Button>
         <Button
           onClick={() => setIsCancelModalOpen(true)}
@@ -322,7 +322,7 @@ const ClientDashboardRoom = ({ booking, currentUser }) => {
           className="w-full ml-3 flex items-center space-x-2"
         >
           <HiOutlineXCircle size={20} />
-          <span className="ml-3">Cancel Booking</span>
+          <span className="ml-3">Cancel </span>
         </Button>
       </div>
     </>

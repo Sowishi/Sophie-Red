@@ -43,6 +43,22 @@ const App = () => {
     getUserFromStorage();
   }, [initializeUser]);
 
+  useEffect(() => {
+    const handleBackButton = (event) => {
+      event.preventDefault();
+      window.history.pushState(null, "", window.location.href);
+    };
+
+    if (window.innerWidth <= 768) {
+      // Check if it's mobile view
+      window.history.pushState(null, "", window.location.href);
+      window.addEventListener("popstate", handleBackButton);
+    }
+
+    return () => {
+      window.removeEventListener("popstate", handleBackButton);
+    };
+  }, []);
   return (
     <BrowserRouter>
       <Routes>
