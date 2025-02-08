@@ -74,42 +74,42 @@ const Landing = () => {
         }}
         className="w-full h-screen bg-red-500 p-10"
       >
-        <Navbar style={{ background: "transparent" }} fluid rounded>
+        <Navbar className="bg-white lg:bg-transparent" fluid rounded>
           <Navbar.Brand as={Link} to="/">
-            <h1 className="text-white text-2xl font-bold">
+            <h1 className="text-black lg:text-white text-2xl font-bold">
               Sophie <span className="text-red-500">Red Hotel</span>
             </h1>
           </Navbar.Brand>
           <Navbar.Toggle />
           <Navbar.Collapse>
             <Navbar.Link
-              className="text-white text-lg opacity-80 hover:bg-red-500"
+              className="text-black lg:text-white text-lg opacity-80 hover:bg-red-500"
               href="/"
             >
               <span className="hover:text-red-500">Home</span>
             </Navbar.Link>
             <Navbar.Link
-              className="text-white text-lg opacity-80 hover:bg-red-500"
+              className="text-black lg:text-white text-lg opacity-80 hover:bg-red-500"
               href="#testimonials"
             >
               Testimonials
             </Navbar.Link>
 
             <Navbar.Link
-              className="text-white text-lg opacity-80 hover:bg-red-500"
+              className="text-black lg:text-white text-lg opacity-80 hover:bg-red-500"
               href="#rooms"
             >
               Rooms
             </Navbar.Link>
             <Navbar.Link
-              className="text-white text-lg opacity-80 hover:bg-red-500"
+              className="text-black lg:text-white text-lg opacity-80 hover:bg-red-500"
               href="#Amenities"
             >
               Amenities
             </Navbar.Link>
             {currentUser && (
               <div className="relative  flex items-center justify-center">
-                <p className="font-medium text-white mr-5 text-lg">
+                <p className="font-medium text-black lg:text-white mr-5 text-lg">
                   {currentUser.name}
                 </p>
                 <Dropdown
@@ -158,7 +158,7 @@ const Landing = () => {
 
             {currentAdmin && (
               <div className="relative  flex items-center justify-center">
-                <p className="font-medium text-white mr-5 text-lg">
+                <p className="font-medium text-black lg:text-white mr-5 text-lg">
                   {currentAdmin.fullName}
                 </p>
 
