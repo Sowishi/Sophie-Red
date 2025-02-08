@@ -4,7 +4,7 @@ import { BsThreeDots } from "react-icons/bs";
 
 const BookingCard = ({ booking, onViewDetails }) => {
   return (
-    <Card className="max-w-sm my-3">
+    <Card className="max-w-sm my-3 min-h-[360px] mx-3">
       <div className="header flex items-center justify-between">
         <Badge
           color={booking.bookType == "room" ? "failure" : "info"}

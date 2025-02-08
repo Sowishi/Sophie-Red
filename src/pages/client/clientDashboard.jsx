@@ -7,6 +7,7 @@ import useCrudBooking from "../../hooks/useCrudBooking";
 import BookingCard from "../../components/bookingCard";
 import ClientDashboardRoom from "./clientDashboardRoom";
 import ClientDashboardEvent from "./clientDashboardEvent";
+import Loader from "../../components/loader";
 
 const ClientDashboard = () => {
   const navigation = useNavigate();
@@ -15,22 +16,23 @@ const ClientDashboard = () => {
   const [bookings, setBookings] = useState(null);
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    if (currentUser) {
-      setIsLoading(true);
-      fetchUserBooking(currentUser, (data) => {
-        setBookings(data);
-        setIsLoading(false);
-      });
-    }
-  }, [currentUser]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleViewDetails = (booking) => {
     setSelectedBooking(booking);
     setIsModalOpen(true);
   };
+
+  const getBooking = async () => {
+    setIsLoading(true);
+    await fetchUserBooking(currentUser, setBookings);
+    setIsLoading(false);
+    console.log("Fldkj");
+  };
+
+  useEffect(() => {
+    getBooking();
+  }, [currentUser]);
 
   return (
     <ClientDashboardLayout>
@@ -54,24 +56,25 @@ const ClientDashboard = () => {
           </div>
         </div>
 
-        <div className="flex mt-10">
-          <div className="basis-full lg:basis-4/12">
-            {isLoading ? (
-              <div className="flex justify-center items-center h-40">
-                <Spinner size="xl" />
-              </div>
-            ) : bookings?.length > 0 ? (
-              bookings.map((booking) => (
+        <div className="flex flex-wrap mt-10">
+          {isLoading ? (
+            <div className="flex mt-10 w-full items-center justify-center">
+              <Loader />
+            </div>
+          ) : bookings && bookings.length > 0 ? (
+            bookings.map((booking) => (
+              <div key={booking.id} className="basis-full lg:basis-4/12 w-full">
                 <BookingCard
-                  key={booking.id}
                   booking={booking}
                   onViewDetails={handleViewDetails}
                 />
-              ))
-            ) : (
-              <p className="text-center text-gray-500">No bookings found.</p>
-            )}
-          </div>
+              </div>
+            ))
+          ) : (
+            <div className="w-full text-center text-gray-500 mt-5">
+              <p>No bookings found.</p>
+            </div>
+          )}
         </div>
       </div>
 

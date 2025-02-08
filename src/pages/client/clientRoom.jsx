@@ -23,16 +23,14 @@ import anim from "../../assets/rating.json";
 import useCrudRating from "../../hooks/useCrudRating";
 import nodata from "../../assets/nodata.json";
 
-const ClientRoom = () => {
-  const { currentUser, booking, setBooking } = useUserStore();
+const ClientRoom = ({ booking }) => {
+  const { currentUser } = useUserStore();
 
-  const { fetchCollection } = useFetchCollection();
+  const { fetchCollectin } = useFetchCollection();
   const { addTask } = useCrudHousekeeping();
-  const { fetchUserBooking } = useCrudBooking();
   const roomDetails = booking?.roomDetails || {};
   const [requestModal, setRequestModal] = useState(false);
   const [ratingModal, setRatingModal] = useState(false);
-  const [users, setUsers] = useState([]);
   const [housekeeper, setHousekeeper] = useState(null);
   const [serviceType, setServiceType] = useState("");
   const [description, setDescription] = useState("");
@@ -63,24 +61,6 @@ const ClientRoom = () => {
     setRatingModal(false);
     toast.success("Thank you for your feedback");
   };
-
-  useEffect(() => {
-    fetchCollection("users", setUsers, setLoading);
-  }, []);
-
-  useEffect(() => {
-    const getBooking = async () => {
-      if (currentUser) {
-        setLoading(true);
-        await fetchUserBooking(currentUser, setBooking);
-        setLoading(false);
-      }
-    };
-
-    getBooking();
-  }, [currentUser]);
-
-  const houseKeepers = users.filter((user) => user.role === "Housekeeping");
 
   return (
     <ClientDashboardLayout>
