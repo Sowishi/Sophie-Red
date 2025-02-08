@@ -4,9 +4,10 @@ import { BsThreeDots } from "react-icons/bs";
 import useUserStore from "../utils/zustand";
 import ClientRoom from "../pages/client/clientRoom";
 import { useState } from "react";
+import ClientEvent from "../pages/client/clientEvent";
 
 const BookingCard = ({ booking, onViewDetails }) => {
-  const { setBooking } = useUserStore();
+  const { setBooking, booking: selectedBooking } = useUserStore();
 
   const [openModal, setOpenModal] = useState(false);
 
@@ -16,7 +17,11 @@ const BookingCard = ({ booking, onViewDetails }) => {
         <Modal size="9xl" show={openModal} onClose={() => setOpenModal(false)}>
           <Modal.Header>Your Hotel</Modal.Header>
           <Modal.Body>
-            <ClientRoom />
+            {selectedBooking?.bookType == "event" ? (
+              <ClientEvent />
+            ) : (
+              <ClientRoom />
+            )}
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={() => setIsModalOpen(false)} color="gray">
