@@ -650,27 +650,50 @@ const ClientHeader = () => {
         )}
 
         {paymentStatus !== "succeeded" && (
-          <div className="buttons fixed bottom-0 left-0 flex items-center justify-center w-full bg-white p-3 rounded">
-            <Button
-              onClick={() => {
-                setBookingModal(false);
-                setRooms(null);
-                setCheckout(null);
-              }}
-              gradientMonochrome="info"
-              className="mx-3 w-full mt-2 py-1"
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={handleBook}
-              disabled={!selectedRoom}
-              gradientMonochrome="failure"
-              className="w-full mt-2 py-1"
-            >
-              {checkout ? "Pay Now" : "Proceed"}
-            </Button>
-          </div>
+          <>
+            <div className="buttons  hidden lg:flex ">
+              <Button
+                onClick={() => {
+                  setBookingModal(false);
+                  setRooms(null);
+                  setCheckout(null);
+                }}
+                gradientMonochrome="info"
+                className="mx-3 w-full mt-2 py-1"
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={handleBook}
+                disabled={!selectedRoom}
+                gradientMonochrome="failure"
+                className="w-full mt-2 py-1"
+              >
+                {checkout ? "Pay Now" : "Proceed"}
+              </Button>
+            </div>
+            <div className="buttons fixed bottom-0 left-0 flex lg:hidden items-center justify-center w-full bg-white p-3 rounded">
+              <Button
+                onClick={() => {
+                  setBookingModal(false);
+                  setRooms(null);
+                  setCheckout(null);
+                }}
+                gradientMonochrome="info"
+                className="mx-3 w-full mt-2 py-1"
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={handleBook}
+                disabled={!selectedRoom}
+                gradientMonochrome="failure"
+                className="w-full mt-2 py-1"
+              >
+                {checkout ? "Pay Now" : "Proceed"}
+              </Button>
+            </div>
+          </>
         )}
       </CustomModal>
 
