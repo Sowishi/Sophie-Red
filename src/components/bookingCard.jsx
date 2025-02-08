@@ -1,4 +1,4 @@
-import { Badge, Card, Dropdown } from "flowbite-react";
+import { Badge, Button, Card, Dropdown } from "flowbite-react";
 import moment from "moment";
 import { BsThreeDots } from "react-icons/bs";
 
@@ -45,9 +45,19 @@ const BookingCard = ({ booking, onViewDetails }) => {
             />
             {booking.currentUser.name}
           </div>
-          <h1>{moment(booking.checkInDate?.toDate()).format("LL")}</h1>
+          <div className="flex flex-col">
+            <p className="text-sm opacity-50">Check in Date</p>
+            <h1>{moment(booking.checkInDate?.toDate()).format("LL")}</h1>
+          </div>
         </div>
       </div>
+      <Button
+        onClick={() => onViewDetails(booking)}
+        className="mt-2"
+        gradientMonochrome="failure"
+      >
+        View Booking
+      </Button>
     </Card>
   );
 };

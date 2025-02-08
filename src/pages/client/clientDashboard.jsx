@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import useCrudBooking from "../../hooks/useCrudBooking";
 import BookingCard from "../../components/bookingCard";
 import ClientDashboardRoom from "./clientDashboardRoom";
+import ClientDashboardEvent from "./clientDashboardEvent";
 
 const ClientDashboard = () => {
   const navigation = useNavigate();
@@ -69,10 +70,19 @@ const ClientDashboard = () => {
         <Modal.Header>Booking Details</Modal.Header>
         <Modal.Body>
           {selectedBooking && (
-            <ClientDashboardRoom
-              currentUser={currentUser}
-              booking={selectedBooking}
-            />
+            <>
+              {selectedBooking?.bookType == "room" ? (
+                <ClientDashboardRoom
+                  currentUser={currentUser}
+                  booking={selectedBooking}
+                />
+              ) : (
+                <ClientDashboardEvent
+                  currentUser={currentUser}
+                  booking={selectedBooking}
+                />
+              )}
+            </>
           )}
         </Modal.Body>
         <Modal.Footer>
