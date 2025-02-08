@@ -1,10 +1,13 @@
 import { Badge, Button, Card, Dropdown } from "flowbite-react";
 import moment from "moment";
 import { BsThreeDots } from "react-icons/bs";
+import useUserStore from "../utils/zustand";
 
 const BookingCard = ({ booking, onViewDetails }) => {
+  const { setBooking } = useUserStore();
+
   return (
-    <Card className="max-w-sm my-3 min-h-[360px] mx-3">
+    <Card className="max-w-sm my-3 h-[360px] mx-3">
       <div className="header flex items-center justify-between">
         <Badge
           color={booking.bookType == "room" ? "failure" : "info"}
@@ -26,13 +29,15 @@ const BookingCard = ({ booking, onViewDetails }) => {
           </Dropdown.Item>
         </Dropdown>
       </div>
-      <h5 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
-        {booking.roomDetails.roomType || booking.roomDetails?.eventName}
-      </h5>
-      <p className="font-normal text-gray-700 dark:text-gray-400">
-        {booking.roomDetails.description ||
-          "A fully equipped and versatile event venue, perfect for meetings, conferences, and all types of gatherings."}
-      </p>
+      <div className="content h-[100px] overflow-hidden">
+        <h5 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
+          {booking.roomDetails.roomType || booking.roomDetails?.eventName}
+        </h5>
+        <p className="font-normal text-gray-700 dark:text-gray-400">
+          {booking.roomDetails.description ||
+            "A fully equipped and versatile event venue, perfect for meetings, conferences, and all types of gatherings."}
+        </p>
+      </div>
       <div className="footer mt-2">
         <hr className="mb-2" />
         <div className="content flex justify-between items-center">
@@ -52,7 +57,7 @@ const BookingCard = ({ booking, onViewDetails }) => {
         </div>
       </div>
       <Button
-        onClick={() => onViewDetails(booking)}
+        onClick={() => setBooking(booking)}
         className="mt-2"
         gradientMonochrome="failure"
       >

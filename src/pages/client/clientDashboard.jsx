@@ -1,4 +1,4 @@
-import { Badge, Button, Card, Modal } from "flowbite-react";
+import { Badge, Button, Card, Modal, Spinner } from "flowbite-react";
 import ClientDashboardLayout from "./clientDashboardLayout";
 import { useNavigate } from "react-router-dom";
 import useUserStore from "../../utils/zustand";
@@ -46,8 +46,16 @@ const ClientDashboard = () => {
     <ClientDashboardLayout>
       <div className="container mx-auto min-h-screen">
         <div className="header px-3 flex flex-col lg:flex-row justify-between items-center">
-          <h1 className="text-2xl lg:text-3xl font-bold mb-3">Your Bookings</h1>
+          <div className="wrapper  mb-3">
+            <h1 className="text-2xl lg:text-3xl font-bold">
+              Your Bookings ({bookings?.length || <Spinner />})
+            </h1>
 
+            <p className="opacity-50">
+              Review your booking history to track and manage your reservations
+              efficiently.
+            </p>
+          </div>
           <div className="flex items-center space-x-3">
             <Button
               onClick={() => setFilter("all")}
