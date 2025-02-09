@@ -3,7 +3,14 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../assets/logo2.png";
 import { HiHome, HiUsers, HiDocumentReport } from "react-icons/hi";
 import { RiComputerLine } from "react-icons/ri";
-import { MdFeedback, MdHotel, MdOutlineCleaningServices } from "react-icons/md";
+import {
+  MdComputer,
+  MdFeedback,
+  MdHistory,
+  MdHotel,
+  MdOutlineCleaningServices,
+  MdPayment,
+} from "react-icons/md";
 import {
   FaAngleDown,
   FaBed,
@@ -172,6 +179,118 @@ const Header = () => {
     );
   }
 
+  function SuperAdminNav() {
+    return (
+      <div className="navigation hidden lg:flex flex-1 items-center  mx-10 text-white px-5">
+        <Link
+          to="/dashboard"
+          className={`flex px-5 cursor-pointer mx-2 py-3 rounded-lg justify-start items-center ${
+            isCurrentPath("/dashboard") ? "bg-red-800" : "bg-slate-700"
+          }`}
+        >
+          <HiHome color="white" className="mr-3" />
+          <h1 className="text-sm font-extralight">Dashboard</h1>
+        </Link>
+        <div className="mx-2">
+          <Dropdown gradientMonochrome="failure" label="Services">
+            <Dropdown.Header>
+              <span className="block text-sm">Sophie Red Hotel</span>
+            </Dropdown.Header>
+            <Dropdown.Item onClick={() => navigation("/room")} icon={MdHotel}>
+              Room Management
+            </Dropdown.Item>
+            <Dropdown.Item
+              onClick={() => navigation("/housekeeping")}
+              icon={MdOutlineCleaningServices}
+            >
+              Housekeeper Management
+            </Dropdown.Item>
+            <Dropdown.Item onClick={() => navigation("/users")} icon={HiUsers}>
+              Users Management
+            </Dropdown.Item>
+          </Dropdown>
+        </div>
+
+        <div className="mx-2">
+          <Dropdown gradientMonochrome="info" label="Front Desk">
+            <Dropdown.Header>
+              <span className="block text-sm">Sophie Red Hotel</span>
+            </Dropdown.Header>
+            <Dropdown.Item
+              onClick={() => navigation("/front-desk")}
+              icon={MdComputer}
+            >
+              Front Desk
+            </Dropdown.Item>
+            <Dropdown.Item
+              onClick={() => navigation("/payments")}
+              icon={MdPayment}
+            >
+              Payments
+            </Dropdown.Item>
+            <Dropdown.Item
+              onClick={() => navigation("/booking-history")}
+              icon={MdHistory}
+            >
+              Booking History
+            </Dropdown.Item>
+          </Dropdown>
+        </div>
+
+        <div className="mx-2">
+          <Dropdown gradientMonochrome="success" label="Houskeeping">
+            <Dropdown.Header>
+              <span className="block text-sm">Sophie Red Hotel</span>
+            </Dropdown.Header>
+            <Dropdown.Item
+              onClick={() => navigation("/guest-request")}
+              icon={MdComputer}
+            >
+              Guest Request
+            </Dropdown.Item>
+            <Dropdown.Item
+              onClick={() => navigation("/housekeeping")}
+              icon={MdPayment}
+            >
+              Housekeeping
+            </Dropdown.Item>
+            <Dropdown.Item
+              onClick={() => navigation("/housekeeper-list")}
+              icon={MdHistory}
+            >
+              Housekeepers
+            </Dropdown.Item>
+            <Dropdown.Item
+              onClick={() => navigation("/housekeeper")}
+              icon={MdHistory}
+            >
+              All Tasks
+            </Dropdown.Item>
+          </Dropdown>
+        </div>
+
+        <Link
+          to="/voucher"
+          className={`flex px-5 cursor-pointer mx-2 py-3 rounded-lg justify-start items-center ${
+            isCurrentPath("/voucher") ? "bg-red-800" : "bg-slate-700"
+          }`}
+        >
+          <MdDiscount color="white" className="mr-3" />
+          <h1 className="text-sm font-extralight">Voucher</h1>
+        </Link>
+        <Link
+          to="/feedback"
+          className={`flex px-5 cursor-pointer mx-2 py-3 rounded-lg justify-start items-center ${
+            isCurrentPath("/feedback") ? "bg-red-800" : "bg-slate-700"
+          }`}
+        >
+          <MdFeedback color="white" className="mr-3" />
+          <h1 className="text-sm font-extralight">Feedback</h1>
+        </Link>
+      </div>
+    );
+  }
+
   const handleLogout = () => {
     navigation("/");
     setCurrentAdmin(null);
@@ -194,6 +313,7 @@ const Header = () => {
       {currentAdmin?.role == "Front Desk" && <FrontDeskNav />}
       {currentAdmin?.role == "Admin" && <AdminNav />}
       {currentAdmin?.role == "Housekeeping" && <HousekeepingNav />}
+      {currentAdmin?.role == "Super Admin" && <SuperAdminNav />}
 
       <div className="hidden lg:flex items-center justify-start cursor-pointer">
         <img
