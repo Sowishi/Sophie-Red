@@ -3,6 +3,7 @@ import {
   Badge,
   Button,
   Card,
+  Datepicker,
   Dropdown,
   Table,
   TextInput,
@@ -246,16 +247,14 @@ const ClientHeaderEvent = () => {
           </div>
 
           <div className="dates flex-col">
-            <CustomDatePicker
-              label={"Arrival Date"}
-              onChange={(date) => setArrivalDate(date)}
-              value={arrivalDate}
-            />
-            <CustomDatePicker
-              label={"Departure Date"}
-              onChange={(date) => setDepartureDate(date)}
-              value={departureDate}
-            />
+            <div className="wrapper my-1">
+              <h1 className="text-sm text-white">Check In Date</h1>
+              <Datepicker onChange={(date) => setArrivalDate(date)} />
+            </div>
+            <div className="wrapper my-1">
+              <h1 className="text-sm text-white">Check Out Date</h1>
+              <Datepicker onChange={(date) => setDepartureDate(date)} />
+            </div>
 
             <div className="voucher my-3">
               <h1 className="text-sm text-white">Voucher</h1>
