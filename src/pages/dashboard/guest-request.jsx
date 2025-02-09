@@ -67,6 +67,8 @@ const GuestRequest = () => {
     (user) => user.status == "Available"
   );
 
+  console.log(guestRequest);
+
   return (
     <DashboardLayout>
       {/* Header */}
@@ -84,6 +86,8 @@ const GuestRequest = () => {
         {guestRequest.length >= 1 ? (
           <Table hoverable striped>
             <Table.Head>
+              <Table.HeadCell>Guest</Table.HeadCell>
+
               <Table.HeadCell>Room Number</Table.HeadCell>
               <Table.HeadCell>Requested Date</Table.HeadCell>
               <Table.HeadCell>Housekeeper</Table.HeadCell>
@@ -104,6 +108,17 @@ const GuestRequest = () => {
 
                 return (
                   <Table.Row key={task.id}>
+                    <Table.Cell className="font-bold text-lg text-red-500">
+                      <div className="flex items-center justify-start">
+                        <img
+                          width={35}
+                          className="rounded-full mr-2"
+                          src={task.currentUser?.photoURL}
+                          alt=""
+                        />{" "}
+                        {task.currentUser?.name}
+                      </div>
+                    </Table.Cell>
                     <Table.Cell className="text-red-500 font-bold text-3xl">
                       {task.selectedRoom.roomNumber}
                     </Table.Cell>
