@@ -28,6 +28,7 @@ const HousekeeperTable = () => {
   }, []);
 
   const handleStatusUpdate = async () => {
+    console.log("guet");
     await updateTaskStatus(
       selectedTask.id,
       selectedStatus,
@@ -179,6 +180,7 @@ const HousekeeperTable = () => {
                             setRemarksModal(true);
                             setSelectedTask(task);
                             setSelectedStatus("Ongoing");
+                            setIsGuest(true);
                           }}
                         >
                           Ongoing
@@ -188,6 +190,7 @@ const HousekeeperTable = () => {
                             setRemarksModal(true);
                             setSelectedTask(task);
                             setSelectedStatus("Completed");
+                            setIsGuest(true);
                           }}
                         >
                           Completed
