@@ -35,6 +35,7 @@ const ClientRoom = () => {
   const [housekeeper, setHousekeeper] = useState(null);
   const [serviceType, setServiceType] = useState("");
   const [description, setDescription] = useState("");
+  const [requestSupply, setRequestSupply] = useState("");
   const [loading, setLoading] = useState(false);
   const [rating, setRating] = useState(0);
   const [remarks, setRemarks] = useState("");
@@ -47,11 +48,13 @@ const ClientRoom = () => {
       housekeeper: null,
       serviceType,
       description,
+      requestSupply,
     });
     toast.success("Assignment task successfully!");
     setHousekeeper("");
     setServiceType("");
     setDescription("");
+    setRequestSupply("");
     setRequestModal(false);
   };
 
@@ -186,8 +189,22 @@ const ClientRoom = () => {
                 </option>
                 <option value="cleaning">Cleaning</option>
                 <option value="maintenance">Maintenance</option>
+                <option value="request">Request</option>
               </Select>
             </div>
+            {serviceType == "request" && (
+              <>
+                <Label htmlFor="request" value="Request Supply" />
+                <Textarea
+                  rows={3}
+                  id="request"
+                  placeholder="Towels, Bed Sheet, Aditional Bed."
+                  value={requestSupply}
+                  onChange={(e) => setRequestSupply(e.target.value)}
+                  required
+                />
+              </>
+            )}
             <div>
               <Label htmlFor="description" value="Description" />
               <Textarea
