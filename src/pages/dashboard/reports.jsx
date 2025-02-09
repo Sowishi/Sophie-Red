@@ -111,9 +111,20 @@ const Reports = () => {
                     className="bg-white dark:border-gray-700 dark:bg-gray-800"
                   >
                     <Table.Cell className="font-bold text-lg text-red-500">
-                      {booking.currentUser.name}
+                      <div className="flex items-center justify-start">
+                        {" "}
+                        <img
+                          width={35}
+                          className="rounded-full mr-2"
+                          src={booking.currentUser?.photoURL}
+                          alt=""
+                        />{" "}
+                        {booking.currentUser.name}
+                      </div>
                     </Table.Cell>
-                    <Table.Cell>{booking.roomDetails.roomNumber}</Table.Cell>
+                    <Table.Cell>
+                      {booking.roomDetails.roomNumber || "Functional Room"}
+                    </Table.Cell>
                     <Table.Cell>₱{booking.totalPrice}</Table.Cell>
                     <Table.Cell>
                       <Badge
