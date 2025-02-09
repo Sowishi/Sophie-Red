@@ -55,8 +55,6 @@ const useUserStore = create((set) => ({
             photoURL: user.photoURL,
           },
         });
-      } else {
-        set({ currentUser: null });
       }
     });
   },

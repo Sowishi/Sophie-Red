@@ -27,20 +27,26 @@ import ClientDashboardRoom from "./pages/client/clientDashboardRoom";
 import ClientDashboard from "./pages/client/clientDashboard";
 
 const App = () => {
-  const { currentUser, currentAdmin, setCurrentAdmin } = useUserStore();
+  const { currentUser, currentAdmin, setCurrentAdmin, setCurrentUser } =
+    useUserStore();
   const initializeUser = useUserStore((state) => state.initializeUser);
 
   const getUserFromStorage = async () => {
     const res = localStorage.getItem("user");
     const user = await JSON.parse(res);
     if (user) {
-      setCurrentAdmin(user);
+      const { role } = user;
+      if (role == "user") {
+        setCurrentUser(user);
+      } else {
+        setCurrentAdmin(user);
+      }
     }
   };
 
   useEffect(() => {
-    initializeUser();
     getUserFromStorage();
+    initializeUser();
   }, [initializeUser]);
 
   useEffect(() => {
