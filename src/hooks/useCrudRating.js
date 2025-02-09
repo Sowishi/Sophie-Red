@@ -38,7 +38,20 @@ const useCrudRating = () => {
     }
   };
 
-  return { addRating };
+  //Fetch all ratings
+  const fetchRatings = async (setRatings) => {
+    const colRef = collection(db, "feedback");
+    const querySnapshot = await getDocs(colRef);
+
+    const ratings = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    setRatings(ratings);
+  };
+
+  return { addRating, fetchRatings };
 };
 
 export default useCrudRating;

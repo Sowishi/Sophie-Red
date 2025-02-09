@@ -1,65 +1,45 @@
-import React from "react";
-import { Button, Avatar } from "flowbite-react";
+import React, { useEffect, useState } from "react";
+import { Avatar } from "flowbite-react";
+import { FaStar, FaStarHalfAlt, FaRegStar, FaQuoteLeft } from "react-icons/fa";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import useCrudRating from "../hooks/useCrudRating";
 
 const Testimonials = () => {
-  const testimonials = [
-    {
-      title: "A Luxurious Stay with Unmatched Comfort",
-      content: [
-        "Sophie Red Hotel offers a luxurious experience in the heart of Cagayan de Oro. The rooms are well-designed, spacious, and provide all the modern amenities you could ask for.",
-        "The staff goes above and beyond to make your stay comfortable, and the location is perfect for both business and leisure travelers.",
-        "If you're looking for the best hotel in the area, Sophie Red is undoubtedly the top choice.",
-      ],
-      name: "Anna Santos",
-      role: "Travel Blogger",
-      img: "https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/karen-nelson.png",
-    },
-    {
-      title: "Exceptional Service and Delicious Cuisine",
-      content: [
-        "The staff at Sophie Red Hotel are incredibly professional and friendly. From the moment you step in, you're greeted with warm smiles and top-notch service.",
-        "The in-house restaurant serves a variety of dishes that cater to every palate, and the breakfast buffet is a must-try!",
-      ],
-      name: "Carlos Reyes",
-      role: "Food Critic",
-      img: "https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/roberta-casas.png",
-    },
-    {
-      title: "Perfect Venue for Events and Celebrations",
-      content: [
-        "I hosted a corporate event at Sophie Red Hotel, and it exceeded all expectations. The event hall was elegantly set up, and the technical support provided ensured everything went smoothly.",
-        "Highly recommend this hotel for business events or even family celebrations!",
-      ],
-      name: "Mark Villanueva",
-      role: "Event Organizer",
-      img: "https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/jese-leos.png",
-    },
-    {
-      title: "A Hidden Gem in Cagayan de Oro",
-      content: [
-        "Sophie Red Hotel offers an oasis of relaxation amidst the hustle and bustle of the city. The spa services are heavenly, and the rooftop pool provides stunning views of the cityscape.",
-        "It’s a hidden gem that guarantees an unforgettable stay.",
-      ],
-      name: "Isabella Cruz",
-      role: "Lifestyle Influencer",
-      img: "https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/joseph-mcfall.png",
-    },
-  ];
+  const [reviews, setReviews] = useState([]);
+  const { fetchRatings } = useCrudRating();
 
-  // Settings for the carousel
+  useEffect(() => {
+    fetchRatings(setReviews);
+  }, []);
+
+  // Carousel settings
   const settings = {
-    dots: true, // Show dots for navigation
-    infinite: true, // Infinite looping
-    speed: 500, // Transition speed
-    slidesToShow: 1, // Number of slides to show at once
-    slidesToScroll: 1, // Number of slides to scroll
-    autoplay: true, // Enable autoplay
-    autoplaySpeed: 2000, // Autoplay interval (5 seconds)
-    pauseOnHover: true, // Pause autoplay on hover
-    arrows: true, // Show navigation arrows
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 2000,
+    pauseOnHover: true,
+    arrows: true,
+  };
+
+  // Function to render stars based on rating
+  const renderStars = (rating) => {
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+      if (i <= rating) {
+        stars.push(<FaStar key={i} className="text-yellow-400" />);
+      } else if (i - 0.5 === rating) {
+        stars.push(<FaStarHalfAlt key={i} className="text-yellow-400" />);
+      } else {
+        stars.push(<FaRegStar key={i} className="text-gray-400" />);
+      }
+    }
+    return stars;
   };
 
   return (
@@ -70,40 +50,52 @@ const Testimonials = () => {
             Testimonials
           </h2>
           <p className="mb-8 font-light text-gray-500 lg:mb-16 sm:text-xl dark:text-gray-400">
-            Discover what our guests have to say about their experience at
-            Sophie Red Hotel in Cagayan de Oro, Philippines.
+            See what our guests have to say about their experience at Sophie Red
+            Hotel.
           </p>
         </div>
+
         <div className="mb-8 lg:mb-12">
-          <Slider {...settings}>
-            {testimonials.map((testimonial, index) => (
-              <div key={index} className="p-8 bg-gray-50 dark:bg-gray-800">
-                <figure className="flex flex-col justify-center items-center text-center">
-                  <blockquote className="mx-auto mb-8 max-w-2xl text-gray-500 dark:text-gray-400">
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                      {testimonial.title}
-                    </h3>
-                    {testimonial.content.map((paragraph, idx) => (
-                      <p key={idx} className="my-4">
-                        {paragraph}
-                      </p>
-                    ))}
-                  </blockquote>
-                  <figcaption className="flex justify-center items-center space-x-3">
-                    <Avatar img={testimonial.img} rounded={true} />
-                    <div className="space-y-0.5 font-medium dark:text-white text-left">
-                      <div>{testimonial.name}</div>
-                      <div className="text-sm font-light text-gray-500 dark:text-gray-400">
-                        {testimonial.role}
+          {reviews.length > 0 ? (
+            <Slider {...settings}>
+              {reviews.map((review) => (
+                <div
+                  key={review.id}
+                  className="p-8 bg-gray-50 dark:bg-gray-800 shadow-md rounded-lg"
+                >
+                  <figure className="flex flex-col justify-center items-center text-center">
+                    <FaQuoteLeft className="text-gray-400 text-4xl mb-3" />
+                    <blockquote className="mx-auto mb-4 max-w-2xl text-gray-500 dark:text-gray-400">
+                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                        {review.room.roomType} Room Experience
+                      </h3>
+                      <p className="my-4">{review.remarks}</p>
+                    </blockquote>
+                    <figcaption className="flex justify-center items-center space-x-3">
+                      <Avatar
+                        img={review.currentUser.photoURL}
+                        rounded={true}
+                      />
+                      <div className="space-y-0.5 font-medium dark:text-white text-left">
+                        <div>{review.currentUser.name}</div>
+                        <div className="flex items-center text-sm font-light text-gray-500 dark:text-gray-400">
+                          Rated: {renderStars(review.rating)}
+                        </div>
                       </div>
-                    </div>
-                  </figcaption>
-                </figure>
-              </div>
-            ))}
-          </Slider>
+                    </figcaption>
+                  </figure>
+                </div>
+              ))}
+            </Slider>
+          ) : (
+            <p className="text-gray-500 dark:text-gray-400">
+              No reviews available.
+            </p>
+          )}
         </div>
       </div>
+
+      {/* Decorative line */}
       <div className="flex justify-center items-center py-10 pb-44">
         <div className="line bg-[#E94040] h-[10px] w-[300px]"></div>
       </div>
