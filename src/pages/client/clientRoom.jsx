@@ -49,6 +49,7 @@ const ClientRoom = () => {
       serviceType,
       description,
       requestSupply,
+      guest: true,
     });
     toast.success("Assignment task successfully!");
     setHousekeeper("");

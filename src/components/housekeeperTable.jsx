@@ -11,6 +11,7 @@ const HousekeeperTable = () => {
   const [tasks, setTasks] = useState(null);
   const [filter, setFilter] = useState("All");
   const { currentAdmin } = useUserStore();
+  const [taskType, setTaskType] = useState("guest");
 
   useEffect(() => {
     fetchAllTasks(setTasks);
@@ -45,9 +46,27 @@ const HousekeeperTable = () => {
 
   const validTasks = filteredTasks.filter((task) => task.housekeeper !== null);
 
+  const guesTasks = validTasks.filter((task) => task.selectedRoom.guest);
+  const supervisorTasks = validTasks.filter((task) => !task.selectedRoom.guest);
+  console.log(guesTasks);
+
   return (
     <div>
-      <div className="flex justify-start mb-4 space-x-2">
+      <div className="flex justify-between items-center mb-4 space-x-2">
+        <Button.Group>
+          <Button
+            color={taskType == "guest" ? "info" : "light"}
+            onClick={() => setTaskType("guest")}
+          >
+            Guest Request Tasks
+          </Button>
+          <Button
+            color={taskType == "supervisor" ? "info" : "light"}
+            onClick={() => setTaskType("supervisor")}
+          >
+            Housekeeeper Supervisor Tasks
+          </Button>
+        </Button.Group>
         <Button.Group>
           <Button
             color={filter == "All" ? "failure" : "light"}
@@ -76,79 +95,159 @@ const HousekeeperTable = () => {
         </Button.Group>
       </div>
 
-      <Table hoverable striped>
-        <Table.Head>
-          <Table.HeadCell>Room Number</Table.HeadCell>
-          <Table.HeadCell>Assign Date</Table.HeadCell>
-          <Table.HeadCell>Housekeeper</Table.HeadCell>
-          <Table.HeadCell>Service Type</Table.HeadCell>
-          <Table.HeadCell>Description</Table.HeadCell>
-          <Table.HeadCell>Completed At</Table.HeadCell>
-          <Table.HeadCell>Status</Table.HeadCell>
-          <Table.HeadCell>Action</Table.HeadCell>
-        </Table.Head>
-        <Table.Body className="divide-y">
-          {validTasks.map((task) => {
-            const assignDate = task.createdAt
-              ? moment(task.createdAt.toDate()).format("LLL")
-              : "Invalid";
+      {taskType == "guest" ? (
+        <>
+          <Table hoverable striped>
+            <Table.Head>
+              <Table.HeadCell>Room Number</Table.HeadCell>
+              <Table.HeadCell>Assign Date</Table.HeadCell>
+              <Table.HeadCell>Housekeeper</Table.HeadCell>
+              <Table.HeadCell>Service Type</Table.HeadCell>
+              <Table.HeadCell>Description</Table.HeadCell>
+              <Table.HeadCell>Completed At</Table.HeadCell>
+              <Table.HeadCell>Status</Table.HeadCell>
+              <Table.HeadCell>Action</Table.HeadCell>
+            </Table.Head>
+            <Table.Body className="divide-y">
+              {guesTasks.map((task) => {
+                const assignDate = task.createdAt
+                  ? moment(task.createdAt.toDate()).format("LLL")
+                  : "Invalid";
 
-            const completedDate = task.completedAt
-              ? moment(task.completedAt.toDate()).format("LLL")
-              : "---";
+                const completedDate = task.completedAt
+                  ? moment(task.completedAt.toDate()).format("LLL")
+                  : "---";
 
-            return (
-              <Table.Row key={task.id}>
-                <Table.Cell className="text-red-500 font-bold text-3xl">
-                  {task.selectedRoom.roomNumber}
-                </Table.Cell>
-                <Table.Cell>{assignDate}</Table.Cell>
-                <Table.Cell>{task.housekeeper?.fullName}</Table.Cell>
-                <Table.Cell>{task.serviceType}</Table.Cell>
-                <Table.Cell>{task.description}</Table.Cell>
-                <Table.Cell>{completedDate}</Table.Cell>
-                <Table.Cell>
-                  <span
-                    className={`px-3 py-1 rounded-md ${getBadgeColor(
-                      task.status
-                    )}`}
-                  >
-                    {task.status}
-                  </span>
-                </Table.Cell>
-                <Table.Cell>
-                  <Dropdown gradientMonochrome="failure" label="Action">
-                    <Dropdown.Item
-                      onClick={() =>
-                        handleStatusUpdate(
-                          task.id,
-                          "Ongoing",
-                          task.selectedRoom.id,
-                          task
-                        )
-                      }
-                    >
-                      Ongoing
-                    </Dropdown.Item>
-                    <Dropdown.Item
-                      onClick={() =>
-                        handleStatusUpdate(
-                          task.id,
-                          "Completed",
-                          task.selectedRoom.id,
-                          task
-                        )
-                      }
-                    >
-                      Completed
-                    </Dropdown.Item>
-                  </Dropdown>
-                </Table.Cell>
-              </Table.Row>
-            );
-          })}
-        </Table.Body>
-      </Table>
+                return (
+                  <Table.Row key={task.id}>
+                    <Table.Cell className="text-red-500 font-bold text-3xl">
+                      {task.selectedRoom.selectedRoom.roomNumber}
+                    </Table.Cell>
+                    <Table.Cell>{assignDate}</Table.Cell>
+                    <Table.Cell>{task.housekeeper?.fullName}</Table.Cell>
+                    <Table.Cell>{task.selectedRoom.serviceType}</Table.Cell>
+                    <Table.Cell>{task.selectedRoom.description}</Table.Cell>
+                    <Table.Cell>{completedDate}</Table.Cell>
+                    <Table.Cell>
+                      <span
+                        className={`px-3 py-1 rounded-md ${getBadgeColor(
+                          task.status
+                        )}`}
+                      >
+                        {task.status}
+                      </span>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <Dropdown gradientMonochrome="failure" label="Action">
+                        <Dropdown.Item
+                          onClick={() =>
+                            handleStatusUpdate(
+                              task.id,
+                              "Ongoing",
+                              task.selectedRoom.selectedRoom.id,
+                              task
+                            )
+                          }
+                        >
+                          Ongoing
+                        </Dropdown.Item>
+                        <Dropdown.Item
+                          onClick={() =>
+                            handleStatusUpdate(
+                              task.id,
+                              "Completed",
+                              task.selectedRoom.selectedRoom.id,
+                              task
+                            )
+                          }
+                        >
+                          Completed
+                        </Dropdown.Item>
+                      </Dropdown>
+                    </Table.Cell>
+                  </Table.Row>
+                );
+              })}
+            </Table.Body>
+          </Table>
+        </>
+      ) : (
+        <>
+          <Table hoverable striped>
+            <Table.Head>
+              <Table.HeadCell>Room Number</Table.HeadCell>
+              <Table.HeadCell>Assign Date</Table.HeadCell>
+              <Table.HeadCell>Housekeeper</Table.HeadCell>
+              <Table.HeadCell>Service Type</Table.HeadCell>
+              <Table.HeadCell>Description</Table.HeadCell>
+              <Table.HeadCell>Completed At</Table.HeadCell>
+              <Table.HeadCell>Status</Table.HeadCell>
+              <Table.HeadCell>Action</Table.HeadCell>
+            </Table.Head>
+            <Table.Body className="divide-y">
+              {supervisorTasks.map((task) => {
+                const assignDate = task.createdAt
+                  ? moment(task.createdAt.toDate()).format("LLL")
+                  : "Invalid";
+
+                const completedDate = task.completedAt
+                  ? moment(task.completedAt.toDate()).format("LLL")
+                  : "---";
+
+                return (
+                  <Table.Row key={task.id}>
+                    <Table.Cell className="text-red-500 font-bold text-3xl">
+                      {task.selectedRoom.roomNumber}
+                    </Table.Cell>
+                    <Table.Cell>{assignDate}</Table.Cell>
+                    <Table.Cell>{task.housekeeper?.fullName}</Table.Cell>
+                    <Table.Cell>{task.serviceType}</Table.Cell>
+                    <Table.Cell>{task.description}</Table.Cell>
+                    <Table.Cell>{completedDate}</Table.Cell>
+                    <Table.Cell>
+                      <span
+                        className={`px-3 py-1 rounded-md ${getBadgeColor(
+                          task.status
+                        )}`}
+                      >
+                        {task.status}
+                      </span>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <Dropdown gradientMonochrome="failure" label="Action">
+                        <Dropdown.Item
+                          onClick={() =>
+                            handleStatusUpdate(
+                              task.id,
+                              "Ongoing",
+                              task.selectedRoom.id,
+                              task
+                            )
+                          }
+                        >
+                          Ongoing
+                        </Dropdown.Item>
+                        <Dropdown.Item
+                          onClick={() =>
+                            handleStatusUpdate(
+                              task.id,
+                              "Completed",
+                              task.selectedRoom.id,
+                              task
+                            )
+                          }
+                        >
+                          Completed
+                        </Dropdown.Item>
+                      </Dropdown>
+                    </Table.Cell>
+                  </Table.Row>
+                );
+              })}
+            </Table.Body>
+          </Table>
+        </>
+      )}
     </div>
   );
 };
