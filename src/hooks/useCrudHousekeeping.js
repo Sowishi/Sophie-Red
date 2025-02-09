@@ -88,10 +88,16 @@ const useCrudHousekeeping = () => {
     }
   };
 
-  const updateTaskStatus = async (taskID, newStatus, roomID, housekeeper) => {
+  const updateTaskStatus = async (
+    taskID,
+    newStatus,
+    roomID,
+    housekeeper,
+    remarks
+  ) => {
     try {
       const taskRef = doc(db, "housekeeping", taskID);
-      await updateDoc(taskRef, { status: newStatus });
+      await updateDoc(taskRef, { status: newStatus, remarks });
 
       console.log(`Task ID: ${taskID} updated to ${newStatus}`);
 

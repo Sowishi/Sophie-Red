@@ -5,6 +5,8 @@ import useUserStore from "../utils/zustand";
 import Loader from "./loader";
 import moment from "moment";
 import { toast } from "react-toastify";
+import CustomModal from "./customModal";
+import CustomInput from "./customInput";
 
 const HousekeeperTable = () => {
   const { fetchAllTasks, updateTaskStatus } = useCrudHousekeeping();
@@ -12,14 +14,36 @@ const HousekeeperTable = () => {
   const [filter, setFilter] = useState("All");
   const { currentAdmin } = useUserStore();
   const [taskType, setTaskType] = useState("guest");
+  const [remarksModal, setRemarksModal] = useState(false);
+  const [remarks, setRemarks] = useState("");
+  const [selectedTask, setSelectedTask] = useState(null);
+  const [selectedStatus, setSelectedStatus] = useState(null);
+  const [isGuest, setIsGuest] = useState(false);
 
   useEffect(() => {
     fetchAllTasks(setTasks);
   }, []);
 
-  const handleStatusUpdate = async (taskId, newStatus, roomID, task) => {
-    console.log(task);
-    await updateTaskStatus(taskId, newStatus, roomID, task.housekeeper);
+  const handleStatusUpdate = async () => {
+    await updateTaskStatus(
+      selectedTask.id,
+      selectedStatus,
+      selectedTask.selectedRoom.selectedRoom.id,
+      selectedTask.housekeeper,
+      remarks
+    );
+    toast.success("Successfully updated the task status");
+    window.location.reload();
+  };
+
+  const handleStatusUpdateNotGuest = async () => {
+    await updateTaskStatus(
+      selectedTask.id,
+      selectedStatus,
+      selectedTask.selectedRoom.id,
+      selectedTask.housekeeper,
+      remarks
+    );
     toast.success("Successfully updated the task status");
     window.location.reload();
   };
@@ -48,7 +72,6 @@ const HousekeeperTable = () => {
 
   const guesTasks = validTasks.filter((task) => task.selectedRoom.guest);
   const supervisorTasks = validTasks.filter((task) => !task.selectedRoom.guest);
-  console.log(guesTasks);
 
   return (
     <div>
@@ -88,7 +111,9 @@ const HousekeeperTable = () => {
           </Button>
           <Button
             color={filter == "Completed" ? "failure" : "light"}
-            onClick={() => setFilter("Completed")}
+            onClick={() => {
+              setFilter("Completed");
+            }}
           >
             Completed
           </Button>
@@ -106,6 +131,8 @@ const HousekeeperTable = () => {
               <Table.HeadCell>Description</Table.HeadCell>
               <Table.HeadCell>Completed At</Table.HeadCell>
               <Table.HeadCell>Status</Table.HeadCell>
+              <Table.HeadCell>Remarks</Table.HeadCell>
+
               <Table.HeadCell>Action</Table.HeadCell>
             </Table.Head>
             <Table.Body className="divide-y">
@@ -128,6 +155,7 @@ const HousekeeperTable = () => {
                     <Table.Cell>{task.selectedRoom.serviceType}</Table.Cell>
                     <Table.Cell>{task.selectedRoom.description}</Table.Cell>
                     <Table.Cell>{completedDate}</Table.Cell>
+
                     <Table.Cell>
                       <span
                         className={`px-3 py-1 rounded-md ${getBadgeColor(
@@ -137,29 +165,25 @@ const HousekeeperTable = () => {
                         {task.status}
                       </span>
                     </Table.Cell>
+                    <Table.Cell>{task.remarks || "---"}</Table.Cell>
+
                     <Table.Cell>
                       <Dropdown gradientMonochrome="failure" label="Action">
                         <Dropdown.Item
-                          onClick={() =>
-                            handleStatusUpdate(
-                              task.id,
-                              "Ongoing",
-                              task.selectedRoom.selectedRoom.id,
-                              task
-                            )
-                          }
+                          onClick={() => {
+                            setRemarksModal(true);
+                            setSelectedTask(task);
+                            setSelectedStatus("Ongoing");
+                          }}
                         >
                           Ongoing
                         </Dropdown.Item>
                         <Dropdown.Item
-                          onClick={() =>
-                            handleStatusUpdate(
-                              task.id,
-                              "Completed",
-                              task.selectedRoom.selectedRoom.id,
-                              task
-                            )
-                          }
+                          onClick={() => {
+                            setRemarksModal(true);
+                            setSelectedTask(task);
+                            setSelectedStatus("Completed");
+                          }}
                         >
                           Completed
                         </Dropdown.Item>
@@ -181,7 +205,10 @@ const HousekeeperTable = () => {
               <Table.HeadCell>Service Type</Table.HeadCell>
               <Table.HeadCell>Description</Table.HeadCell>
               <Table.HeadCell>Completed At</Table.HeadCell>
+
               <Table.HeadCell>Status</Table.HeadCell>
+              <Table.HeadCell>Remarks</Table.HeadCell>
+
               <Table.HeadCell>Action</Table.HeadCell>
             </Table.Head>
             <Table.Body className="divide-y">
@@ -213,29 +240,27 @@ const HousekeeperTable = () => {
                         {task.status}
                       </span>
                     </Table.Cell>
+                    <Table.Cell>{task.remarks || "---"}</Table.Cell>
+
                     <Table.Cell>
                       <Dropdown gradientMonochrome="failure" label="Action">
                         <Dropdown.Item
-                          onClick={() =>
-                            handleStatusUpdate(
-                              task.id,
-                              "Ongoing",
-                              task.selectedRoom.id,
-                              task
-                            )
-                          }
+                          onClick={() => {
+                            setRemarksModal(true);
+                            setSelectedTask(task);
+                            setSelectedStatus("Ongoing");
+                            setIsGuest(false);
+                          }}
                         >
                           Ongoing
                         </Dropdown.Item>
                         <Dropdown.Item
-                          onClick={() =>
-                            handleStatusUpdate(
-                              task.id,
-                              "Completed",
-                              task.selectedRoom.id,
-                              task
-                            )
-                          }
+                          onClick={() => {
+                            setRemarksModal(true);
+                            setSelectedTask(task);
+                            setSelectedStatus("Completed");
+                            setIsGuest(false);
+                          }}
                         >
                           Completed
                         </Dropdown.Item>
@@ -248,6 +273,19 @@ const HousekeeperTable = () => {
           </Table>
         </>
       )}
+
+      <CustomModal
+        onSubmit={isGuest ? handleStatusUpdate : handleStatusUpdateNotGuest}
+        title={"Add Remarks"}
+        open={remarksModal}
+        handleClose={() => setRemarksModal(false)}
+      >
+        <CustomInput
+          label={"Remarks"}
+          placeholder={"Put a remarks"}
+          onChange={(e) => setRemarks(e.target.value)}
+        />
+      </CustomModal>
     </div>
   );
 };
