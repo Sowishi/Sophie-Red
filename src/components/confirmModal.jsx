@@ -19,7 +19,7 @@ export function ConfirmModal({ open, handleClose, handleSubmit, title }) {
               <Button color="failure" onClick={handleSubmit}>
                 {"Yes, I'm sure"}
               </Button>
-              <Button color="gray" onClick={() => setOpenModal(false)}>
+              <Button color="gray" onClick={() => handleClose(false)}>
                 No, cancel
               </Button>
             </div>
