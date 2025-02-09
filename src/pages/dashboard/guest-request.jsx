@@ -189,13 +189,23 @@ const GuestRequest = () => {
                 onChange={(e) => setServiceType(e.target.value)}
                 required
               >
-                <option value="" disabled>
-                  Choose service type
-                </option>
-                <option value="cleaning">Cleaning</option>
-                <option value="maintenance">Maintenance</option>
+                <option value="">{selectedRoom?.serviceType}</option>
               </Select>
             </div>
+            {selectedRoom?.serviceType == "request" && (
+              <div>
+                <Label htmlFor="description" value="Request Supply" />
+                <Textarea
+                  disabled
+                  rows={5}
+                  id="description"
+                  placeholder="Provide additional details..."
+                  value={selectedRoom?.requestSupply}
+                  onChange={(e) => setDescription(e.target.value)}
+                  required
+                />
+              </div>
+            )}
             <div>
               <Label htmlFor="description" value="Description" />
               <Textarea
