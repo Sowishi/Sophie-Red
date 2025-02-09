@@ -196,6 +196,8 @@ export function HousekeepingTable() {
                 <Table.HeadCell>Service Type</Table.HeadCell>
                 <Table.HeadCell>Description</Table.HeadCell>
                 <Table.HeadCell>Completed At</Table.HeadCell>
+                <Table.HeadCell>Remarks</Table.HeadCell>
+
                 <Table.HeadCell>Status</Table.HeadCell>
               </Table.Head>
               <Table.Body className="divide-y">
@@ -217,6 +219,8 @@ export function HousekeepingTable() {
                       <Table.Cell>
                         {log.completedAt ? completedDate : "---"}
                       </Table.Cell>
+                      <Table.Cell>{log.remarks || "---"}</Table.Cell>
+
                       <Table.Cell>
                         <Badge>{log.status}</Badge>
                       </Table.Cell>
