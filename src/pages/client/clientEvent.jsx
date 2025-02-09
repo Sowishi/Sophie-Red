@@ -63,7 +63,6 @@ const ClientEvent = () => {
     setRating(0);
     setRemarks("");
     setRatingModal(false);
-    toast.success("Thank you for your feedback");
   };
 
   return (

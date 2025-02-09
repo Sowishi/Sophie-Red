@@ -187,9 +187,7 @@ export const BookingCalendar = ({ searchQuery, filterType, rooms }) => {
       </div>
 
       <Modal show={selectedEvent !== null} onClose={closeModal}>
-        <Modal.Header>
-          Booking Details - Room {selectedEvent?.roomType}
-        </Modal.Header>
+        <Modal.Header>Booking Details {selectedEvent?.roomType}</Modal.Header>
         <Modal.Body>
           {selectedEvent && (
             <div className="p-4 space-y-3">
@@ -239,8 +237,15 @@ export const BookingCalendar = ({ searchQuery, filterType, rooms }) => {
             </Button>
           </Tooltip>
 
-          <Tooltip content="Check Out the guest">
+          <Tooltip
+            content={
+              selectedEvent?.paymentStatus == "down"
+                ? "Guest has not fully paid"
+                : "You can checkout the guest"
+            }
+          >
             <Button
+              disabled={selectedEvent?.paymentStatus == "down"}
               onClick={() => setConfirmCheckout(true)}
               className="w-full"
               gradientMonochrome="info"

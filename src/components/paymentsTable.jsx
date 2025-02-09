@@ -7,6 +7,7 @@ import {
   TextInput,
   Select,
   Dropdown,
+  Tooltip,
 } from "flowbite-react";
 import { useEffect, useState } from "react";
 import useFetchCollection from "../hooks/useFetchCollection";
@@ -129,15 +130,29 @@ export function PaymentsTable({ typeFilter }) {
                 </Table.Cell>
                 <Table.Cell>{date}</Table.Cell>
                 <Table.Cell>
-                  <Dropdown label="Actions">
-                    <Dropdown.Item
-                      onClick={() =>
-                        handlePaymentStatusChange(booking.id, "full")
-                      }
+                  <Tooltip
+                    content={
+                      booking.paymentStatus == "full"
+                        ? "User is already paid"
+                        : `Remaining Balance: ₱${
+                            booking?.totalPrice - booking?.downpayment
+                          }`
+                    }
+                    placement="left"
+                  >
+                    <Dropdown
+                      disabled={booking.paymentStatus == "full"}
+                      label="Actions"
                     >
-                      Mark as Paid
-                    </Dropdown.Item>
-                  </Dropdown>
+                      <Dropdown.Item
+                        onClick={() =>
+                          handlePaymentStatusChange(booking.id, "full")
+                        }
+                      >
+                        Mark as Paid
+                      </Dropdown.Item>
+                    </Dropdown>
+                  </Tooltip>
                 </Table.Cell>
               </Table.Row>
             );
