@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 const useCrudRating = () => {
   const addRating = async (data) => {
     const { currentUser, room } = data;
-    const userId = currentUser.id;
+    const userId = currentUser.uid;
     const roomId = room.id;
 
     try {
@@ -34,7 +34,7 @@ const useCrudRating = () => {
 
       toast.success("Thank you for your feedback");
     } catch (error) {
-      toast.error("You are already reviewed this room");
+      toast.error(error.message);
     }
   };
 
