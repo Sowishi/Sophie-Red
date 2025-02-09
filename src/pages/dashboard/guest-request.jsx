@@ -66,6 +66,7 @@ const GuestRequest = () => {
   const availableHousekeepers = housekeepers.filter(
     (user) => user.status == "Available"
   );
+
   return (
     <DashboardLayout>
       {/* Header */}
@@ -120,7 +121,7 @@ const GuestRequest = () => {
                     <Table.Cell>
                       <Button
                         onClick={() => {
-                          setSelectedRoom(task.selectedRoom);
+                          setSelectedRoom(task);
                           setSelectedTask(task.id);
                         }}
                         gradientMonochrome="failure"
@@ -151,7 +152,7 @@ const GuestRequest = () => {
         <form className="container p-10 mx-auto">
           <div className="header flex justify-between items-center mb-5">
             <h1 className="text-3xl font-bold flex items-center justify-start">
-              Room Number: #{selectedRoom?.roomNumber}{" "}
+              Room Number: #{selectedRoom?.roomNumber}
             </h1>
           </div>
           <div className="space-y-4">
@@ -182,8 +183,9 @@ const GuestRequest = () => {
             <div>
               <Label htmlFor="serviceType" value="Select Service Type" />
               <Select
+                disabled
                 id="serviceType"
-                value={serviceType}
+                value={selectedRoom?.serviceType}
                 onChange={(e) => setServiceType(e.target.value)}
                 required
               >
@@ -197,10 +199,11 @@ const GuestRequest = () => {
             <div>
               <Label htmlFor="description" value="Description" />
               <Textarea
+                disabled
                 rows={5}
                 id="description"
                 placeholder="Provide additional details..."
-                value={description}
+                value={selectedRoom?.description}
                 onChange={(e) => setDescription(e.target.value)}
                 required
               />
