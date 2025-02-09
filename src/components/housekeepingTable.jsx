@@ -99,6 +99,7 @@ export function HousekeepingTable() {
   };
 
   const handleViewLogs = (roomId) => {
+    console.log(roomId);
     fetchRoomTasks(roomId, setHousekeepingLogs);
 
     setIsLogsModalOpen(true);
