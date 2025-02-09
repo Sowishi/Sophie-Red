@@ -23,6 +23,9 @@ const ClientDashboardEvent = ({ booking, currentUser }) => {
   const navigation = useNavigate();
   const { cancelBooking } = useCrudBooking();
 
+  const { fetchUserBooking, reschedBooking, checkEventAvailability } =
+    useCrudBooking();
+
   const handleCancelBooking = async () => {
     await cancelBooking(booking.id);
     window.location.reload();
@@ -52,11 +55,7 @@ const ClientDashboardEvent = ({ booking, currentUser }) => {
       return;
     }
 
-    const res = await checkRoomAvailability(
-      booking.roomDetails?.id,
-      arrivalDate,
-      departureDate
-    );
+    const res = await checkEventAvailability(arrivalDate, departureDate);
 
     if (res) {
       await reschedBooking(
@@ -65,7 +64,6 @@ const ClientDashboardEvent = ({ booking, currentUser }) => {
         departureDate,
         booking.roomDetails
       );
-      await fetchUserBooking(currentUser, setBooking);
       setDateModal(false);
 
       toast.success("Successfully Update Booking Schedule");
