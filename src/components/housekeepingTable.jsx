@@ -202,27 +202,27 @@ export function HousekeepingTable() {
               </Table.Head>
               <Table.Body className="divide-y">
                 {housekeepingLogs.map((log) => {
-                  const assignDate = log.createdAt
-                    ? moment(log.createdAt.toDate()).format("LLL")
+                  const assignDate = log?.createdAt
+                    ? moment(log?.createdAt.toDate()).format("LLL")
                     : "invalid";
 
-                  const completedDate = log.completedAt
-                    ? moment(log.completedAt.toDate()).format("LLL")
+                  const completedDate = log?.completedAt
+                    ? moment(log?.completedAt.toDate()).format("LLL")
                     : "invalid";
                   return (
-                    <Table.Row key={log.id}>
+                    <Table.Row key={log?.id}>
                       <Table.Cell>{assignDate}</Table.Cell>
-                      <Table.Cell>{log.housekeeper.fullName}</Table.Cell>
-                      <Table.Cell>{log.serviceType}</Table.Cell>
-                      <Table.Cell>{log.description}</Table.Cell>
+                      <Table.Cell>{log?.housekeeper?.fullName}</Table.Cell>
+                      <Table.Cell>{log?.serviceType}</Table.Cell>
+                      <Table.Cell>{log?.description}</Table.Cell>
 
                       <Table.Cell>
-                        {log.completedAt ? completedDate : "---"}
+                        {log?.completedAt ? completedDate : "---"}
                       </Table.Cell>
-                      <Table.Cell>{log.remarks || "---"}</Table.Cell>
+                      <Table.Cell>{log?.remarks || "---"}</Table.Cell>
 
                       <Table.Cell>
-                        <Badge>{log.status}</Badge>
+                        <Badge>{log?.status}</Badge>
                       </Table.Cell>
                     </Table.Row>
                   );
@@ -238,71 +238,72 @@ export function HousekeepingTable() {
       </Modal>
 
       {/* Bottom Drawer for Assigning Housekeeper */}
-      <CustomModal
-        title={"Add Housekeeper Task"}
-        onSubmit={handleFormSubmit}
-        open={!!selectedRoom}
-        handleClose={() => setSelectedRoom(null)}
-      >
-        <form className="container p-10 mx-auto">
-          <div className="header flex justify-between items-center mb-5">
-            <h1 className="text-3xl font-bold flex items-center justify-start">
-              Room Number: #{selectedRoom?.roomNumber}{" "}
-            </h1>
-          </div>
-          <div className="space-y-4">
-            <div>
-              <Label htmlFor="housekeeper" value="Select Housekeeper" />
-              {availableHousekeepers.length >= 1 ? (
-                <Dropdown
-                  label={
-                    housekeeper == null
-                      ? "Please Select Housekeeper"
-                      : housekeeper.fullName
-                  }
+      {selectedRoom && (
+        <CustomModal
+          title={"Add Housekeeper Task"}
+          onSubmit={handleFormSubmit}
+          open={!!selectedRoom}
+          handleClose={() => setSelectedRoom(null)}
+        >
+          <form className="container p-10 mx-auto">
+            <div className="header flex justify-between items-center mb-5">
+              <h1 className="text-3xl font-bold flex items-center justify-start">
+                Room Number: #{selectedRoom?.roomNumber}{" "}
+              </h1>
+            </div>
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="housekeeper" value="Select Housekeeper" />
+                {availableHousekeepers.length >= 1 ? (
+                  <Dropdown
+                    label={
+                      housekeeper == null
+                        ? "Please Select Housekeeper"
+                        : housekeeper.fullName
+                    }
+                  >
+                    {availableHousekeepers.map((user) => (
+                      <Dropdown.Item onClick={() => setHousekeeper(user)}>
+                        {user.fullName}
+                      </Dropdown.Item>
+                    ))}
+                  </Dropdown>
+                ) : (
+                  <>
+                    <Alert color="failure">
+                      There's no available housekeepers as of the moment
+                    </Alert>
+                  </>
+                )}
+              </div>
+              <div>
+                <Label htmlFor="serviceType" value="Select Service Type" />
+                <Select
+                  id="serviceType"
+                  value={serviceType}
+                  onChange={(e) => setServiceType(e.target.value)}
+                  required
                 >
-                  {availableHousekeepers.map((user) => (
-                    <Dropdown.Item onClick={() => setHousekeeper(user)}>
-                      {user.fullName}
-                    </Dropdown.Item>
-                  ))}
-                </Dropdown>
-              ) : (
-                <>
-                  <Alert color="failure">
-                    There's no available housekeepers as of the moment
-                  </Alert>
-                </>
-              )}
+                  <option value="" disabled>
+                    Choose service type
+                  </option>
+                  <option value="cleaning">Cleaning</option>
+                  <option value="maintenance">Maintenance</option>
+                </Select>
+              </div>
+              <div>
+                <Label htmlFor="description" value="Description" />
+                <Textarea
+                  rows={5}
+                  id="description"
+                  placeholder="Provide additional details..."
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  required
+                />
+              </div>
             </div>
-            <div>
-              <Label htmlFor="serviceType" value="Select Service Type" />
-              <Select
-                id="serviceType"
-                value={serviceType}
-                onChange={(e) => setServiceType(e.target.value)}
-                required
-              >
-                <option value="" disabled>
-                  Choose service type
-                </option>
-                <option value="cleaning">Cleaning</option>
-                <option value="maintenance">Maintenance</option>
-              </Select>
-            </div>
-            <div>
-              <Label htmlFor="description" value="Description" />
-              <Textarea
-                rows={5}
-                id="description"
-                placeholder="Provide additional details..."
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                required
-              />
-            </div>
-          </div>
-          {/* <div className="mt-5 flex justify-end items-center">
+            {/* <div className="mt-5 flex justify-end items-center">
             <Button
               type="button"
               gradientMonochrome="failure"
@@ -314,8 +315,9 @@ export function HousekeepingTable() {
               Assign Task
             </Button>
           </div> */}
-        </form>
-      </CustomModal>
+          </form>
+        </CustomModal>
+      )}
     </div>
   );
 }

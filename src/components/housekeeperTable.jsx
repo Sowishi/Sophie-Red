@@ -20,8 +20,11 @@ const HousekeeperTable = () => {
   const [selectedStatus, setSelectedStatus] = useState(null);
   const [isGuest, setIsGuest] = useState(false);
 
+  const handleGetFetchTasks = async () => {
+    await fetchAllTasks(setTasks);
+  };
   useEffect(() => {
-    fetchAllTasks(setTasks);
+    handleGetFetchTasks();
   }, []);
 
   const handleStatusUpdate = async () => {
@@ -33,7 +36,8 @@ const HousekeeperTable = () => {
       remarks
     );
     toast.success("Successfully updated the task status");
-    window.location.reload();
+    setRemarksModal(false);
+    handleGetFetchTasks();
   };
 
   const handleStatusUpdateNotGuest = async () => {
@@ -45,7 +49,8 @@ const HousekeeperTable = () => {
       remarks
     );
     toast.success("Successfully updated the task status");
-    window.location.reload();
+    setRemarksModal(false);
+    handleGetFetchTasks();
   };
 
   if (tasks == null) {
