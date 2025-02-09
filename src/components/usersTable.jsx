@@ -133,7 +133,16 @@ export function UsersTable() {
                 className="bg-white dark:border-gray-700 dark:bg-gray-800"
               >
                 <Table.Cell className="font-bold text-lg text-red-500">
-                  {user.fullName}
+                  <div className="flex items-center justify-start">
+                    {" "}
+                    <img
+                      width={35}
+                      className="rounded-full mr-2"
+                      src={user?.photoURL}
+                      alt=""
+                    />{" "}
+                    {user.fullName}
+                  </div>
                 </Table.Cell>
                 <Table.Cell>{user.email}</Table.Cell>
                 <Table.Cell>{user.role}</Table.Cell>

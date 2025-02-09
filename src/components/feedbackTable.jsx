@@ -95,7 +95,18 @@ export function FeedbackTable() {
           {filteredFeedbacks && filteredFeedbacks.length > 0 ? (
             filteredFeedbacks.map((feedback) => (
               <Table.Row key={feedback.id} className="bg-white">
-                <Table.Cell>{feedback.currentUser.name}</Table.Cell>
+                <Table.Cell className="font-bold text-lg text-red-500">
+                  <div className="flex items-center justify-start">
+                    {" "}
+                    <img
+                      width={35}
+                      className="rounded-full mr-2"
+                      src={feedback.currentUser?.photoURL}
+                      alt=""
+                    />{" "}
+                    {feedback.currentUser.name}
+                  </div>
+                </Table.Cell>{" "}
                 <Table.Cell>{renderStars(feedback.rating)}</Table.Cell>
                 <Table.Cell className="w-[300px] whitespace-normal">
                   {feedback.remarks}

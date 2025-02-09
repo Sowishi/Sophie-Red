@@ -77,16 +77,16 @@ export function PaymentsTable({ typeFilter }) {
         <Table.Head>
           <Table.HeadCell>Guest Name</Table.HeadCell>
           {typeFilter == "room" && <Table.HeadCell>Room Number</Table.HeadCell>}
-
           <Table.HeadCell>Total Price</Table.HeadCell>
           <Table.HeadCell>Payment Status</Table.HeadCell>
-          <Table.HeadCell>Balance</Table.HeadCell>
+          <Table.HeadCell>Balance</Table.HeadCell>{" "}
+          <Table.HeadCell>Created At</Table.HeadCell>
           <Table.HeadCell>Actions</Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
           {filteredBookings.map((booking, index) => {
-            const date = booking.checkOutDate
-              ? moment(booking.checkOutDate.toDate()).format("LLL")
+            const date = booking.createdAt
+              ? moment(booking.createdAt.toDate()).format("LLL")
               : "Invalid Date";
 
             return (
@@ -95,7 +95,16 @@ export function PaymentsTable({ typeFilter }) {
                 className="bg-white dark:border-gray-700 dark:bg-gray-800"
               >
                 <Table.Cell className="font-bold text-lg text-red-500">
-                  {booking.currentUser.name}
+                  <div className="flex items-center justify-start">
+                    {" "}
+                    <img
+                      width={35}
+                      className="rounded-full mr-2"
+                      src={booking.currentUser?.photoURL}
+                      alt=""
+                    />{" "}
+                    {booking.currentUser.name}
+                  </div>
                 </Table.Cell>
 
                 {booking?.bookType == "room" && (
@@ -118,6 +127,7 @@ export function PaymentsTable({ typeFilter }) {
                     <h1>₱{booking?.totalPrice - booking?.downpayment}</h1>
                   )}
                 </Table.Cell>
+                <Table.Cell>{date}</Table.Cell>
                 <Table.Cell>
                   <Dropdown label="Actions">
                     <Dropdown.Item

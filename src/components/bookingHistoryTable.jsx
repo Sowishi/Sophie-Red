@@ -94,7 +94,16 @@ export function BookingHistoryTable({ typeFilter }) {
                 className="bg-white dark:border-gray-700 dark:bg-gray-800"
               >
                 <Table.Cell className="font-bold text-lg text-red-500">
-                  {booking.currentUser.name}
+                  <div className="flex items-center justify-start">
+                    {" "}
+                    <img
+                      width={35}
+                      className="rounded-full mr-2"
+                      src={booking.currentUser?.photoURL}
+                      alt=""
+                    />{" "}
+                    {booking.currentUser.name}
+                  </div>
                 </Table.Cell>
 
                 {booking?.bookType == "room" && (
@@ -120,7 +129,9 @@ export function BookingHistoryTable({ typeFilter }) {
                 <Table.Cell>{date2}</Table.Cell>
 
                 <Table.Cell>{date}</Table.Cell>
-                <Table.Cell>{booking.status}</Table.Cell>
+                <Table.Cell>
+                  <Badge>{booking.status}</Badge>
+                </Table.Cell>
               </Table.Row>
             );
           })}
