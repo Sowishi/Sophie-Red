@@ -15,7 +15,7 @@ const BookingHistory = () => {
       <div className="container mx-auto lg:p-10 rounded-3xl min-h-[600px] pt-10 ">
         <div className="flex flex-col lg:flex-row justify-between items-center">
           <div className="div p-5">
-            <h1 className="text-2xl lg:text-4xl font-bold">BookingHistory</h1>
+            <h1 className="text-2xl lg:text-4xl font-bold">Booking History</h1>
             <div className="flex mt-2">
               <Button.Group color="failure">
                 <Button

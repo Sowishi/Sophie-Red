@@ -24,16 +24,12 @@ export function BookingHistoryTable({ typeFilter }) {
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
+  const [statusFilter, setStatusFilter] = useState("all"); // New status filter
   const { updateBookingPayment } = useCrudBooking();
 
   useEffect(() => {
     fetchCollection("bookings", setBookings, setLoading);
   }, []);
-
-  const handlePaymentStatusChange = async (bookingId, newStatus) => {
-    await updateBookingPayment(bookingId, newStatus);
-    toast.success("Successfully updated the payment");
-  };
 
   const filteredBookings = bookings.filter((booking) => {
     if (filter !== "all") {
@@ -41,6 +37,7 @@ export function BookingHistoryTable({ typeFilter }) {
       if (filter === "unpaid" && booking.paymentStatus === "full") return false;
     }
     if (typeFilter !== "all" && booking.bookType !== typeFilter) return false;
+    if (statusFilter !== "all" && booking.status !== statusFilter) return false; // New filter condition
     return true;
   });
 
@@ -66,16 +63,27 @@ export function BookingHistoryTable({ typeFilter }) {
 
   return (
     <div className="overflow-x-auto">
+      {/* Status Filter Dropdown */}
+      <div className="mb-4 flex justify-end">
+        <Select
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+          className="w-48"
+        >
+          <option value="all">All</option>
+          <option value="Booked">Booked</option>
+          <option value="Completed">Completed</option>
+        </Select>
+      </div>
+
       <Table hoverable striped>
         <Table.Head>
           <Table.HeadCell>Guest Name</Table.HeadCell>
           {typeFilter == "room" && <Table.HeadCell>Room Number</Table.HeadCell>}
-
           <Table.HeadCell>Total Price</Table.HeadCell>
           <Table.HeadCell>Payment Status</Table.HeadCell>
           <Table.HeadCell>Balance</Table.HeadCell>
           <Table.HeadCell>Check In Date</Table.HeadCell>
-
           <Table.HeadCell>Check Out Date</Table.HeadCell>
           <Table.HeadCell>Status</Table.HeadCell>
         </Table.Head>
@@ -95,13 +103,12 @@ export function BookingHistoryTable({ typeFilter }) {
               >
                 <Table.Cell className="font-bold text-lg text-red-500">
                   <div className="flex items-center justify-start">
-                    {" "}
                     <img
                       width={35}
                       className="rounded-full mr-2"
                       src={booking.currentUser?.photoURL}
                       alt=""
-                    />{" "}
+                    />
                     {booking.currentUser.name}
                   </div>
                 </Table.Cell>
@@ -127,7 +134,6 @@ export function BookingHistoryTable({ typeFilter }) {
                   )}
                 </Table.Cell>
                 <Table.Cell>{date2}</Table.Cell>
-
                 <Table.Cell>{date}</Table.Cell>
                 <Table.Cell>
                   <Badge>{booking.status}</Badge>
