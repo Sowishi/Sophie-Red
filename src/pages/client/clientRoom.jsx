@@ -60,12 +60,15 @@ const ClientRoom = () => {
     setRequestModal(false);
   };
 
-  const handleRatingSubmit = () => {
-    addRating({ rating, remarks, room: roomDetails, currentUser });
-    setRating(0);
-    setRemarks("");
-    setRatingModal(false);
-    toast.success("Thank you for your feedback");
+  const handleRatingSubmit = async () => {
+    try {
+      await addRating({ rating, remarks, room: roomDetails, currentUser });
+      setRating(0);
+      setRemarks("");
+      setRatingModal(false);
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   return (

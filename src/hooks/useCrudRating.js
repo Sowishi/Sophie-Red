@@ -1,21 +1,40 @@
 import {
   addDoc,
   collection,
-  deleteDoc,
-  doc,
-  onSnapshot,
+  getDocs,
   serverTimestamp,
-  updateDoc,
 } from "firebase/firestore";
 import { db } from "../utils/firebase";
+import { toast } from "react-toastify";
 
 const useCrudRating = () => {
   const addRating = async (data) => {
+    const { currentUser, room } = data;
+    const userId = currentUser.id;
+    const roomId = room.id;
+
     try {
       const colRef = collection(db, "feedback");
-      await addDoc(colRef, { ...data, createdAt: serverTimestamp() });
+      const querySnapshot = await getDocs(colRef);
+
+      const userAlreadyReviewed = querySnapshot.docs.some(
+        (doc) => doc.data().userId === userId && doc.data().roomId === roomId
+      );
+
+      if (userAlreadyReviewed) {
+        throw new Error("User has already reviewed this room.");
+      }
+
+      await addDoc(colRef, {
+        ...data,
+        userId,
+        roomId,
+        createdAt: serverTimestamp(),
+      });
+
+      toast.success("Thank you for your feedback");
     } catch (error) {
-      console.log(error.message);
+      toast.error("You are already reviewed this room");
     }
   };
 
