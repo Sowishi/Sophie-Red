@@ -72,9 +72,13 @@ const GuestRequest = () => {
       {/* Header */}
       <div className="container mx-auto lg:p-10 rounded-3xl min-h-[600px]">
         <div className="flex mb-10 flex-col lg:flex-row justify-between items-center">
-          <div className="div p-5">
+          <div className="p-5">
             <h1 className="text-2xl lg:text-4xl font-bold">Guest Request</h1>
-            <p className="mt-3 text-gray-500">Here's your guest request</p>
+            <p className="mt-3 text-gray-600">
+              Here you can find all the details regarding the current guest
+              request. Please review the information below to ensure everything
+              is in order and take the necessary actions as needed.
+            </p>
           </div>
         </div>
         {guestRequest.length >= 1 ? (

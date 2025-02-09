@@ -75,9 +75,11 @@ const HousekeeperList = () => {
       {/* Header */}
       <div className="container mx-auto lg:p-10 rounded-3xl min-h-[600px]">
         <div className="flex mb-10 flex-col lg:flex-row justify-between items-center">
-          <div className="div p-5">
+          <div className="p-5">
             <h1 className="text-2xl lg:text-4xl font-bold">Housekeepers</h1>
-            <p className="mt-3 text-gray-500">Here's your housekeepers</p>
+            <p className="mt-3 text-gray-600 ">
+              Below is the list of available housekeepers
+            </p>
           </div>
           <Button
             gradientMonochrome="failure"
