@@ -14,6 +14,8 @@ const HousekeeperListTable = () => {
   const { deleteHousekeeper } = useCrudHousekeeping();
   const [selectedUser, setSelectedUser] = useState(null);
 
+  const { updateStatusHousekeeper } = useCrudHousekeeping();
+
   useEffect(() => {
     fetchCollection("housekeepers", setHousekeepers, setLoading);
   }, []);
@@ -86,14 +88,23 @@ const HousekeeperListTable = () => {
                     {housekeeper.status}
                   </span>
                 </Table.Cell>
-                <Table.Cell>
+                <Table.Cell className="flex items-center justify-start">
                   <Button
                     gradientMonochrome="failure"
                     onClick={() => {
-                      setSelectedUser(housekeeper.id);
+                      updateStatusHousekeeper(housekeeper.id, "Unavailable");
+                    }}
+                    className="mr-2"
+                  >
+                    Disable
+                  </Button>
+                  <Button
+                    gradientMonochrome="info"
+                    onClick={() => {
+                      updateStatusHousekeeper(housekeeper.id, "Available");
                     }}
                   >
-                    Delete
+                    Enable
                   </Button>
                 </Table.Cell>
               </Table.Row>

@@ -14,10 +14,10 @@ import useAuth from "../hooks/useAuth";
 const Login = () => {
   const router = useNavigate();
   const { setCurrentAdmin, setCurrentUser, loginWithGoogle } = useUserStore();
-  const { login } = useAuth();  
+  const { login } = useAuth();
 
   // State for email and password
-  const [email, setEmail] = useState(""); 
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = async () => {
@@ -30,7 +30,7 @@ const Login = () => {
 
     if (user.role !== "user") {
       if (user.role == "Housekeeping") {
-        router("/housekeeping");
+        router("/guest-request");
       } else {
         router("/dashboard");
       }

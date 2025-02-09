@@ -146,6 +146,15 @@ const useCrudHousekeeping = () => {
     }
   };
 
+  const updateStatusHousekeeper = async (id, status) => {
+    try {
+      const docRef = doc(db, "housekeepers", id);
+      updateDoc(docRef, { status: status });
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   return {
     addTask,
     fetchRoomTasks,
@@ -155,6 +164,7 @@ const useCrudHousekeeping = () => {
     addHousekeeper,
     deleteHousekeeper,
     deleteTask,
+    updateStatusHousekeeper,
   };
 };
 

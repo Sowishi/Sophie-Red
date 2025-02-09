@@ -133,15 +133,6 @@ const Header = () => {
     return (
       <div className="navigation hidden lg:flex flex-1  mx-10 text-white px-5">
         <Link
-          to="/housekeeping"
-          className={`flex px-5 cursor-pointer mx-2 py-3 rounded-lg justify-start items-center ${
-            isCurrentPath("/housekeeping") ? "bg-red-800" : "bg-slate-700"
-          }`}
-        >
-          <FaBroom color="white" className="mr-3" />
-          <h1 className="text-sm font-extralight">Housekeeping</h1>
-        </Link>
-        <Link
           to="/guest-request"
           className={`flex px-5 cursor-pointer mx-2 py-3 rounded-lg justify-start items-center ${
             isCurrentPath("/guest-request") ? "bg-red-800" : "bg-slate-700"
@@ -149,6 +140,15 @@ const Header = () => {
         >
           <FaUserAlt color="white" className="mr-3" />
           <h1 className="text-sm font-extralight">Guest Request</h1>
+        </Link>
+        <Link
+          to="/housekeeping"
+          className={`flex px-5 cursor-pointer mx-2 py-3 rounded-lg justify-start items-center ${
+            isCurrentPath("/housekeeping") ? "bg-red-800" : "bg-slate-700"
+          }`}
+        >
+          <FaBroom color="white" className="mr-3" />
+          <h1 className="text-sm font-extralight">Housekeeping</h1>
         </Link>
         <Link
           to="/housekeeper-list"
@@ -159,7 +159,6 @@ const Header = () => {
           <FaUsers color="white" className="mr-3" />
           <h1 className="text-sm font-extralight">Housekeepers</h1>
         </Link>
-
         <Link
           to="/housekeeper"
           className={`flex px-5 cursor-pointer mx-2 py-3 rounded-lg justify-start items-center ${
