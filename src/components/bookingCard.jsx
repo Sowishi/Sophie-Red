@@ -25,7 +25,14 @@ const BookingCard = ({ booking, onViewDetails }) => {
           </Modal.Body>
         </Modal>
       )}
-      <Card className="max-w-sm my-3 h-[360px] mx-3">
+      <Card
+        style={{
+          backgroundColor: "rgb(230,53,53)",
+          backgroundImage:
+            "linear-gradient(360deg, rgba(230,53,53,1) 0%, rgba(254,254,254,1) 32%)",
+        }}
+        className="max-w-sm my-3 h-[360px] mx-3"
+      >
         <div className="flex text-xs opacity-50">
           <h1>
             You booked this on:{" "}
@@ -88,7 +95,7 @@ const BookingCard = ({ booking, onViewDetails }) => {
             setOpenModal(true);
           }}
           className="mt-2"
-          gradientMonochrome="failure"
+          gradientMonochrome="info"
         >
           View Booking
         </Button>
