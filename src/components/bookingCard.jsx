@@ -26,6 +26,12 @@ const BookingCard = ({ booking, onViewDetails }) => {
         </Modal>
       )}
       <Card className="max-w-sm my-3 h-[360px] mx-3">
+        <div className="flex text-xs opacity-50">
+          <h1>
+            You booked this on:{" "}
+            {moment(booking.createdAt?.toDate()).format("LL")}
+          </h1>
+        </div>
         <div className="header flex items-center justify-between">
           <Badge
             color={booking.bookType == "room" ? "failure" : "info"}
@@ -64,9 +70,15 @@ const BookingCard = ({ booking, onViewDetails }) => {
               />
               {booking.currentUser.name}
             </div>
-            <div className="flex flex-col">
-              <p className="text-sm opacity-50">Check in Date</p>
-              <h1>{moment(booking.checkInDate?.toDate()).format("LL")}</h1>
+            <div className="flex">
+              <div className="flex flex-col mr-2 " style={{ fontSize: 11 }}>
+                <p className="opacity-50">Check in Date</p>
+                <h1>{moment(booking.checkInDate?.toDate()).format("LL")}</h1>
+              </div>
+              <div className="flex flex-col" style={{ fontSize: 11 }}>
+                <p className="opacity-50">Check Out Date</p>
+                <h1>{moment(booking.checkOutDate?.toDate()).format("LL")}</h1>
+              </div>
             </div>
           </div>
         </div>
