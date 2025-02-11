@@ -294,7 +294,7 @@ const ClientDashboardRoom = ({ booking, currentUser }) => {
         size={"5xl"}
         handleClose={() => setDateModal(false)}
       >
-        <div className="container mx-auto min-h-[3  00px]">
+        <div className="container mx-auto min-h-[400px]">
           <div className="wrapper">
             <h1>Arrival Date</h1>
             <Datepicker onChange={(event) => setArrivalDate(event)} />
