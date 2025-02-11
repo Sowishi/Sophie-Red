@@ -48,7 +48,7 @@ const ChartComponent = () => {
 
   // Calculate total sales from all time
   const totalSales = bookings.reduce(
-    (total, booking) => parseInt(total) + parseInt(booking.totalPrice),
+    (total, booking) => total + Number(booking.totalPrice),
     0
   );
 

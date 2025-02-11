@@ -68,6 +68,10 @@ const ClientDashboardRoom = ({ booking, currentUser }) => {
       setDateModal(false);
 
       toast.success("Successfully Update Booking Schedule");
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
+      timeout;
     } else {
       toast.error("Selected Dates is not available");
     }
