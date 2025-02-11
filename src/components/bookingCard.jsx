@@ -5,6 +5,7 @@ import useUserStore from "../utils/zustand";
 import ClientRoom from "../pages/client/clientRoom";
 import { useState } from "react";
 import ClientEvent from "../pages/client/clientEvent";
+import ClienRoomBooking from "./clientRoomBooking";
 
 const BookingCard = ({ booking, onViewDetails }) => {
   const { setBooking, booking: selectedBooking } = useUserStore();
@@ -20,7 +21,7 @@ const BookingCard = ({ booking, onViewDetails }) => {
             {selectedBooking?.bookType == "event" ? (
               <ClientEvent />
             ) : (
-              <ClientRoom />
+              <ClienRoomBooking />
             )}
           </Modal.Body>
         </Modal>
@@ -33,11 +34,14 @@ const BookingCard = ({ booking, onViewDetails }) => {
         }}
         className="max-w-sm my-3 h-[360px] mx-3"
       >
-        <div className="flex text-xs opacity-50">
+        <div className="flex justify-between items-center text-xs opacity-50">
           <h1>
             You booked this on:{" "}
             {moment(booking.createdAt?.toDate()).format("LL")}
           </h1>
+          <Badge color="warning">
+            <h1>{booking?.status}</h1>
+          </Badge>
         </div>
         <div className="header flex items-center justify-between">
           <Badge
