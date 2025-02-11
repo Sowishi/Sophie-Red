@@ -3,13 +3,17 @@ import DisplayRoom from "./displayRoom";
 import logo from "../assets/logo.png";
 import moment from "moment";
 import { Alert, Badge, Card } from "flowbite-react";
+import Stepper from "./stepper";
 
 const ClienRoomBooking = () => {
   const { currentUser, booking } = useUserStore();
   const roomDetails = booking?.roomDetails || {};
 
   return (
-    <div className="container mx-auto p-5 md:p-10">
+    <div className="container mx-auto p-0 md:p-10">
+      {/* Steps Progress */}
+      <Stepper />
+
       <div className="flex flex-col lg:flex-row">
         {/* Left Section - Map (Hidden on small screens) */}
         <div className="hidden lg:flex lg:w-1/2 justify-center items-center">

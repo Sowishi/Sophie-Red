@@ -218,11 +218,7 @@ const useCrudBooking = () => {
 
   const fetchUserBooking = async (user, setBooking) => {
     const colRef = collection(db, "bookings");
-    const q = query(
-      colRef,
-      where("currentUser.uid", "==", user.uid),
-      where("status", "==", "Booked")
-    );
+    const q = query(colRef, where("currentUser.uid", "==", user.uid));
     const snapshot = await getDocs(q);
     const output = [];
     snapshot.docs.map((doc) => {

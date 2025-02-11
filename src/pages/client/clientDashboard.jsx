@@ -61,7 +61,7 @@ const ClientDashboard = () => {
               efficiently.
             </p>
           </div>
-          <div className="flex hidden lg:flex items-center space-x-3">
+          <div className="hidden lg:flex items-center space-x-3">
             <Button
               onClick={() => setFilter("all")}
               color={filter === "all" ? "failure" : "gray"}
