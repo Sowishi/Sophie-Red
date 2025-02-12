@@ -70,7 +70,7 @@ const ClientEvent = () => {
       {!booking && <NoData />}
       {roomDetails && booking && (
         <div className="container mx-auto h-screen p-7 lg:p-0">
-          <div className="flex flex-col lg:flex-row justify-start lg:justify-between  justify-start lg:items-center mb-10">
+          <div className="flex flex-col lg:flex-row lg:justify-between  justify-start lg:items-center mb-10">
             <div className="wrapper mb-5">
               <h1 className="text-3xl lg:text-5xl font-bold ">
                 Functional Room
@@ -80,13 +80,6 @@ const ClientEvent = () => {
                 meetings, conferences, and all types of gatherings.
               </p>
             </div>
-            <Button
-              className="hidden lg:flex"
-              gradientMonochrome="info"
-              onClick={() => setRatingModal(true)}
-            >
-              Leave A Review
-            </Button>
           </div>
 
           <div className="flex flex-wrap">
