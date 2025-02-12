@@ -41,13 +41,13 @@ const Index = () => {
         <div className="flex  w-full mt-10">
           <div
             style={{ background: "#F6F6F6", marginRight: 10, borderRadius: 20 }}
-            className="basis-6/12 p-10"
+            className="basis-6/12 p-10 shadow-2xl"
           >
             <ChartComponent />
           </div>
           <div
             style={{ background: "#F6F6F6", borderRadius: 20 }}
-            className="basis-6/12 p-10"
+            className="basis-6/12 p-10 shadow-2xl"
           >
             <div className="header flex items-center justify-between">
               <div className="flex flex-col">

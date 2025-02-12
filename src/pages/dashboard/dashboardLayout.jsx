@@ -12,8 +12,14 @@ const DashboardLayout = ({ children }) => {
     <div className="w-full bg-slate-900 h-screen">
       <Header />
       <div
-        className="w-full h-full bg-white p-5 mb-20 "
-        style={{ borderTopLeftRadius: 60, borderTopRightRadius: 60 }}
+        className="w-full min-h-screen bg-white p-5 mb-20 "
+        style={{
+          borderTopLeftRadius: 60,
+          borderTopRightRadius: 60,
+          backgroundColor: "rgb(230,53,53)",
+          backgroundImage:
+            "linear-gradient(250deg, rgba(230,53,53,1) 0%, rgba(254,254,254,1) 60%)",
+        }}
       >
         {children}
       </div>

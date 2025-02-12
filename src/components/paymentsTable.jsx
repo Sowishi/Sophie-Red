@@ -20,11 +20,10 @@ import useCrudBooking from "../hooks/useCrudBooking";
 import { toast } from "react-toastify";
 import { BsThreeDots } from "react-icons/bs";
 
-export function PaymentsTable({ typeFilter }) {
+export function PaymentsTable({ typeFilter, search }) {
   const { fetchCollection } = useFetchCollection();
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
   const { updateBookingPayment } = useCrudBooking();
 
@@ -52,6 +51,7 @@ export function PaymentsTable({ typeFilter }) {
     return dateA - dateB;
   });
 
+  console.log(search);
   if (loading) {
     return (
       <div className="container flex pt-28 h-full justify-center items-center flex-col">

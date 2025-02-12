@@ -9,6 +9,8 @@ import SearchInput from "../../components/searchInput";
 
 const Payments = () => {
   const [filterType, setFilterType] = useState("room");
+  const [search, setSearch] = useState("");
+
   return (
     <DashboardLayout>
       <div className="container mx-auto lg:p-10 rounded-3xl min-h-[600px] pt-10 ">
@@ -32,9 +34,9 @@ const Payments = () => {
               </Button.Group>
             </div>
           </div>
-          <SearchInput />
+          <SearchInput onChange={(event) => setSearch(event.target.value)} />
         </div>{" "}
-        <PaymentsTable typeFilter={filterType} />
+        <PaymentsTable search={search} typeFilter={filterType} />
       </div>
     </DashboardLayout>
   );
