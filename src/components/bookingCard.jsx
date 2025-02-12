@@ -6,6 +6,7 @@ import ClientRoom from "../pages/client/clientRoom";
 import { useState } from "react";
 import ClientEvent from "../pages/client/clientEvent";
 import ClienRoomBooking from "./clientRoomBooking";
+import ClientEventBooking from "./clientEventBooking";
 
 const BookingCard = ({ booking, onViewDetails }) => {
   const { setBooking, booking: selectedBooking } = useUserStore();
@@ -19,7 +20,7 @@ const BookingCard = ({ booking, onViewDetails }) => {
           <Modal.Header>Booking Details</Modal.Header>
           <Modal.Body>
             {selectedBooking?.bookType == "event" ? (
-              <ClientEvent />
+              <ClientEventBooking />
             ) : (
               <ClienRoomBooking />
             )}
