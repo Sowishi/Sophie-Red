@@ -110,7 +110,7 @@ const ClienRoomBooking = () => {
       {booking.status === "Completed" && (
         <>
           {booking.status === "Completed" && (
-            <div className="container mx-auto h-[50vh] flex flex-col items-center justify-center text-center p-6">
+            <div className="container mx-auto h-[50vh] flex flex-col items-center justify-center text-center p-6 py-10">
               <FaCheck className="w-16 h-16 text-green-500 mb-4" />
               <h1 className="text-4xl font-bold text-gray-800">
                 Thank You for Staying with Us!
