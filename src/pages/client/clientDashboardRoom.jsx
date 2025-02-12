@@ -19,7 +19,6 @@ const ClientDashboardRoom = ({ booking, currentUser }) => {
   const [dateModal, setDateModal] = useState(false);
   const [arrivalDate, setArrivalDate] = useState();
   const [departureDate, setDepartureDate] = useState();
-  const navigation = useNavigate();
   const { cancelBooking, checkRoomAvailability, reschedBooking } =
     useCrudBooking();
 
@@ -237,6 +236,12 @@ const ClientDashboardRoom = ({ booking, currentUser }) => {
                     <div className="flex justify-between">
                       <h1>Downpayment</h1>
                       <h1 className="font-bold">₱{booking.downpayment}</h1>
+                    </div>
+                  )}
+                  {booking?.extraCharge && (
+                    <div className="flex justify-between">
+                      <h1>Aditional Person Charge</h1>
+                      <h1 className="font-bold">₱{booking.extraCharge}</h1>
                     </div>
                   )}
                   <div className="flex justify-between">
