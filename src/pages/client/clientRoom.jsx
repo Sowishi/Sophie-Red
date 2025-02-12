@@ -69,17 +69,6 @@ const ClientRoom = () => {
     setRequestModal(false);
   };
 
-  const handleRatingSubmit = async () => {
-    try {
-      await addRating({ rating, remarks, room: roomDetails, currentUser });
-      setRating(0);
-      setRemarks("");
-      setRatingModal(false);
-    } catch (error) {
-      toast.error(error.message);
-    }
-  };
-
   useEffect(() => {
     fetchRoomLogs(roomDetails.roomNumber, currentUser.uid, setLogs);
   }, [booking]);
@@ -308,51 +297,7 @@ const ClientRoom = () => {
           </>
         )}
       </CustomModal>
-      <CustomModal
-        title={"Leave Feedback"}
-        open={ratingModal}
-        handleClose={() => setRatingModal(false)}
-        onSubmit={handleRatingSubmit}
-      >
-        <div className="container p-10 mx-auto">
-          <h1 className="text-3xl font-bold mb-4">Rate Your Stay</h1>
-          <div className="flex space-x-2 mb-5">
-            {[1, 2, 3, 4, 5].map((star) => (
-              <FaStar
-                key={star}
-                className={`cursor-pointer text-3xl ${
-                  star <= rating ? "text-yellow-500" : "text-gray-300"
-                }`}
-                onClick={() => setRating(star)}
-              />
-            ))}
-          </div>
-          <Label htmlFor="remarks" value="Your Remarks" />
-          <Textarea
-            rows={4}
-            id="remarks"
-            placeholder="Share your experience..."
-            value={remarks}
-            onChange={(e) => setRemarks(e.target.value)}
-            required
-          />
-          <Lottie
-            options={{
-              animationData: anim,
-              autoplay: true,
-            }}
-            style={{ width: 250 }}
-          />
-          <p className="text-lg opacity-50">
-            We want to hear from you! Your feedback is invaluable in helping us
-            improve and make our services better for you. Whether it’s
-            suggestions, concerns, or ideas, your input will guide us in making
-            the necessary adjustments to ensure we meet your needs and exceed
-            your expectations. Thank you for taking the time to share with us —
-            together, we can make this experience even better for everyone.
-          </p>
-        </div>
-      </CustomModal>
+
       <div className="bottom-navs fixed bottom-0 left-0 bg-white w-full p-5 flex lg:hidden justify-center items-center">
         <Button
           gradientMonochrome="info"

@@ -2,13 +2,36 @@ import useUserStore from "../utils/zustand";
 import DisplayRoom from "./displayRoom";
 import logo from "../assets/logo.png";
 import moment from "moment";
-import { Alert, Badge, Card } from "flowbite-react";
+import { Alert, Badge, Button, Card, Label, Textarea } from "flowbite-react";
 import Stepper from "./stepper";
 import ClientRoom from "../pages/client/clientRoom";
+import CustomModal from "./customModal";
+import Lottie from "react-lottie";
+import anim from "../assets/rating.json";
+import { FaStar } from "react-icons/fa6";
+import { useState } from "react";
+import { toast } from "react-toastify";
+import useCrudRating from "../hooks/useCrudRating";
 
 const ClienRoomBooking = () => {
   const { currentUser, booking } = useUserStore();
+  const { addRating } = useCrudRating();
+
   const roomDetails = booking?.roomDetails || {};
+  const [ratingModal, setRatingModal] = useState(false);
+  const [rating, setRating] = useState(0);
+  const [remarks, setRemarks] = useState("");
+
+  const handleRatingSubmit = async () => {
+    try {
+      await addRating({ rating, remarks, room: roomDetails, currentUser });
+      setRating(0);
+      setRemarks("");
+      setRatingModal(false);
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
   return (
     <div className="container mx-auto p-0 md:p-10">
@@ -83,6 +106,65 @@ const ClienRoomBooking = () => {
         </div>
       )}
       {booking.status === "Check In" && <ClientRoom />}
+
+      {booking.status === "Completed" && (
+        <>
+          <div className="container mx-auto h-[50vh]">
+            <h1 className="text-3xl text-center font-bold">
+              Thank you for staying in Sophie Red Hotel, Hope we see you again
+              soon!
+            </h1>
+            <Button onClick={() => setRatingModal(true)}>Leave a Review</Button>
+          </div>
+        </>
+      )}
+
+      {/* Rating Modal */}
+      <CustomModal
+        title={"Leave Feedback"}
+        open={ratingModal}
+        handleClose={() => setRatingModal(false)}
+        onSubmit={handleRatingSubmit}
+      >
+        <div className="container p-10 mx-auto">
+          <h1 className="text-3xl font-bold mb-4">Rate Your Stay</h1>
+          <div className="flex space-x-2 mb-5">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <FaStar
+                key={star}
+                className={`cursor-pointer text-3xl ${
+                  star <= rating ? "text-yellow-500" : "text-gray-300"
+                }`}
+                onClick={() => setRating(star)}
+              />
+            ))}
+          </div>
+          <Label htmlFor="remarks" value="Your Remarks" />
+          <Textarea
+            rows={4}
+            id="remarks"
+            placeholder="Share your experience..."
+            value={remarks}
+            onChange={(e) => setRemarks(e.target.value)}
+            required
+          />
+          <Lottie
+            options={{
+              animationData: anim,
+              autoplay: true,
+            }}
+            style={{ width: 250 }}
+          />
+          <p className="text-lg opacity-50">
+            We want to hear from you! Your feedback is invaluable in helping us
+            improve and make our services better for you. Whether it’s
+            suggestions, concerns, or ideas, your input will guide us in making
+            the necessary adjustments to ensure we meet your needs and exceed
+            your expectations. Thank you for taking the time to share with us —
+            together, we can make this experience even better for everyone.
+          </p>
+        </div>
+      </CustomModal>
     </div>
   );
 };
