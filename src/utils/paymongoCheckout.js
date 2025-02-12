@@ -21,9 +21,9 @@ export const createPaymongoCheckout = async (amount, paymentTerm) => {
                   amount: amount * 100, // Convert to centavos
 
                   name:
-                    "Sophie Red Hotel" + paymentTerm == "down"
-                      ? "Downpayment for room booking"
-                      : "Fullpayment for room booking",
+                    paymentTerm == "down"
+                      ? "Down payment for room booking"
+                      : "Full payment for room booking",
                   quantity: 1,
                 },
               ],
