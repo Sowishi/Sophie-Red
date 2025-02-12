@@ -17,7 +17,11 @@ import loader from "../assets/lotties/loader.json";
 import moment from "moment/moment";
 import { BsThreeDots } from "react-icons/bs";
 
-export function PaymentsTable({ typeFilter }) {
+export function PaymentsTable({
+  typeFilter,
+  setCheckInModal,
+  setSelectedBooking,
+}) {
   const { fetchCollection } = useFetchCollection();
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -179,7 +183,14 @@ export function PaymentsTable({ typeFilter }) {
                       arrowIcon={false}
                       label={<BsThreeDots className="cursor-pointer text-xl" />}
                     >
-                      <Dropdown.Item>Check In Guest</Dropdown.Item>
+                      <Dropdown.Item
+                        onClick={() => {
+                          setCheckInModal(true);
+                          setSelectedBooking(booking);
+                        }}
+                      >
+                        Check In Guest
+                      </Dropdown.Item>
                       <Dropdown.Item>Check Out Guest</Dropdown.Item>
                     </Dropdown>
                   </Table.Cell>
