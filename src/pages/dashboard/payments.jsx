@@ -9,6 +9,7 @@ import CustomModal from "../../components/customModal";
 import useCrudBooking from "../../hooks/useCrudBooking";
 import { toast } from "react-toastify";
 import moment from "moment";
+import { calculateStayDuration } from "../../utils/calculateStay";
 
 const Payments = () => {
   const [filterType, setFilterType] = useState("room");
@@ -164,74 +165,123 @@ const Payments = () => {
       </CustomModal>
 
       {/* Check Out Modal */}
-      <CustomModal
-        onSubmit={handleCheckOutGuest}
-        title={"Checking Out Guest"}
-        size={"7xl"}
-        open={checkOutModal}
-        handleClose={() => setCheckOutModal(false)}
-      >
-        <div className="container mx-auto p-5">
-          <div className="flex">
-            <div className="basis-6/12">
-              <div className="wrapper">
-                <h1 className="text-4xl">Checkout Guest</h1>
-                <p className="opacity-50">
-                  Thank you for staying with us, hope we see you again
-                </p>
-              </div>
-              <h1 className="mt-5 text-2xl">Customer Information</h1>
-              <hr className="my-3" />
-              <div className="flex justify-around items-center">
+      {selectedBooking && (
+        <CustomModal
+          onSubmit={handleCheckOutGuest}
+          title={"Checking Out Guest"}
+          size={"7xl"}
+          open={checkOutModal}
+          handleClose={() => setCheckOutModal(false)}
+        >
+          <div className="container mx-auto p-5">
+            <div className="flex">
+              <div className="basis-6/12">
                 <div className="wrapper">
-                  <h1 className="opacity-50">Customer Name</h1>
-                  <div className="flex items-center justify-center mt-2">
-                    <img
-                      className="rounded-full w-[50px] mr-2"
-                      src={selectedBooking?.currentUser?.photoURL}
-                      alt=""
-                    />
-                    <h1 className="font-bold text-2xl">
-                      {selectedBooking?.currentUser.name}
-                    </h1>
+                  <h1 className="text-4xl">Checkout Guest</h1>
+                  <p className="opacity-50">
+                    Thank you for staying with us, hope we see you again
+                  </p>
+                </div>
+                <h1 className="mt-5 text-2xl">Customer Information</h1>
+                <hr className="my-3" />
+                <div className="flex justify-around items-center">
+                  <div className="wrapper">
+                    <h1 className="opacity-50">Customer Name</h1>
+                    <div className="flex items-center justify-center mt-2">
+                      <img
+                        className="rounded-full w-[50px] mr-2"
+                        src={selectedBooking?.currentUser?.photoURL}
+                        alt=""
+                      />
+                      <h1 className="font-bold text-2xl">
+                        {selectedBooking?.currentUser.name}
+                      </h1>
+                    </div>
+                  </div>
+                  <div className="wrapper">
+                    <h1 className="opacity-50">Checkout Date</h1>
+                    <div className="flex items-center justify-center mt-2">
+                      <FaCalendarAlt size={24} />
+                      <h1 className="font-bold text-2xl ml-3">
+                        {moment(selectedBooking?.checkoutDate).format("LL")}
+                      </h1>
+                    </div>
                   </div>
                 </div>
-                <div className="wrapper">
-                  <h1 className="opacity-50">Checkout Date</h1>
-                  <div className="flex items-center justify-center mt-2">
-                    <FaCalendarAlt size={24} />
+                <div className="flex mt-10 justify-around items-center">
+                  <div className="wrapper">
+                    <h1 className="opacity-50">Room Number</h1>
                     <h1 className="font-bold text-2xl ml-3">
-                      {moment(selectedBooking?.checkoutDate).format("LL")}
+                      {selectedBooking?.roomDetails.roomNumber}
+                    </h1>
+                  </div>
+                  <div className="wrapper">
+                    <h1 className="opacity-50">Booking ID</h1>
+                    <div className="flex items-center justify-center mt-2">
+                      <h1 className="font-bold text-2xl ml-3">
+                        {selectedBooking?.id}
+                      </h1>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="basis-6/12">
+                <h1 className="text-2xl font-semibold my-5">Price Details</h1>
+                <hr />
+                <div className="p-5 space-y-3">
+                  <div className="flex justify-between">
+                    <h1>Price Per Night</h1>
+                    <h1 className="font-light">
+                      ₱{selectedBooking.roomDetails.pricePerNight}
+                    </h1>
+                  </div>
+                  <div className="flex justify-between">
+                    <h1>Stay Duration</h1>
+                    <h1 className="font-light">
+                      {
+                        calculateStayDuration(
+                          selectedBooking?.checkInDate,
+                          selectedBooking?.checkOutDate,
+                          true
+                        ).days
+                      }{" "}
+                      day(s)
+                    </h1>
+                  </div>
+
+                  <div className="flex justify-between">
+                    <h1>Total Stay Cost</h1>
+                    <h1 className="font-light">
+                      ₱
+                      {selectedBooking.roomDetails.pricePerNight *
+                        calculateStayDuration(
+                          selectedBooking?.checkInDate,
+                          selectedBooking?.checkOutDate,
+                          true
+                        ).days}
+                    </h1>
+                  </div>
+
+                  {selectedBooking?.extraCharge && (
+                    <div className="flex justify-between">
+                      <h1>Aditional Person Charge</h1>
+                      <h1 className="font-light">
+                        ₱{selectedBooking.extraCharge}
+                      </h1>
+                    </div>
+                  )}
+                  <div className="flex justify-between">
+                    <h1>Total Cost</h1>
+                    <h1 className="font-bold text-red-500 text-3xl">
+                      ₱{selectedBooking.totalPrice.toLocaleString()}
                     </h1>
                   </div>
                 </div>
               </div>
-              <div className="flex mt-10 justify-around items-center">
-                <div className="wrapper">
-                  <h1 className="opacity-50">Room Number</h1>
-                  <h1 className="font-bold text-2xl ml-3">
-                    {selectedBooking?.roomDetails.roomNumber}
-                  </h1>
-                </div>
-                <div className="wrapper">
-                  <h1 className="opacity-50">Booking ID</h1>
-                  <div className="flex items-center justify-center mt-2">
-                    <h1 className="font-bold text-2xl ml-3">
-                      {selectedBooking?.id}
-                    </h1>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="basis-6/12">
-              {/* <h1 className="text-3xl">
-                Customer Balance:{" "}
-                {selectedBooking?.totalPrice - selectedBooking?.downpayment}{" "}
-              </h1> */}
             </div>
           </div>
-        </div>
-      </CustomModal>
+        </CustomModal>
+      )}
     </DashboardLayout>
   );
 };
