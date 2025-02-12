@@ -6,6 +6,7 @@ import { FaBed } from "react-icons/fa6";
 import { useState, useEffect } from "react";
 import SearchInput from "../../components/searchInput";
 import CustomModal from "../../components/customModal";
+import useCrudBooking from "../../hooks/useCrudBooking";
 
 const Payments = () => {
   const [filterType, setFilterType] = useState("room");
@@ -15,6 +16,8 @@ const Payments = () => {
   const [childCount, setChildCount] = useState(0);
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [extraCharge, setExtraCharge] = useState(0);
+
+  const { checkInBooking } = useCrudBooking();
 
   useEffect(() => {
     if (selectedBooking) {
@@ -28,6 +31,10 @@ const Payments = () => {
       setExtraCharge(totalExtraGuests * 500);
     }
   }, [adultCount, childCount, selectedBooking]);
+
+  const handleCheckInGuest = async () => {
+    checkInBooking(selectedBooking.id, extraCharge);
+  };
 
   return (
     <DashboardLayout>
@@ -65,6 +72,7 @@ const Payments = () => {
       </div>
 
       <CustomModal
+        onSubmit={handleCheckInGuest}
         title={"Confirm Number of Guests"}
         size={"5xl"}
         open={checkInModal}

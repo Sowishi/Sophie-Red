@@ -3,6 +3,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDoc,
   getDocs,
   onSnapshot,
   query,
@@ -300,6 +301,28 @@ const useCrudBooking = () => {
     }
   };
 
+  const checkInBooking = async (id, extraCharge) => {
+    try {
+      const docRef = doc(db, "bookings", id);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        const currentData = docSnap.data();
+        const updatedTotalPrice = (currentData.totalPrice || 0) + extraCharge;
+
+        await updateDoc(docRef, {
+          status: "Check In",
+          extraCharge,
+          totalPrice: updatedTotalPrice,
+        });
+      } else {
+        console.log("Booking not found");
+      }
+    } catch (error) {
+      console.log("Error updating booking:", error);
+    }
+  };
+
   return {
     fetchAvailableRoom,
     checkRoomAvailability,
@@ -313,6 +336,7 @@ const useCrudBooking = () => {
     deleteBooking,
     checkoutBooking,
     checkEventAvailability,
+    checkInBooking,
   };
 };
 

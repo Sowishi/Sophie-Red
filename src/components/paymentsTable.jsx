@@ -79,7 +79,7 @@ export function PaymentsTable({
 
   const getStatusColor = (status) => {
     if (status === "Booked") return "info";
-    if (status === "CheckIn") return "warning";
+    if (status === "Check In") return "warning";
     return "success";
   };
 
@@ -93,7 +93,7 @@ export function PaymentsTable({
           <Dropdown.Item onClick={() => setStatusFilter("Booked")}>
             Booked
           </Dropdown.Item>
-          <Dropdown.Item onClick={() => setStatusFilter("CheckIn")}>
+          <Dropdown.Item onClick={() => setStatusFilter("Check In")}>
             Check In
           </Dropdown.Item>
           <Dropdown.Item onClick={() => setStatusFilter("Completed")}>
@@ -110,28 +110,38 @@ export function PaymentsTable({
       </div>
       <div className="overflow-x-auto shadow-2xl">
         <Table hoverable striped>
-          <Table.Head className="bg-red-500">
-            <Table.HeadCell className="text-white">Guest Name</Table.HeadCell>
+          <Table.Head>
+            <Table.HeadCell className="bg-red-500 text-white">
+              Guest Name
+            </Table.HeadCell>
             {typeFilter === "room" && (
               <>
-                <Table.HeadCell className="text-white">
+                <Table.HeadCell className="bg-red-500 text-white">
                   Room Type
                 </Table.HeadCell>
-                <Table.HeadCell className="text-white">
+                <Table.HeadCell className="bg-red-500 text-white">
                   Room Number
                 </Table.HeadCell>
               </>
             )}
-            <Table.HeadCell className="text-white">Total Price</Table.HeadCell>
-            <Table.HeadCell className="text-white">Balance</Table.HeadCell>
-            <Table.HeadCell className="text-white">
+            <Table.HeadCell className="bg-red-500 text-white">
+              Total Price
+            </Table.HeadCell>
+            <Table.HeadCell className="bg-red-500 text-white">
+              Balance
+            </Table.HeadCell>
+            <Table.HeadCell className="bg-red-500 text-white">
               Check In Date
             </Table.HeadCell>
-            <Table.HeadCell className="text-white">
+            <Table.HeadCell className="bg-red-500 text-white">
               Check Out Date
             </Table.HeadCell>
-            <Table.HeadCell className="text-white">Status</Table.HeadCell>
-            <Table.HeadCell className="text-white">Actions</Table.HeadCell>
+            <Table.HeadCell className="bg-red-500 text-white">
+              Status
+            </Table.HeadCell>
+            <Table.HeadCell className="bg-red-500 text-white">
+              Actions
+            </Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
             {paginatedBookings.map((booking, index) => {
@@ -200,7 +210,7 @@ export function PaymentsTable({
           </Table.Body>
         </Table>
       </div>
-      <div className="flex justify-end items-center mt-4">
+      <div className="flex justify-start items-center mt-4">
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
