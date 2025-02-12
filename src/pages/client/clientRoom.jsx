@@ -1,4 +1,5 @@
 import {
+  Alert,
   Badge,
   Button,
   Dropdown,
@@ -23,13 +24,16 @@ import anim from "../../assets/rating.json";
 import useCrudRating from "../../hooks/useCrudRating";
 import NoData from "../../components/noData";
 import { HiOutlineStar, HiOutlineClipboardList } from "react-icons/hi";
+import moment from "moment";
 
 const ClientRoom = () => {
   const { currentUser, booking } = useUserStore();
 
   const { fetchCollectin } = useFetchCollection();
-  const { addTask } = useCrudHousekeeping();
+  const { addTask, fetchRoomLogs } = useCrudHousekeeping();
   const roomDetails = booking?.roomDetails || {};
+  const { addRating } = useCrudRating();
+
   const [requestModal, setRequestModal] = useState(false);
   const [ratingModal, setRatingModal] = useState(false);
   const [housekeeper, setHousekeeper] = useState(null);
@@ -39,7 +43,8 @@ const ClientRoom = () => {
   const [loading, setLoading] = useState(false);
   const [rating, setRating] = useState(0);
   const [remarks, setRemarks] = useState("");
-  const { addRating } = useCrudRating();
+  const [requestHistoryModal, setRequestHistoryModal] = useState(false);
+  const [logs, setLogs] = useState([]);
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -70,6 +75,10 @@ const ClientRoom = () => {
       toast.error(error.message);
     }
   };
+
+  useEffect(() => {
+    fetchRoomLogs(roomDetails.roomNumber, currentUser.uid, setLogs);
+  }, [booking]);
 
   return (
     <>
@@ -160,7 +169,7 @@ const ClientRoom = () => {
                     <hr />
                     <div className="flex justify-center items-center w-full gap-2">
                       <Button
-                        onClick={() => setRequestModal(true)}
+                        onClick={() => setRequestHistoryModal(true)}
                         gradientMonochrome="info"
                         className="w-full"
                       >
@@ -237,6 +246,63 @@ const ClientRoom = () => {
             </div>
           </div>
         </form>
+      </CustomModal>
+
+      {/* Request History Modal */}
+      <CustomModal
+        hideFooter={true}
+        size={"7xl"}
+        title={"Request History"}
+        open={requestHistoryModal}
+        handleClose={() => setRequestHistoryModal(false)}
+        onSubmit={handleFormSubmit}
+      >
+        {logs.length >= 1 ? (
+          <Table hoverable striped>
+            <Table.Head>
+              <Table.HeadCell>Assign Date</Table.HeadCell>
+              <Table.HeadCell>Housekeeper</Table.HeadCell>
+              <Table.HeadCell>Service Type</Table.HeadCell>
+              <Table.HeadCell>Description</Table.HeadCell>
+              <Table.HeadCell>Completed At</Table.HeadCell>
+              <Table.HeadCell>Remarks</Table.HeadCell>
+
+              <Table.HeadCell>Status</Table.HeadCell>
+            </Table.Head>
+            <Table.Body className="divide-y">
+              {logs.map((log) => {
+                const assignDate = log?.createdAt
+                  ? moment(log?.createdAt.toDate()).format("LLL")
+                  : "invalid";
+
+                const completedDate = log?.completedAt
+                  ? moment(log?.completedAt.toDate()).format("LLL")
+                  : "invalid";
+                return (
+                  <Table.Row key={log?.id}>
+                    <Table.Cell>{assignDate}</Table.Cell>
+                    <Table.Cell>{log?.housekeeper?.fullName}</Table.Cell>
+                    <Table.Cell>{log?.serviceType}</Table.Cell>
+                    <Table.Cell>{log?.description}</Table.Cell>
+
+                    <Table.Cell>
+                      {log?.completedAt ? completedDate : "---"}
+                    </Table.Cell>
+                    <Table.Cell>{log?.remarks || "---"}</Table.Cell>
+
+                    <Table.Cell>
+                      <Badge>{log?.status}</Badge>
+                    </Table.Cell>
+                  </Table.Row>
+                );
+              })}
+            </Table.Body>
+          </Table>
+        ) : (
+          <>
+            <Alert color="failure">There's no logs to show</Alert>
+          </>
+        )}
       </CustomModal>
       <CustomModal
         title={"Leave Feedback"}

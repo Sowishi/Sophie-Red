@@ -57,6 +57,25 @@ const useCrudHousekeeping = () => {
     }
   };
 
+  const fetchRoomLogs = async (roomNumber, userUID, setLogs) => {
+    try {
+      const colRef = collection(db, "housekeeping");
+      const q = query(
+        colRef,
+        where("selectedRoom.selectedRoom.roomNumber", "==", roomNumber),
+        where("selectedRoom.currentUser.uid", "==", userUID)
+      );
+      const snapshot = await getDocs(q);
+      const output = snapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      setLogs(output);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   const fetchUserTasks = async (userID, setTasks) => {
     try {
       const colRef = collection(db, "housekeeping");
@@ -165,6 +184,7 @@ const useCrudHousekeeping = () => {
     deleteHousekeeper,
     deleteTask,
     updateStatusHousekeeper,
+    fetchRoomLogs,
   };
 };
 
