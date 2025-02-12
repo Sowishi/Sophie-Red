@@ -43,6 +43,15 @@ const Payments = () => {
     }, 2000);
   };
 
+  const handleCheckOutGuest = async () => {
+    await checkoutBooking(selectedBooking.id);
+    setCheckOutModal(false);
+    toast.success("Guest Checked Out Successfully");
+    setTimeout(() => {
+      window.location.reload();
+    }, 2000);
+  };
+
   return (
     <DashboardLayout>
       <div className="container mx-auto lg:p-10 rounded-3xl min-h-[600px] pt-10">
@@ -155,6 +164,7 @@ const Payments = () => {
 
       {/* Check Out Modal */}
       <CustomModal
+        onSubmit={handleCheckOutGuest}
         title={"Confirm Number of Guests"}
         size={"5xl"}
         open={checkOutModal}
