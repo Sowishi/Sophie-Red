@@ -360,7 +360,7 @@ const ClientRoom = () => {
           onClick={() => setRequestHistoryModal(true)}
         >
           <HiViewList size={20} />
-          <span className="ml-3">Request Logs</span>
+          <span className="ml-3">Logs</span>
         </Button>
         <Button
           onClick={() => setRequestModal(true)}
