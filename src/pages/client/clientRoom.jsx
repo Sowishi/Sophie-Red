@@ -76,15 +76,18 @@ const ClientRoom = () => {
       {!booking && <NoData />}
       {roomDetails && booking && (
         <div className="container mx-auto h-screen p-7 lg:p-0">
+          <div className="wrapper space-y-4">
+            <h1 className="text-3xl font-bold text-gray-800">
+              You’re all checked in! Have a wonderful stay.
+            </h1>
+            <p className="text-gray-600">
+              We’re delighted to welcome you. If there’s anything we can do to
+              make your stay more comfortable, please don’t hesitate to let us
+              know.
+            </p>
+          </div>
+
           <div className="flex flex-col lg:flex-row  lg:justify-between  justify-start lg:items-center mb-10">
-            <div className="wrapper mb-5">
-              <h1 className="text-3xl  lg:text-5xl font-bold ">
-                {roomDetails.roomType}
-              </h1>
-              <p className="opacity-50 text-sm lg:text-lg">
-                {roomDetails.description}
-              </p>
-            </div>
             {/* <Button
               className="hidden lg:flex"
               gradientMonochrome="info"
@@ -126,7 +129,7 @@ const ClientRoom = () => {
             {/* Right Section: Room Details Table */}
             {roomDetails && (
               <div className="basis-full lg:basis-5/12 flex items-start justify-center">
-                <div className="bg-white p-5 lg:p-10 w-full lg:w-9/12 rounded-lg shadow mt-5">
+                <div className="bg-white p-5 lg:p-10 w-full lg:w-9/12 rounded-2xl shadow-2xl mt-5">
                   <h1 className="text-2xl font-semibold mb-5">Details</h1>
                   <hr />
                   <div className="p-5 space-y-3">
@@ -167,7 +170,7 @@ const ClientRoom = () => {
           </div>
         </div>
       )}
-
+      {/* Request Modal */}
       <CustomModal
         title={"Request Service"}
         open={requestModal}
@@ -203,7 +206,7 @@ const ClientRoom = () => {
                 <Textarea
                   rows={3}
                   id="request"
-                  placeholder="Towels, Bed Sheet, Aditional Bed."
+                  placeholder="Towels, Bed Sheet, Additional Pillows, etc."
                   value={requestSupply}
                   onChange={(e) => setRequestSupply(e.target.value)}
                   required
@@ -224,7 +227,6 @@ const ClientRoom = () => {
           </div>
         </form>
       </CustomModal>
-
       <CustomModal
         title={"Leave Feedback"}
         open={ratingModal}
@@ -271,14 +273,14 @@ const ClientRoom = () => {
         </div>
       </CustomModal>
       <div className="bottom-navs fixed bottom-0 left-0 bg-white w-full p-5 flex lg:hidden justify-center items-center">
-        <Button
+        {/* <Button
           gradientMonochrome="info"
           className="w-full mr-5 flex items-center space-x-2"
           onClick={() => setRatingModal(true)}
         >
           <HiOutlineStar size={20} />
           <span className="ml-3">Review</span>
-        </Button>
+        </Button> */}
         <Button
           onClick={() => setRequestModal(true)}
           gradientMonochrome="failure"

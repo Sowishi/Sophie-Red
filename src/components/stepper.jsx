@@ -16,7 +16,7 @@ const Stepper = ({ step }) => {
       {steps.map((step, index) => (
         <li
           key={step.id}
-          className={`flex md:w-full items-center ${
+          className={`flex md:w-full items-center  text-xs lg:text-2xl ${
             step.id <= activeStep
               ? "text-blue-600 dark:text-blue-500"
               : "text-gray-500 dark:text-gray-400"
