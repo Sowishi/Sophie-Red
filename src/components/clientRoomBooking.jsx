@@ -8,7 +8,7 @@ import ClientRoom from "../pages/client/clientRoom";
 import CustomModal from "./customModal";
 import Lottie from "react-lottie";
 import anim from "../assets/rating.json";
-import { FaStar } from "react-icons/fa6";
+import { FaCheck, FaStar } from "react-icons/fa6";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import useCrudRating from "../hooks/useCrudRating";
@@ -109,13 +109,30 @@ const ClienRoomBooking = () => {
 
       {booking.status === "Completed" && (
         <>
-          <div className="container mx-auto h-[50vh]">
-            <h1 className="text-3xl text-center font-bold">
-              Thank you for staying in Sophie Red Hotel, Hope we see you again
-              soon!
-            </h1>
-            <Button onClick={() => setRatingModal(true)}>Leave a Review</Button>
-          </div>
+          {booking.status === "Completed" && (
+            <div className="container mx-auto h-[50vh] flex flex-col items-center justify-center text-center p-6">
+              <FaCheck className="w-16 h-16 text-green-500 mb-4" />
+              <h1 className="text-4xl font-bold text-gray-800">
+                Thank You for Staying with Us!
+              </h1>
+              <p className="text-lg text-gray-600 mt-2 max-w-md">
+                We hope you had a wonderful time at{" "}
+                <span className="font-semibold">Sophie Red Hotel</span>. Your
+                comfort and happiness mean everything to us!
+              </p>
+              <p className="text-lg text-gray-600 mt-2 max-w-md">
+                We'd love to hear your feedback. Please leave us a review to
+                help us improve.
+              </p>
+              <Button
+                className="mt-4 flex items-center space-x-2 bg-yellow-500 hover:bg-yellow-600"
+                onClick={() => setRatingModal(true)}
+              >
+                <FaStar className="w-5 h-5 text-white" />
+                <span>Leave a Review</span>
+              </Button>
+            </div>
+          )}
         </>
       )}
 

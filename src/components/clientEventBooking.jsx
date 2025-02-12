@@ -2,14 +2,35 @@ import useUserStore from "../utils/zustand";
 import DisplayRoom from "./displayRoom";
 import logo from "../assets/logo.png";
 import moment from "moment";
-import { Alert, Badge, Card } from "flowbite-react";
+import { Alert, Badge, Button, Card, Label, Textarea } from "flowbite-react";
 import Stepper from "./stepper";
-import ClientRoom from "../pages/client/clientRoom";
 import ClientEvent from "../pages/client/clientEvent";
-
+import ClientRoom from "../pages/client/clientRoom";
+import CustomModal from "./customModal";
+import Lottie from "react-lottie";
+import anim from "../assets/rating.json";
+import { FaCheck, FaStar } from "react-icons/fa6";
+import { useState } from "react";
+import { toast } from "react-toastify";
+import useCrudRating from "../hooks/useCrudRating";
 const ClientEventBooking = () => {
   const { currentUser, booking } = useUserStore();
+  const { addRating } = useCrudRating();
+
   const roomDetails = booking?.roomDetails || {};
+  const [ratingModal, setRatingModal] = useState(false);
+  const [rating, setRating] = useState(0);
+  const [remarks, setRemarks] = useState("");
+
+  const handleRatingSubmit = () => {
+    // const data = { rating, remarks, room: roomDetails, currentUser }
+    // console.log(data)
+    // addRating(data);
+    toast.success("Successfully Added Rating");
+    setRating(0);
+    setRemarks("");
+    setRatingModal(false);
+  };
 
   return (
     <div className="container mx-auto p-0 md:p-10">
@@ -81,6 +102,82 @@ const ClientEventBooking = () => {
         </div>
       )}
       {booking.status === "Check In" && <ClientEvent />}
+
+      {booking.status === "Completed" && (
+        <>
+          {booking.status === "Completed" && (
+            <div className="container mx-auto h-[50vh] flex flex-col items-center justify-center text-center p-6">
+              <FaCheck className="w-16 h-16 text-green-500 mb-4" />
+              <h1 className="text-4xl font-bold text-gray-800">
+                Thank You for Staying with Us!
+              </h1>
+              <p className="text-lg text-gray-600 mt-2 max-w-md">
+                We hope you had a wonderful time at{" "}
+                <span className="font-semibold">Sophie Red Hotel</span>. Your
+                comfort and happiness mean everything to us!
+              </p>
+              <p className="text-lg text-gray-600 mt-2 max-w-md">
+                We'd love to hear your feedback. Please leave us a review to
+                help us improve.
+              </p>
+              <Button
+                className="mt-4 flex items-center space-x-2 bg-yellow-500 hover:bg-yellow-600"
+                onClick={() => setRatingModal(true)}
+              >
+                <FaStar className="w-5 h-5 text-white" />
+                <span>Leave a Review</span>
+              </Button>
+            </div>
+          )}
+        </>
+      )}
+
+      {/* Rating Modal */}
+      <CustomModal
+        title={"Leave Feedback"}
+        open={ratingModal}
+        handleClose={() => setRatingModal(false)}
+        onSubmit={handleRatingSubmit}
+      >
+        <div className="container p-10 mx-auto">
+          <h1 className="text-3xl font-bold mb-4">Rate Your Stay</h1>
+          <div className="flex space-x-2 mb-5">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <FaStar
+                key={star}
+                className={`cursor-pointer text-3xl ${
+                  star <= rating ? "text-yellow-500" : "text-gray-300"
+                }`}
+                onClick={() => setRating(star)}
+              />
+            ))}
+          </div>
+          <Label htmlFor="remarks" value="Your Remarks" />
+          <Textarea
+            rows={4}
+            id="remarks"
+            placeholder="Share your experience..."
+            value={remarks}
+            onChange={(e) => setRemarks(e.target.value)}
+            required
+          />
+          <Lottie
+            options={{
+              animationData: anim,
+              autoplay: true,
+            }}
+            style={{ width: 250 }}
+          />
+          <p className="text-lg opacity-50">
+            We want to hear from you! Your feedback is invaluable in helping us
+            improve and make our services better for you. Whether it’s
+            suggestions, concerns, or ideas, your input will guide us in making
+            the necessary adjustments to ensure we meet your needs and exceed
+            your expectations. Thank you for taking the time to share with us —
+            together, we can make this experience even better for everyone.
+          </p>
+        </div>
+      </CustomModal>
     </div>
   );
 };

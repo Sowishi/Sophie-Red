@@ -80,6 +80,13 @@ const ClientEvent = () => {
                 meetings, conferences, and all types of gatherings.
               </p>
             </div>
+            {/* <Button
+              className="hidden lg:flex"
+              gradientMonochrome="info"
+              onClick={() => setRatingModal(true)}
+            >
+              Leave A Review
+            </Button> */}
           </div>
 
           <div className="flex flex-wrap">
