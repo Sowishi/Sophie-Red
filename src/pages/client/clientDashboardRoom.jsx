@@ -14,11 +14,11 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import nodata from "../../assets/nodata.json";
 import Lottie from "react-lottie";
+import ReschedUI from "../../components/reschedUI";
 const ClientDashboardRoom = ({ booking, currentUser }) => {
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
   const [dateModal, setDateModal] = useState(false);
-  const [arrivalDate, setArrivalDate] = useState();
-  const [departureDate, setDepartureDate] = useState();
+
   const { cancelBooking, checkRoomAvailability, reschedBooking } =
     useCrudBooking();
 
@@ -27,54 +27,6 @@ const ClientDashboardRoom = ({ booking, currentUser }) => {
     window.location.reload();
   };
 
-  const handleSubmit = async () => {
-    // Validate date inputs
-    if (!arrivalDate || !departureDate) {
-      toast.error("Please select your check-in and check-out dates");
-      return;
-    }
-
-    const today = moment().startOf("day"); // Get today's date without time
-    const checkInDate = moment(arrivalDate).startOf("day");
-    const checkOutDate = moment(departureDate).startOf("day");
-
-    // Check if check-in date is in the past
-    if (checkInDate.isBefore(today)) {
-      toast.error("Check-in date cannot be in the past");
-      return;
-    }
-
-    // Check if arrivalDate is after or equal to departureDate
-    if (checkInDate.isSameOrAfter(checkOutDate)) {
-      toast.error("Check-out date must be after the check-in date");
-
-      return;
-    }
-
-    const res = await checkRoomAvailability(
-      booking.roomDetails?.id,
-      arrivalDate,
-      departureDate
-    );
-
-    if (res) {
-      await reschedBooking(
-        booking?.id,
-        arrivalDate,
-        departureDate,
-        booking.roomDetails
-      );
-      setDateModal(false);
-
-      toast.success("Successfully Update Booking Schedule");
-      setTimeout(() => {
-        window.location.reload();
-      }, 2000);
-      timeout;
-    } else {
-      toast.error("Selected Dates is not available");
-    }
-  };
   return (
     <>
       {booking ? (
@@ -320,23 +272,7 @@ const ClientDashboardRoom = ({ booking, currentUser }) => {
         size={"5xl"}
         handleClose={() => setDateModal(false)}
       >
-        <div className="container mx-auto min-h-[400px]">
-          <div className="wrapper">
-            <h1>Arrival Date</h1>
-            <Datepicker onChange={(event) => setArrivalDate(event)} />
-          </div>
-          <div className="wrapper mt-5">
-            <h1>Departure Date</h1>
-            <Datepicker onChange={(event) => setDepartureDate(event)} />
-          </div>
-          <Button
-            onClick={handleSubmit}
-            gradientMonochrome="failure"
-            className="mt-5"
-          >
-            Reschedule Booking
-          </Button>
-        </div>
+        <ReschedUI booking={booking} setDateModal={setDateModal} />
       </CustomModal>
       {booking.status == "Booked" && (
         <div className="bottom-navs fixed bottom-0 left-0 bg-white w-full p-5 flex lg:hidden justify-center items-center">
