@@ -76,15 +76,17 @@ const ClientRoom = () => {
       {!booking && <NoData />}
       {roomDetails && booking && (
         <div className="container mx-auto h-screen p-7 lg:p-0">
-          <div className="wrapper space-y-4">
-            <h1 className="text-3xl font-bold text-gray-800">
-              You’re all checked in! Have a wonderful stay.
-            </h1>
-            <p className="text-gray-600">
-              We’re delighted to welcome you. If there’s anything we can do to
-              make your stay more comfortable, please don’t hesitate to let us
-              know.
-            </p>
+          <div className="flex items-center justify-start">
+            <div className="wrapper space-y-4">
+              <h1 className="text-3xl font-bold text-gray-800">
+                You’re all checked in! Have a wonderful stay.
+              </h1>
+              <p className="text-gray-600">
+                We’re delighted to welcome you. If there’s anything we can do to
+                make your stay more comfortable, please don’t hesitate to let us
+                know.
+              </p>
+            </div>
           </div>
 
           <div className="flex flex-col lg:flex-row  lg:justify-between  justify-start lg:items-center mb-10">
@@ -156,13 +158,22 @@ const ClientRoom = () => {
                       Accomodation
                     </h1>
                     <hr />
-                    <Button
-                      onClick={() => setRequestModal(true)}
-                      gradientMonochrome="failure"
-                      className="w-full"
-                    >
-                      Request Service
-                    </Button>
+                    <div className="flex justify-center items-center w-full gap-2">
+                      <Button
+                        onClick={() => setRequestModal(true)}
+                        gradientMonochrome="info"
+                        className="w-full"
+                      >
+                        Request History
+                      </Button>
+                      <Button
+                        onClick={() => setRequestModal(true)}
+                        gradientMonochrome="failure"
+                        className="w-full"
+                      >
+                        Request Service
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </div>
