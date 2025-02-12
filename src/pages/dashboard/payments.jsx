@@ -34,7 +34,6 @@ const Payments = () => {
               </Button.Group>
             </div>
           </div>
-          <SearchInput onChange={(event) => setSearch(event.target.value)} />
         </div>{" "}
         <PaymentsTable search={search} typeFilter={filterType} />
       </div>
