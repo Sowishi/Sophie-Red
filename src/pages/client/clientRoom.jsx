@@ -53,6 +53,7 @@ const ClientRoom = () => {
   const handleFormSubmit = (e) => {
     e.preventDefault();
     addTask({
+      bookingID: booking.id,
       selectedRoom: booking.roomDetails,
       housekeeper: null,
       serviceType,
@@ -70,7 +71,7 @@ const ClientRoom = () => {
   };
 
   useEffect(() => {
-    fetchRoomLogs(roomDetails.roomNumber, currentUser.uid, setLogs);
+    fetchRoomLogs(booking.id, currentUser.uid, setLogs);
   }, [booking]);
 
   return (

@@ -57,12 +57,12 @@ const useCrudHousekeeping = () => {
     }
   };
 
-  const fetchRoomLogs = async (roomNumber, userUID, setLogs) => {
+  const fetchRoomLogs = async (bookingID, userUID, setLogs) => {
     try {
       const colRef = collection(db, "housekeeping");
       const q = query(
         colRef,
-        where("selectedRoom.selectedRoom.roomNumber", "==", roomNumber),
+        where("selectedRoom.bookingID", "==", bookingID),
         where("selectedRoom.currentUser.uid", "==", userUID)
       );
       const snapshot = await getDocs(q);

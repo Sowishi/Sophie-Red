@@ -174,6 +174,9 @@ const Payments = () => {
           handleClose={() => setCheckOutModal(false)}
         >
           <div className="container mx-auto p-5">
+            <Alert color="warning" className="mb-3">
+              Make sure the guest is fully paid before checking them out
+            </Alert>
             <div className="flex">
               <div className="basis-6/12">
                 <div className="wrapper">
@@ -262,7 +265,7 @@ const Payments = () => {
                     </h1>
                   </div>
 
-                  {selectedBooking?.extraCharge && (
+                  {selectedBooking?.extraCharge > 0 && (
                     <div className="flex justify-between">
                       <h1>Aditional Person Charge</h1>
                       <h1 className="font-light">
@@ -270,14 +273,20 @@ const Payments = () => {
                       </h1>
                     </div>
                   )}
-                  {selectedBooking?.paymentStatus == "down" && (
-                    <div className="flex justify-between">
-                      <h1>Downpayment</h1>
+                  <div className="flex justify-between">
+                    <h1>Paid Balance</h1>
+                    {selectedBooking?.paymentStatus == "full" ? (
+                      <h1 className="font-light text-green-500">
+                        -₱
+                        {selectedBooking.totalPrice -
+                          selectedBooking?.extraCharge}
+                      </h1>
+                    ) : (
                       <h1 className="font-light text-green-500">
                         -₱{selectedBooking.downpayment}
                       </h1>
-                    </div>
-                  )}
+                    )}
+                  </div>
                   <div className="flex justify-between">
                     <h1>Current Balance</h1>
                     <h1 className="font-bold text-red-500 text-3xl">
