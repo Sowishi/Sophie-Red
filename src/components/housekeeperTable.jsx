@@ -87,7 +87,7 @@ const HousekeeperTable = () => {
             color={taskType == "guest" ? "info" : "light"}
             onClick={() => setTaskType("guest")}
           >
-            Guest Request Tasks
+            Pending Request Tasks
           </Button>
           <Button
             color={taskType == "supervisor" ? "info" : "light"}

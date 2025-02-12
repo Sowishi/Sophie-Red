@@ -138,7 +138,7 @@ const Header = () => {
           }`}
         >
           <FaUserAlt color="white" className="mr-3" />
-          <h1 className="text-sm font-extralight">Guest Request</h1>
+          <h1 className="text-sm font-extralight">Pending Request</h1>
         </Link>
         <Link
           to="/housekeeping"
