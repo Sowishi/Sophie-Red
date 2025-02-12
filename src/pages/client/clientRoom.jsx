@@ -23,7 +23,11 @@ import Lottie from "react-lottie";
 import anim from "../../assets/rating.json";
 import useCrudRating from "../../hooks/useCrudRating";
 import NoData from "../../components/noData";
-import { HiOutlineStar, HiOutlineClipboardList } from "react-icons/hi";
+import {
+  HiOutlineStar,
+  HiOutlineClipboardList,
+  HiViewList,
+} from "react-icons/hi";
 import moment from "moment";
 
 const ClientRoom = () => {
@@ -260,7 +264,7 @@ const ClientRoom = () => {
         {logs.length >= 1 ? (
           <Table hoverable striped>
             <Table.Head>
-              <Table.HeadCell>Assign Date</Table.HeadCell>
+              <Table.HeadCell>Request Date</Table.HeadCell>
               <Table.HeadCell>Housekeeper</Table.HeadCell>
               <Table.HeadCell>Service Type</Table.HeadCell>
               <Table.HeadCell>Description</Table.HeadCell>
@@ -282,8 +286,8 @@ const ClientRoom = () => {
                   <Table.Row key={log?.id}>
                     <Table.Cell>{assignDate}</Table.Cell>
                     <Table.Cell>{log?.housekeeper?.fullName}</Table.Cell>
-                    <Table.Cell>{log?.serviceType}</Table.Cell>
-                    <Table.Cell>{log?.description}</Table.Cell>
+                    <Table.Cell>{log?.selectedRoom.serviceType}</Table.Cell>
+                    <Table.Cell>{log?.selectedRoom.description}</Table.Cell>
 
                     <Table.Cell>
                       {log?.completedAt ? completedDate : "---"}
@@ -350,14 +354,14 @@ const ClientRoom = () => {
         </div>
       </CustomModal>
       <div className="bottom-navs fixed bottom-0 left-0 bg-white w-full p-5 flex lg:hidden justify-center items-center">
-        {/* <Button
+        <Button
           gradientMonochrome="info"
           className="w-full mr-5 flex items-center space-x-2"
-          onClick={() => setRatingModal(true)}
+          onClick={() => setRequestHistoryModal(true)}
         >
-          <HiOutlineStar size={20} />
-          <span className="ml-3">Review</span>
-        </Button> */}
+          <HiViewList size={20} />
+          <span className="ml-3">Request Logs</span>
+        </Button>
         <Button
           onClick={() => setRequestModal(true)}
           gradientMonochrome="failure"
