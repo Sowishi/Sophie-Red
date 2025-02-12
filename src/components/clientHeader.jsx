@@ -157,13 +157,27 @@ const ClientHeader = () => {
     if (checkoutID) {
       const res = await getCheckoutPaymongo(checkoutID);
       console.log(res);
-      if (res == "succeeded") {
-        handleConfirmBook();
+      if (res === "succeeded") {
+        await handleConfirmBook();
         setPaymentStatus(res);
         setPaymongoModal(false);
+
+        // Store a flag in localStorage before reloading
+        localStorage.setItem("redirectAfterReload", "true");
+
+        window.location.reload(); // Reload the page
       }
     }
   };
+
+  // Check for redirect flag after reload
+  useEffect(() => {
+    const shouldRedirect = localStorage.getItem("redirectAfterReload");
+    if (shouldRedirect) {
+      localStorage.removeItem("redirectAfterReload"); // Clear flag after reading
+      navigation("/client-dashboard"); // Redirect after reload
+    }
+  }, []);
 
   const handleConfirmBook = async () => {
     await bookRoom(

@@ -37,6 +37,9 @@ const Payments = () => {
     await checkInBooking(selectedBooking.id, extraCharge);
     setCheckInModal(false);
     toast.success("Guest Checked In Successfully");
+    setTimeout(() => {
+      window.location.reload();
+    }, 2000);
   };
 
   return (
