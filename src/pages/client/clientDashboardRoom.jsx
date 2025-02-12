@@ -138,11 +138,13 @@ const ClientDashboardRoom = ({ booking, currentUser }) => {
                       {moment(booking?.checkOutDate.toDate()).format("LL")}
                     </h1>
                   </div>
-                  <div className="w-full lg:w-4/12 flex justify-center lg:justify-start">
-                    <Button onClick={() => setDateModal(true)}>
-                      Reschedule Booking
-                    </Button>
-                  </div>
+                  {booking.status == "Booked" && (
+                    <div className="w-full lg:w-4/12 flex justify-center lg:justify-start">
+                      <Button onClick={() => setDateModal(true)}>
+                        Reschedule Booking
+                      </Button>
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="bg-white p-5 lg:p-10 rounded-lg shadow-sm mt-5 flex flex-col lg:flex-row items-start gap-5">
@@ -156,13 +158,15 @@ const ClientDashboardRoom = ({ booking, currentUser }) => {
                     <span className="font-bold">non-refundable</span>. Once
                     booked, cancellations will not be eligible for a refund.
                   </p>
-                  <Button
-                    onClick={() => setIsCancelModalOpen(true)}
-                    gradientMonochrome="failure"
-                    className="mt-3"
-                  >
-                    Cancel Booking
-                  </Button>
+                  {booking.status == "Booked" && (
+                    <Button
+                      onClick={() => setIsCancelModalOpen(true)}
+                      gradientMonochrome="failure"
+                      className="mt-3"
+                    >
+                      Cancel Booking
+                    </Button>
+                  )}
                 </div>
               </div>
             </div>
@@ -247,7 +251,7 @@ const ClientDashboardRoom = ({ booking, currentUser }) => {
                     {booking?.paymentStatus == "full" ? (
                       <h1 className="font-light text-green-500">
                         -₱
-                        {booking.totalPrice - booking?.extraCharge}
+                        {booking.totalPrice - (booking?.extraCharge || 0)}
                       </h1>
                     ) : (
                       <h1 className="font-light text-green-500">
@@ -334,23 +338,25 @@ const ClientDashboardRoom = ({ booking, currentUser }) => {
           </Button>
         </div>
       </CustomModal>
-      <div className="bottom-navs fixed bottom-0 left-0 bg-white w-full p-5 flex lg:hidden justify-center items-center">
-        <Button
-          className="w-full flex items-center space-x-2"
-          onClick={() => setDateModal(true)}
-        >
-          <HiOutlineCalendar size={20} />
-          <span className="ml-3">Reschedule</span>
-        </Button>
-        <Button
-          onClick={() => setIsCancelModalOpen(true)}
-          gradientMonochrome="failure"
-          className="w-full ml-3 flex items-center space-x-2"
-        >
-          <HiOutlineXCircle size={20} />
-          <span className="ml-3">Cancel </span>
-        </Button>
-      </div>
+      {booking.status == "Booked" && (
+        <div className="bottom-navs fixed bottom-0 left-0 bg-white w-full p-5 flex lg:hidden justify-center items-center">
+          <Button
+            className="w-full flex items-center space-x-2"
+            onClick={() => setDateModal(true)}
+          >
+            <HiOutlineCalendar size={20} />
+            <span className="ml-3">Reschedule</span>
+          </Button>
+          <Button
+            onClick={() => setIsCancelModalOpen(true)}
+            gradientMonochrome="failure"
+            className="w-full ml-3 flex items-center space-x-2"
+          >
+            <HiOutlineXCircle size={20} />
+            <span className="ml-3">Cancel </span>
+          </Button>
+        </div>
+      )}
     </>
   );
 };
