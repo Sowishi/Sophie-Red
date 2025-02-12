@@ -62,7 +62,7 @@ export function BookingHistoryTable({ typeFilter }) {
   }
 
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto shadow-2xl">
       {/* Status Filter Dropdown */}
       <div className="mb-4 flex justify-end">
         <Select

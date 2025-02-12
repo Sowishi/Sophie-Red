@@ -14,6 +14,7 @@ import {
 import {
   FaAngleDown,
   FaBed,
+  FaBook,
   FaBroom,
   FaCalendarAlt,
   FaPlus,
@@ -68,17 +69,8 @@ const Header = () => {
             isCurrentPath("/payments") ? "bg-red-800" : "bg-slate-700"
           }`}
         >
-          <FaPesoSign color="white" className="mr-3" />
-          <h1 className="text-sm font-extralight">Payments</h1>
-        </Link>
-        <Link
-          to="/booking-history"
-          className={`flex px-5 cursor-pointer mx-2 py-3 rounded-lg justify-start items-center ${
-            isCurrentPath("/booking-history") ? "bg-red-800" : "bg-slate-700"
-          }`}
-        >
-          <FaPesoSign color="white" className="mr-3" />
-          <h1 className="text-sm font-extralight">Booking History</h1>
+          <FaBook color="white" className="mr-3" />
+          <h1 className="text-sm font-extralight">Guest Management</h1>
         </Link>
       </div>
     );

@@ -28,10 +28,9 @@ const BookingCard = ({ booking, onViewDetails }) => {
       )}
       <Card
         style={{
+          backgroundColor: "rgb(230,53,53)",
           backgroundImage:
-            booking.bookType == "event"
-              ? "linear-gradient(360deg, rgba(207,250,254,),rgba(0,0,230,1) 0%, rgba(254,254,254,1) 32%)"
-              : "linear-gradient(360deg, rgba(230,53,53,1) 0%, rgba(254,254,254,1) 32%)",
+            "linear-gradient(360deg, rgba(230,53,53,1) 0%, rgba(254,254,254,1) 32%)",
         }}
         className="max-w-sm my-3 h-[360px] mx-3"
       >

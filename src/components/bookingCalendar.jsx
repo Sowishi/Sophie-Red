@@ -135,7 +135,7 @@ export const BookingCalendar = ({ searchQuery, filterType, rooms }) => {
   };
 
   return (
-    <div className=" container mx-auto bg-white lg:p-10 rounded-lg shadow">
+    <div className=" container mx-auto bg-white lg:p-10 rounded-lg shadow-2xl">
       <div className="flex justify-end items-center mb-3">
         <Dropdown
           color="info"
@@ -226,7 +226,7 @@ export const BookingCalendar = ({ searchQuery, filterType, rooms }) => {
             </div>
           )}
         </Modal.Body>
-        <Modal.Footer className="flex justify-end">
+        {/* <Modal.Footer className="flex justify-end">
           <Tooltip content="Delete Booking for accidental/errors in booking">
             <Button
               onClick={() => setDeleteModal(true)}
@@ -253,7 +253,7 @@ export const BookingCalendar = ({ searchQuery, filterType, rooms }) => {
               Checkout Guest
             </Button>
           </Tooltip>
-        </Modal.Footer>
+        </Modal.Footer> */}
       </Modal>
 
       <ConfirmModal
