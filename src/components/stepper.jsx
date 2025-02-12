@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { HiCheckCircle, HiOutlineCheckCircle } from "react-icons/hi";
 
-const Stepper = () => {
-  const [activeStep, setActiveStep] = useState(1);
+const Stepper = ({ step }) => {
+  const [activeStep, setActiveStep] = useState(
+    step === "Booked" ? 1 : step == "Check In" ? 2 : 3
+  );
   const steps = [
     { id: 1, label: "Booked" },
     { id: 2, label: "Check In" },

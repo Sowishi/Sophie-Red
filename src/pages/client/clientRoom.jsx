@@ -85,13 +85,13 @@ const ClientRoom = () => {
                 {roomDetails.description}
               </p>
             </div>
-            <Button
+            {/* <Button
               className="hidden lg:flex"
               gradientMonochrome="info"
               onClick={() => setRatingModal(true)}
             >
               Leave A Review
-            </Button>
+            </Button> */}
           </div>
 
           <div className="flex flex-wrap">

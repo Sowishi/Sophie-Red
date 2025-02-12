@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import SearchInput from "../../components/searchInput";
 import CustomModal from "../../components/customModal";
 import useCrudBooking from "../../hooks/useCrudBooking";
+import { toast } from "react-toastify";
 
 const Payments = () => {
   const [filterType, setFilterType] = useState("room");
@@ -33,7 +34,9 @@ const Payments = () => {
   }, [adultCount, childCount, selectedBooking]);
 
   const handleCheckInGuest = async () => {
-    checkInBooking(selectedBooking.id, extraCharge);
+    await checkInBooking(selectedBooking.id, extraCharge);
+    setCheckInModal(false);
+    toast.success("Guest Checked In Successfully");
   };
 
   return (
