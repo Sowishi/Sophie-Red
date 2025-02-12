@@ -29,7 +29,7 @@ const Payments = () => {
       const extraChildren = Math.max(0, childCount - allowedChildren);
 
       const totalExtraGuests = extraAdults + extraChildren;
-      setExtraCharge(totalExtraGuests * 500);
+      setExtraCharge(totalExtraGuests * 600);
     }
   }, [adultCount, childCount, selectedBooking]);
 
@@ -85,11 +85,14 @@ const Payments = () => {
         handleClose={() => setCheckInModal(false)}
       >
         <div className="flex flex-col gap-5">
-          <Alert color="warning">
-            The number of guests allowed in this booking is{" "}
+          <h1 className="text-2xl font-bold">
+            The total guest allowed in this booking is{" "}
             {selectedBooking?.roomDetails.adultCount} Adults and{" "}
-            {selectedBooking?.roomDetails.childCount} Kids. There's an
-            additional 500 pesos per head if exceeded.
+            {selectedBooking?.roomDetails.childCount} Kids.{" "}
+          </h1>
+          <Alert>
+            Please confirm the number of guest arrived at the hotel before
+            checking them in
           </Alert>
 
           {/* Adult Counter */}
@@ -133,13 +136,18 @@ const Payments = () => {
               </Button>
             </div>
           </div>
-          {/* Extra Charge Alert */}
-          {extraCharge > 0 && (
-            <Alert color="failure">
-              You have exceeded the allowed guest limit. Additional charge:{" "}
-              <strong>{extraCharge.toLocaleString()} pesos</strong>.
-            </Alert>
-          )}
+          <p className="text-lg opacity-50">
+            The hotel requires an additional bed for each extra guest. You
+            currently have{" "}
+            {Math.max(0, adultCount - selectedBooking?.roomDetails.adultCount)}{" "}
+            extra adult(s) and{" "}
+            {Math.max(0, childCount - selectedBooking?.roomDetails.childCount)}{" "}
+            extra child(ren) for which additional beds will be provided. An
+            additional fee of 600 pesos per bed applies.
+          </p>
+          <div className="flex justify-end">
+            <h1 className="text-3xl font-bold">Extra Charge: ₱{extraCharge}</h1>
+          </div>
         </div>
       </CustomModal>
     </DashboardLayout>
