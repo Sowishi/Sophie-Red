@@ -177,7 +177,11 @@ export function PaymentsTable({
                   )}
                   <Table.Cell>₱{booking.totalPrice}</Table.Cell>
                   <Table.Cell>
-                    ₱{booking.totalPrice - booking.downpayment}
+                    {booking?.paymentStatus == "full" ? (
+                      <>₱{booking?.extraCharge || 0}</>
+                    ) : (
+                      <>₱{booking.totalPrice - booking.downpayment}</>
+                    )}
                   </Table.Cell>
                   <Table.Cell>{inDate}</Table.Cell>
                   <Table.Cell>{outDate}</Table.Cell>

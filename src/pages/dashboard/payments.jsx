@@ -252,7 +252,7 @@ const Payments = () => {
                   <div className="flex justify-between">
                     <h1>Total Stay Cost</h1>
                     <h1 className="font-light">
-                      ₱
+                      +₱
                       {selectedBooking.roomDetails.pricePerNight *
                         calculateStayDuration(
                           selectedBooking?.checkInDate,
@@ -266,14 +266,30 @@ const Payments = () => {
                     <div className="flex justify-between">
                       <h1>Aditional Person Charge</h1>
                       <h1 className="font-light">
-                        ₱{selectedBooking.extraCharge}
+                        +₱{selectedBooking.extraCharge}
+                      </h1>
+                    </div>
+                  )}
+                  {selectedBooking?.paymentStatus == "down" && (
+                    <div className="flex justify-between">
+                      <h1>Downpayment</h1>
+                      <h1 className="font-light text-green-500">
+                        -₱{selectedBooking.downpayment}
                       </h1>
                     </div>
                   )}
                   <div className="flex justify-between">
-                    <h1>Total Cost</h1>
+                    <h1>Current Balance</h1>
                     <h1 className="font-bold text-red-500 text-3xl">
-                      ₱{selectedBooking.totalPrice.toLocaleString()}
+                      {selectedBooking?.paymentStatus == "full" ? (
+                        <>₱{selectedBooking?.extraCharge || 0}</>
+                      ) : (
+                        <>
+                          ₱
+                          {selectedBooking.totalPrice -
+                            selectedBooking.downpayment}
+                        </>
+                      )}
                     </h1>
                   </div>
                 </div>

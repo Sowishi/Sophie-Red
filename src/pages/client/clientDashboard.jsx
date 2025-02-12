@@ -89,7 +89,7 @@ const ClientDashboard = () => {
               <Loader />
             </div>
           ) : filteredBookings.length > 0 ? (
-            filteredBookings.reverse().map((booking) => (
+            filteredBookings.map((booking) => (
               <div key={booking.id} className="basis-full lg:basis-4/12 w-full">
                 <BookingCard
                   booking={booking}
