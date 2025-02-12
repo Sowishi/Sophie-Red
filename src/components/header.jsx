@@ -61,7 +61,7 @@ const Header = () => {
           }`}
         >
           <FaCalendarAlt color="white" className="mr-3" />
-          <h1 className="text-sm font-extralight">Booking</h1>
+          <h1 className="text-sm font-extralight">Booking Calendar</h1>
         </Link>
         <Link
           to="/payments"
@@ -70,7 +70,7 @@ const Header = () => {
           }`}
         >
           <FaBook color="white" className="mr-3" />
-          <h1 className="text-sm font-extralight">Guest Management</h1>
+          <h1 className="text-sm font-extralight">Booking Management</h1>
         </Link>
       </div>
     );

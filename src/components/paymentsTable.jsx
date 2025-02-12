@@ -5,9 +5,8 @@ import {
   Button,
   Table,
   TextInput,
-  Select,
   Dropdown,
-  Tooltip,
+  Pagination,
 } from "flowbite-react";
 import { useEffect, useState } from "react";
 import useFetchCollection from "../hooks/useFetchCollection";
@@ -16,33 +15,22 @@ import empty from "../assets/empty-box.png";
 import Lottie from "react-lottie";
 import loader from "../assets/lotties/loader.json";
 import moment from "moment/moment";
-import useCrudBooking from "../hooks/useCrudBooking";
-import { toast } from "react-toastify";
 import { BsThreeDots } from "react-icons/bs";
 
 export function PaymentsTable({ typeFilter }) {
   const { fetchCollection } = useFetchCollection();
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [filter, setFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
   const [search, setSearch] = useState("");
-  const { updateBookingPayment } = useCrudBooking();
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
 
   useEffect(() => {
     fetchCollection("bookings", setBookings, setLoading);
   }, []);
 
-  const handlePaymentStatusChange = async (bookingId, newStatus) => {
-    await updateBookingPayment(bookingId, newStatus);
-    toast.success("Successfully updated the payment");
-  };
-
   const filteredBookings = bookings.filter((booking) => {
-    if (filter !== "all") {
-      if (filter === "paid" && booking.paymentStatus !== "full") return false;
-      if (filter === "unpaid" && booking.paymentStatus === "full") return false;
-    }
     if (statusFilter !== "all" && booking.status !== statusFilter) return false;
     if (typeFilter !== "all" && booking.bookType !== typeFilter) return false;
     if (
@@ -58,6 +46,12 @@ export function PaymentsTable({ typeFilter }) {
     const dateB = b.checkInDate ? b.checkInDate.toDate() : new Date(0);
     return dateA - dateB;
   });
+
+  const totalPages = Math.ceil(sortedBookings.length / itemsPerPage);
+  const paginatedBookings = sortedBookings.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   if (loading) {
     return (
@@ -88,22 +82,20 @@ export function PaymentsTable({ typeFilter }) {
   return (
     <div>
       <div className="flex justify-end mb-4">
-        <div className="mx-2">
-          <Dropdown label="Filter by status">
-            <Dropdown.Item onClick={() => setStatusFilter("all")}>
-              All
-            </Dropdown.Item>
-            <Dropdown.Item onClick={() => setStatusFilter("Booked")}>
-              Booked
-            </Dropdown.Item>
-            <Dropdown.Item onClick={() => setStatusFilter("CheckIn")}>
-              Check In
-            </Dropdown.Item>
-            <Dropdown.Item onClick={() => setStatusFilter("Completed")}>
-              Completed
-            </Dropdown.Item>
-          </Dropdown>
-        </div>
+        <Dropdown label="Filter by status" className="mx-2">
+          <Dropdown.Item onClick={() => setStatusFilter("all")}>
+            All
+          </Dropdown.Item>
+          <Dropdown.Item onClick={() => setStatusFilter("Booked")}>
+            Booked
+          </Dropdown.Item>
+          <Dropdown.Item onClick={() => setStatusFilter("CheckIn")}>
+            Check In
+          </Dropdown.Item>
+          <Dropdown.Item onClick={() => setStatusFilter("Completed")}>
+            Completed
+          </Dropdown.Item>
+        </Dropdown>
 
         <TextInput
           icon={CiSearch}
@@ -115,40 +107,30 @@ export function PaymentsTable({ typeFilter }) {
       <div className="overflow-x-auto shadow-2xl">
         <Table hoverable striped>
           <Table.Head className="bg-red-500">
-            <Table.HeadCell className="bg-red-500 text-white">
-              Guest Name
-            </Table.HeadCell>
-            {typeFilter == "room" && (
+            <Table.HeadCell className="text-white">Guest Name</Table.HeadCell>
+            {typeFilter === "room" && (
               <>
-                <Table.HeadCell className="bg-red-500 text-white">
+                <Table.HeadCell className="text-white">
                   Room Type
                 </Table.HeadCell>
-                <Table.HeadCell className="bg-red-500 text-white">
+                <Table.HeadCell className="text-white">
                   Room Number
                 </Table.HeadCell>
               </>
             )}
-            <Table.HeadCell className="bg-red-500 text-white">
-              Total Price
-            </Table.HeadCell>
-            <Table.HeadCell className="bg-red-500 text-white">
-              Balance
-            </Table.HeadCell>
-            <Table.HeadCell className="bg-red-500 text-white">
+            <Table.HeadCell className="text-white">Total Price</Table.HeadCell>
+            <Table.HeadCell className="text-white">Balance</Table.HeadCell>
+            <Table.HeadCell className="text-white">
               Check In Date
             </Table.HeadCell>
-            <Table.HeadCell className="bg-red-500 text-white">
+            <Table.HeadCell className="text-white">
               Check Out Date
             </Table.HeadCell>
-            <Table.HeadCell className="bg-red-500 text-white">
-              Status
-            </Table.HeadCell>
-            <Table.HeadCell className="bg-red-500 text-white">
-              Actions
-            </Table.HeadCell>
+            <Table.HeadCell className="text-white">Status</Table.HeadCell>
+            <Table.HeadCell className="text-white">Actions</Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
-            {sortedBookings.map((booking, index) => {
+            {paginatedBookings.map((booking, index) => {
               const inDate = booking.checkInDate
                 ? moment(booking.checkInDate.toDate()).format("LL")
                 : "Invalid Date";
@@ -162,7 +144,7 @@ export function PaymentsTable({ typeFilter }) {
                   className="bg-white dark:border-gray-700 dark:bg-gray-800"
                 >
                   <Table.Cell className="font-bold text-lg text-red-500">
-                    <div className="flex items-center justify-start">
+                    <div className="flex items-center">
                       <img
                         width={35}
                         className="rounded-full mr-2"
@@ -172,7 +154,7 @@ export function PaymentsTable({ typeFilter }) {
                       {booking.currentUser.name}
                     </div>
                   </Table.Cell>
-                  {booking?.bookType == "room" && (
+                  {booking?.bookType === "room" && (
                     <>
                       <Table.Cell>{booking.roomDetails.roomType}</Table.Cell>
                       <Table.Cell>{booking.roomDetails.roomNumber}</Table.Cell>
@@ -180,11 +162,9 @@ export function PaymentsTable({ typeFilter }) {
                   )}
                   <Table.Cell>₱{booking.totalPrice}</Table.Cell>
                   <Table.Cell>
-                    {booking.paymentStatus === "full" ? (
-                      <h1>₱0</h1>
-                    ) : (
-                      <h1>₱{booking?.totalPrice - booking?.downpayment}</h1>
-                    )}
+                    {booking.paymentStatus === "full"
+                      ? "₱0"
+                      : `₱${booking.totalPrice - booking.downpayment}`}
                   </Table.Cell>
                   <Table.Cell>{inDate}</Table.Cell>
                   <Table.Cell>{outDate}</Table.Cell>
@@ -199,13 +179,8 @@ export function PaymentsTable({ typeFilter }) {
                       arrowIcon={false}
                       label={<BsThreeDots className="cursor-pointer text-xl" />}
                     >
-                      <Dropdown.Item
-                        onClick={() =>
-                          handlePaymentStatusChange(booking.id, "full")
-                        }
-                      >
-                        Mark as Paid
-                      </Dropdown.Item>
+                      <Dropdown.Item>Check In Guest</Dropdown.Item>
+                      <Dropdown.Item>Check Out Guest</Dropdown.Item>
                     </Dropdown>
                   </Table.Cell>
                 </Table.Row>
@@ -213,6 +188,13 @@ export function PaymentsTable({ typeFilter }) {
             })}
           </Table.Body>
         </Table>
+      </div>
+      <div className="flex justify-end items-center mt-4">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
       </div>
     </div>
   );
