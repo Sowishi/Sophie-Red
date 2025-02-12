@@ -21,6 +21,7 @@ export function PaymentsTable({
   typeFilter,
   setCheckInModal,
   setSelectedBooking,
+  setCheckOutModal,
 }) {
   const { fetchCollection } = useFetchCollection();
   const [bookings, setBookings] = useState([]);
@@ -176,9 +177,7 @@ export function PaymentsTable({
                   )}
                   <Table.Cell>₱{booking.totalPrice}</Table.Cell>
                   <Table.Cell>
-                    {booking.paymentStatus === "full"
-                      ? "₱0"
-                      : `₱${booking.totalPrice - booking.downpayment}`}
+                    ₱{booking.totalPrice - booking.downpayment}
                   </Table.Cell>
                   <Table.Cell>{inDate}</Table.Cell>
                   <Table.Cell>{outDate}</Table.Cell>
@@ -193,15 +192,26 @@ export function PaymentsTable({
                       arrowIcon={false}
                       label={<BsThreeDots className="cursor-pointer text-xl" />}
                     >
-                      <Dropdown.Item
-                        onClick={() => {
-                          setCheckInModal(true);
-                          setSelectedBooking(booking);
-                        }}
-                      >
-                        Check In Guest
-                      </Dropdown.Item>
-                      <Dropdown.Item>Check Out Guest</Dropdown.Item>
+                      {booking.status === "Booked" && (
+                        <Dropdown.Item
+                          onClick={() => {
+                            setCheckInModal(true);
+                            setSelectedBooking(booking);
+                          }}
+                        >
+                          Check In Guest
+                        </Dropdown.Item>
+                      )}
+                      {booking.status === "Check In" && (
+                        <Dropdown.Item
+                          onClick={() => {
+                            setSelectedBooking(booking);
+                            setCheckOutModal(true);
+                          }}
+                        >
+                          Check Out Guest
+                        </Dropdown.Item>
+                      )}{" "}
                     </Dropdown>
                   </Table.Cell>
                 </Table.Row>

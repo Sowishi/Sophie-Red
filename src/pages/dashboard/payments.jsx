@@ -13,12 +13,13 @@ const Payments = () => {
   const [filterType, setFilterType] = useState("room");
   const [search, setSearch] = useState("");
   const [checkInModal, setCheckInModal] = useState(false);
+  const [checkOutModal, setCheckOutModal] = useState(false);
   const [adultCount, setAdultCount] = useState(1);
   const [childCount, setChildCount] = useState(0);
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [extraCharge, setExtraCharge] = useState(0);
 
-  const { checkInBooking } = useCrudBooking();
+  const { checkInBooking, checkoutBooking } = useCrudBooking();
 
   useEffect(() => {
     if (selectedBooking) {
@@ -72,11 +73,12 @@ const Payments = () => {
         <PaymentsTable
           setSelectedBooking={setSelectedBooking}
           setCheckInModal={setCheckInModal}
+          setCheckOutModal={setCheckOutModal}
           search={search}
           typeFilter={filterType}
         />
       </div>
-
+      {/* Check In Modal */}
       <CustomModal
         onSubmit={handleCheckInGuest}
         title={"Confirm Number of Guests"}
@@ -149,6 +151,19 @@ const Payments = () => {
             <h1 className="text-3xl font-bold">Extra Charge: ₱{extraCharge}</h1>
           </div>
         </div>
+      </CustomModal>
+
+      {/* Check Out Modal */}
+      <CustomModal
+        title={"Confirm Number of Guests"}
+        size={"5xl"}
+        open={checkOutModal}
+        handleClose={() => setCheckOutModal(false)}
+      >
+        <h1 className="text-3xl">
+          Customer Balance:{" "}
+          {selectedBooking?.totalPrice - selectedBooking?.downpayment}{" "}
+        </h1>
       </CustomModal>
     </DashboardLayout>
   );
