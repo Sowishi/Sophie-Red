@@ -194,6 +194,18 @@ export const BookingCalendar = ({ searchQuery, filterType, rooms }) => {
               <p>
                 <strong>Room Number:</strong> {selectedEvent.title}
               </p>
+              {selectedEvent?.roomType == "room" && (
+                <>
+                  {" "}
+                  <p>
+                    <strong>Price per Night:</strong> ₱{selectedEvent.price}
+                  </p>
+                  <p>
+                    <strong>Description:</strong> {selectedEvent.description}
+                  </p>
+                </>
+              )}
+
               <p>
                 <strong>Guest:</strong> {selectedEvent.title.split(" - ")[1]}
               </p>
@@ -205,9 +217,7 @@ export const BookingCalendar = ({ searchQuery, filterType, rooms }) => {
                 <strong>Check-out:</strong>{" "}
                 {moment(selectedEvent.end).format("LLL")}
               </p>
-              <p>
-                <strong>Price per Night:</strong> ₱{selectedEvent.price}
-              </p>
+
               <p>
                 <strong>Downpayment:</strong> ₱{selectedEvent.downpayment}
               </p>
@@ -219,9 +229,6 @@ export const BookingCalendar = ({ searchQuery, filterType, rooms }) => {
               </p>
               <p>
                 <strong>Booking Status:</strong> {selectedEvent.status}
-              </p>
-              <p>
-                <strong>Description:</strong> {selectedEvent.description}
               </p>
             </div>
           )}
