@@ -17,7 +17,7 @@ const ReceiptUI = ({ booking }) => {
           SOPHIERED HOTEL AND ONSHORE RESTAURANT
         </h2>
         <p className="text-sm">
-          Purok 9 Robontugan, 9003, Jasaan, Misamis Oriental, Philippines
+          Purok 9 Bobontugan, 9003, Jasaan, Misamis Oriental, Philippines
         </p>
         <p className="text-sm">GRACE A. JARDIN - Prop.</p>
         <p className="text-sm">VAT REG. TIN: 254-650-511-0000</p>

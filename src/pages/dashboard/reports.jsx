@@ -79,6 +79,19 @@ const Reports = () => {
 
         {/* Table with Title */}
         <div ref={targetRef} className="bg-white p-6 rounded-lg shadow-md">
+          <div className="text-center border-b pb-4 mb-4">
+            <div className="flex justify-center items-center">
+              <img className="w-[200px]" src={logo} alt="Logo" />
+            </div>
+            <h2 className="text-xl font-bold">
+              SOPHIERED HOTEL AND ONSHORE RESTAURANT
+            </h2>
+            <p className="text-sm">
+              Purok 9 Robontugan, 9003, Jasaan, Misamis Oriental, Philippines
+            </p>
+            <p className="text-sm">GRACE A. JARDIN - Prop.</p>
+            <p className="text-sm">VAT REG. TIN: 254-650-511-0000</p>
+          </div>
           <h2 className="text-xl font-bold mb-4">
             Booking Report {""}{" "}
             <span className="ml-3 text-red-500 opacity-85">
@@ -164,6 +177,19 @@ const Reports = () => {
       >
         <Modal.Header>PDF Preview</Modal.Header>
         <Modal.Body>
+          <div className="text-center border-b pb-4 mb-4">
+            <div className="flex justify-center items-center">
+              <img className="w-[200px]" src={logo} alt="Logo" />
+            </div>
+            <h2 className="text-xl font-bold">
+              SOPHIERED HOTEL AND ONSHORE RESTAURANT
+            </h2>
+            <p className="text-sm">
+              Purok 9 Bobontugan , 9003, Jasaan, Misamis Oriental, Philippines
+            </p>
+            <p className="text-sm">GRACE A. JARDIN - Prop.</p>
+            <p className="text-sm">VAT REG. TIN: 254-650-511-0000</p>
+          </div>
           <h2 className="text-xl font-bold mb-4">
             Booking Report {""}{" "}
             <span className="ml-3 text-red-500 opacity-85">
@@ -198,7 +224,9 @@ const Reports = () => {
                     <Table.Cell className="font-bold text-lg text-red-500">
                       {booking.currentUser.name}
                     </Table.Cell>
-                    <Table.Cell>{booking.roomDetails.roomNumber}</Table.Cell>
+                    <Table.Cell>
+                      {booking.roomDetails.roomNumber || "Event"}
+                    </Table.Cell>
                     <Table.Cell>₱{booking.totalPrice}</Table.Cell>
                     <Table.Cell>
                       <Badge
