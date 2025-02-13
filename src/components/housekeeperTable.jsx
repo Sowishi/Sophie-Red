@@ -128,7 +128,7 @@ const HousekeeperTable = () => {
 
       {taskType == "guest" ? (
         <>
-          <Table hoverable striped>
+          <Table className="shadow-2xl" hoverable striped>
             <Table.Head>
               <Table.HeadCell>Room Number</Table.HeadCell>
               <Table.HeadCell>Assign Date</Table.HeadCell>
@@ -205,7 +205,7 @@ const HousekeeperTable = () => {
         </>
       ) : (
         <>
-          <Table hoverable striped>
+          <Table hoverable striped className="shadow-2xl">
             <Table.Head>
               <Table.HeadCell>Room Number</Table.HeadCell>
               <Table.HeadCell>Assign Date</Table.HeadCell>

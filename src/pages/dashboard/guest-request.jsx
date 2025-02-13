@@ -84,7 +84,7 @@ const GuestRequest = () => {
           </div>
         </div>
         {guestRequest.length >= 1 ? (
-          <Table hoverable striped>
+          <Table className="shadow-2xl" hoverable striped>
             <Table.Head>
               <Table.HeadCell>Guest</Table.HeadCell>
 

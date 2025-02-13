@@ -78,7 +78,7 @@ const Reports = () => {
         </div>
 
         {/* Table with Title */}
-        <div ref={targetRef} className="bg-white p-6 rounded-lg shadow-md">
+        <div ref={targetRef} className="bg-white p-6 rounded-lg shadow-2xl">
           <div className="text-center border-b pb-4 mb-4">
             <div className="flex justify-center items-center">
               <img className="w-[200px]" src={logo} alt="Logo" />

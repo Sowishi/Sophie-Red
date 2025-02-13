@@ -54,7 +54,7 @@ const HousekeeperListTable = () => {
 
   return (
     <div>
-      <Table hoverable striped>
+      <Table className="shadow-2xl" hoverable striped>
         <Table.Head>
           <Table.HeadCell>Name</Table.HeadCell>
           <Table.HeadCell>Email</Table.HeadCell>

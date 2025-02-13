@@ -111,7 +111,7 @@ export function HousekeepingTable() {
   );
 
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto shadow-2xl">
       <div className="flex items-center justify-end mb-5">
         <TextInput
           onChange={(event) => setSearch(event.target.value)}
