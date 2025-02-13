@@ -228,7 +228,13 @@ const Payments = () => {
                       <div className="flex items-center justify-center mt-2">
                         <FaCalendarAlt size={24} />
                         <h1 className="font-bold text-2xl ml-3">
-                          {moment(selectedBooking?.checkoutDate).format("LL")}
+                          {moment(
+                            selectedBooking.checkOutDate
+                              ? moment(
+                                  selectedBooking.checkOutDate.toDate()
+                                ).format("LL")
+                              : "Invalid Date"
+                          ).format("LL")}
                         </h1>
                       </div>
                     </div>
