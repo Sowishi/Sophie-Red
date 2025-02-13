@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import moment from "moment";
 import { calculateStayDuration } from "../../utils/calculateStay";
 import logo from "../../assets/logo.png";
+import ReceiptUI from "../../components/receiptUI";
 const Payments = () => {
   const [filterType, setFilterType] = useState("room");
   const [search, setSearch] = useState("");
@@ -20,7 +21,7 @@ const Payments = () => {
   const [childCount, setChildCount] = useState(0);
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [extraCharge, setExtraCharge] = useState(0);
-
+  const [receiptModal, setReceiptModal] = useState(false);
   const { checkInBooking, checkoutBooking } = useCrudBooking();
 
   useEffect(() => {
@@ -196,9 +197,14 @@ const Payments = () => {
         >
           {selectedBooking?.bookType == "room" && (
             <div className="container mx-auto p-5">
-              <Alert color="warning" className="mb-3">
-                Make sure the guest is fully paid before checking them out
-              </Alert>
+              <div className="flex items-center justify-start ">
+                <Alert color="warning" className="mb-3">
+                  Make sure the guest is fully paid before checking them out
+                </Alert>
+                <Button onClick={() => setReceiptModal(true)} className="ml-3">
+                  Print Receipt
+                </Button>
+              </div>
               <div className="flex">
                 <div className="basis-6/12">
                   <div className="wrapper">
@@ -458,6 +464,17 @@ const Payments = () => {
               </div>
             </div>
           )}
+        </CustomModal>
+      )}
+
+      {selectedBooking && (
+        <CustomModal
+          hideFooter={true}
+          size={"2xl"}
+          open={receiptModal}
+          handleClose={() => setReceiptModal(false)}
+        >
+          <ReceiptUI booking={selectedBooking} />
         </CustomModal>
       )}
     </DashboardLayout>

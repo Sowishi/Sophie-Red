@@ -4,7 +4,7 @@ export const roomTypeData = [
   "Agutayan Villa",
   "Junior Suite",
   "Family Room",
-  "See View ",
+  "Sea View ",
   "Deluxe Room",
   "Presidential Suite",
   "Premium Deluxe",

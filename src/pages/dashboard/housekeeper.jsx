@@ -28,7 +28,7 @@ const Housekeeper = () => {
               Housekeeping tasks
             </h1>
             <p className="mt-3 text-gray-500">
-              Below is the list of the task, guest request and supervisor
+              Below is the list of the task, pending request and supervisor
               request
             </p>
           </div>
