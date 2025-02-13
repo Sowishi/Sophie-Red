@@ -152,19 +152,9 @@ const Payments = () => {
               </div>
             </div>
             <p className="text-lg opacity-50">
-              The hotel requires an additional bed for each extra guest. You
-              currently have{" "}
-              {Math.max(
-                0,
-                adultCount - selectedBooking?.roomDetails.adultCount
-              )}{" "}
-              extra adult(s) and{" "}
-              {Math.max(
-                0,
-                childCount - selectedBooking?.roomDetails.childCount
-              )}{" "}
-              extra child(ren) for which additional beds will be provided. An
-              additional fee of 600 pesos per bed applies.
+              The hotel requires an additional bed for each extra guest. for
+              which additional beds will be provided. An additional fee of 600
+              pesos per bed applies.
             </p>
             <div className="flex justify-end">
               <h1 className="text-3xl font-bold">
