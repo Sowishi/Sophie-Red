@@ -1,10 +1,12 @@
 "use client";
 
-import { Table, Select } from "flowbite-react";
+import { Table, Select, Checkbox } from "flowbite-react";
 import { useEffect, useState } from "react";
 import moment from "moment";
 import Loader from "./loader";
 import useFetchCollection from "../hooks/useFetchCollection";
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "../utils/firebase";
 
 export function FeedbackTable() {
   const { fetchCollection } = useFetchCollection();
@@ -12,6 +14,7 @@ export function FeedbackTable() {
   const [feedbacks, setFeedbacks] = useState([]);
   const [filteredFeedbacks, setFilteredFeedbacks] = useState([]);
   const [filterRating, setFilterRating] = useState("all");
+  const [selectedFeedbacks, setSelectedFeedbacks] = useState({});
 
   useEffect(() => {
     fetchCollection(
@@ -24,7 +27,6 @@ export function FeedbackTable() {
     );
   }, []);
 
-  // Handle filtering
   const handleFilterChange = (rating) => {
     setFilterRating(rating);
     if (rating === "all") {
@@ -36,7 +38,22 @@ export function FeedbackTable() {
     }
   };
 
-  // Convert rating to yellow stars
+  const handleCheckboxChange = async (feedback) => {
+    const feedbackRef = doc(db, "feedback", feedback.id);
+    const newStatus = !selectedFeedbacks[feedback.id];
+
+    try {
+      await updateDoc(feedbackRef, { posted: newStatus });
+      setSelectedFeedbacks((prev) => ({
+        ...prev,
+        [feedback.id]: newStatus,
+      }));
+      console.log(`Feedback ${feedback.id} updated: posted = ${newStatus}`);
+    } catch (error) {
+      console.error("Error updating feedback:", error);
+    }
+  };
+
   const renderStars = (rating) => {
     const fullStar = <span style={{ color: "gold" }}>★</span>;
     const emptyStar = <span style={{ color: "lightgray" }}>☆</span>;
@@ -52,7 +69,6 @@ export function FeedbackTable() {
     );
   };
 
-  // Loading state UI
   if (loading) {
     return (
       <div className="flex h-full justify-center items-center flex-col pt-28">
@@ -63,7 +79,6 @@ export function FeedbackTable() {
 
   return (
     <div className="p-4 overflow-x-auto">
-      {/* Filter by Rating */}
       <div className="mb-4 flex items-center gap-4">
         <label htmlFor="filter-rating" className="font-medium">
           Filter by Rating:
@@ -85,6 +100,7 @@ export function FeedbackTable() {
 
       <Table hoverable striped className="mt-4">
         <Table.Head>
+          <Table.HeadCell>Post</Table.HeadCell>
           <Table.HeadCell>Customer Name</Table.HeadCell>
           <Table.HeadCell>Rating</Table.HeadCell>
           <Table.HeadCell className="w-[300px]">Remarks</Table.HeadCell>
@@ -95,18 +111,23 @@ export function FeedbackTable() {
           {filteredFeedbacks && filteredFeedbacks.length > 0 ? (
             filteredFeedbacks.map((feedback) => (
               <Table.Row key={feedback.id} className="bg-white">
+                <Table.Cell>
+                  <Checkbox
+                    checked={feedback.posted}
+                    onChange={() => handleCheckboxChange(feedback)}
+                  />
+                </Table.Cell>
                 <Table.Cell className="font-bold text-lg text-red-500">
                   <div className="flex items-center justify-start">
-                    {" "}
                     <img
                       width={35}
                       className="rounded-full mr-2"
                       src={feedback.currentUser?.photoURL}
                       alt=""
-                    />{" "}
+                    />
                     {feedback.currentUser.name}
                   </div>
-                </Table.Cell>{" "}
+                </Table.Cell>
                 <Table.Cell>{renderStars(feedback.rating)}</Table.Cell>
                 <Table.Cell className="w-[300px] whitespace-normal">
                   {feedback.remarks}
@@ -121,7 +142,7 @@ export function FeedbackTable() {
             ))
           ) : (
             <Table.Row>
-              <Table.Cell colSpan={5} className="text-center">
+              <Table.Cell colSpan={6} className="text-center">
                 No feedback available.
               </Table.Cell>
             </Table.Row>

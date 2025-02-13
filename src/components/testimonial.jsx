@@ -42,6 +42,8 @@ const Testimonials = () => {
     return stars;
   };
 
+  const filterReviews = reviews.filter((review) => review.posted);
+
   return (
     <section className="bg-white dark:bg-gray-900">
       <div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-6">
@@ -56,9 +58,9 @@ const Testimonials = () => {
         </div>
 
         <div className="mb-8 lg:mb-12">
-          {reviews.length > 0 ? (
+          {filterReviews.length > 0 ? (
             <Slider {...settings}>
-              {reviews.map((review) => (
+              {filterReviews.map((review) => (
                 <div
                   key={review.id}
                   className="p-8 bg-gray-50 dark:bg-gray-800 shadow-md rounded-lg"
