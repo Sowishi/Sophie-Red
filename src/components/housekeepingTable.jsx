@@ -26,6 +26,7 @@ import useCrudHousekeeping from "../hooks/useCrudHousekeeping";
 import moment from "moment/moment";
 import useUserStore from "../utils/zustand";
 import CustomModal from "./customModal";
+import HousekeepingLogs from "./housekpeeingLogs";
 
 export function HousekeepingTable() {
   const { fetchCollection } = useFetchCollection();
@@ -188,52 +189,7 @@ export function HousekeepingTable() {
       >
         <Modal.Header>Housekeeping Logs</Modal.Header>
         <Modal.Body>
-          {housekeepingLogs.length >= 1 ? (
-            <Table hoverable striped>
-              <Table.Head>
-                <Table.HeadCell>Assign Date</Table.HeadCell>
-                <Table.HeadCell>Housekeeper</Table.HeadCell>
-                <Table.HeadCell>Service Type</Table.HeadCell>
-                <Table.HeadCell>Description</Table.HeadCell>
-                <Table.HeadCell>Completed At</Table.HeadCell>
-                <Table.HeadCell>Remarks</Table.HeadCell>
-
-                <Table.HeadCell>Status</Table.HeadCell>
-              </Table.Head>
-              <Table.Body className="divide-y">
-                {housekeepingLogs.map((log) => {
-                  const assignDate = log?.createdAt
-                    ? moment(log?.createdAt.toDate()).format("LLL")
-                    : "invalid";
-
-                  const completedDate = log?.completedAt
-                    ? moment(log?.completedAt.toDate()).format("LLL")
-                    : "invalid";
-                  return (
-                    <Table.Row key={log?.id}>
-                      <Table.Cell>{assignDate}</Table.Cell>
-                      <Table.Cell>{log?.housekeeper?.fullName}</Table.Cell>
-                      <Table.Cell>{log?.serviceType}</Table.Cell>
-                      <Table.Cell>{log?.description}</Table.Cell>
-
-                      <Table.Cell>
-                        {log?.completedAt ? completedDate : "---"}
-                      </Table.Cell>
-                      <Table.Cell>{log?.remarks || "---"}</Table.Cell>
-
-                      <Table.Cell>
-                        <Badge>{log?.status}</Badge>
-                      </Table.Cell>
-                    </Table.Row>
-                  );
-                })}
-              </Table.Body>
-            </Table>
-          ) : (
-            <>
-              <Alert color="failure">There's no logs to show</Alert>
-            </>
-          )}
+          <HousekeepingLogs logs={housekeepingLogs} />
         </Modal.Body>
       </Modal>
 
