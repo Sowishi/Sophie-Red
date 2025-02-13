@@ -89,7 +89,7 @@ export function VoucherTable({ openModal, handleCloseModal }) {
   );
 
   return (
-    <div className="p-4 overflow-x-auto">
+    <div className="p-4 overflow-x-auto shadow-2xl">
       {/* Voucher Table */}
       <Table hoverable striped className="mt-4">
         <Table.Head>

@@ -78,7 +78,7 @@ export function FeedbackTable() {
   }
 
   return (
-    <div className="p-4 overflow-x-auto">
+    <div className="p-4 overflow-x-aut shadow-2xl">
       <div className="mb-4 flex items-center gap-4">
         <label htmlFor="filter-rating" className="font-medium">
           Filter by Rating:
