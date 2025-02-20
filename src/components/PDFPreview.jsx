@@ -29,10 +29,12 @@ const PDFPreview = ({
         </div>
         <h2 className="text-xl font-bold mb-4">
           Booking Report {""}{" "}
-          <span className="ml-3 text-red-500 opacity-85">
-            {moment(startDate.toDateString()).format("LL")} -{" "}
-            {moment(endDate.toDateString()).format("LL")}
-          </span>
+          {startDate && endDate && (
+            <span className="ml-3 text-red-500 opacity-85">
+              {moment(startDate.toDateString()).format("LL")} -{" "}
+              {moment(endDate.toDateString()).format("LL")}
+            </span>
+          )}
         </h2>
         <Table hoverable striped>
           <Table.Head>

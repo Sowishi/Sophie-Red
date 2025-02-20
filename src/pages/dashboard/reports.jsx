@@ -12,8 +12,8 @@ import PDFPreview from "../../components/PDFPreview";
 const Reports = () => {
   const [bookings, setBookings] = useState([]);
   const [filteredBookings, setFilteredBookings] = useState([]);
-  const [startDate, setStartDate] = useState(moment().startOf("day").toDate()); // Default to today's start
-  const [endDate, setEndDate] = useState(moment().endOf("day").toDate()); // Default to today's end
+  const [startDate, setStartDate] = useState(null); // Default to today's start
+  const [endDate, setEndDate] = useState(null); // Default to today's end
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
   const { fetchAllBookings } = useCrudBooking();
   const { toPDF, targetRef } = usePDF({ filename: "bookings_report.pdf" });
@@ -24,11 +24,15 @@ const Reports = () => {
 
   useEffect(() => {
     // Filter bookings based on the selected date range
-    const filtered = bookings.filter((booking) => {
-      const bookingDate = moment(booking.createdAt.toDate());
-      return bookingDate.isBetween(startDate, endDate, null, "[]"); // Inclusive of start and end dates
-    });
-    setFilteredBookings(filtered);
+    if (startDate !== null && endDate !== null) {
+      const filtered = bookings.filter((booking) => {
+        const bookingDate = moment(booking.createdAt.toDate());
+        return bookingDate.isBetween(startDate, endDate, null, "[]"); // Inclusive of start and end dates
+      });
+      setFilteredBookings(filtered);
+      return;
+    }
+    setFilteredBookings(bookings);
   }, [startDate, endDate, bookings]);
 
   return (
@@ -93,13 +97,15 @@ const Reports = () => {
             <p className="text-sm">GRACE A. JARDIN - Prop.</p>
             <p className="text-sm">VAT REG. TIN: 254-650-511-0000</p>
           </div>
-          <h2 className="text-xl font-bold mb-4">
-            Booking Report {""}{" "}
-            <span className="ml-3 text-red-500 opacity-85">
-              {moment(startDate.toDateString()).format("LL")} -{" "}
-              {moment(endDate.toDateString()).format("LL")}
-            </span>
-          </h2>
+          {startDate && endDate && (
+            <h2 className="text-xl font-bold mb-4">
+              Booking Report {""}{" "}
+              <span className="ml-3 text-red-500 opacity-85">
+                {moment(startDate.toDateString()).format("LL")} -{" "}
+                {moment(endDate.toDateString()).format("LL")}
+              </span>
+            </h2>
+          )}
           <Table hoverable striped>
             <Table.Head>
               <Table.HeadCell>Guest Name</Table.HeadCell>
@@ -113,10 +119,10 @@ const Reports = () => {
             <Table.Body className="divide-y">
               {filteredBookings.map((booking, index) => {
                 const date = booking.checkOutDate
-                  ? moment(booking.checkOutDate.toDate()).format("LLL")
+                  ? moment(booking.checkOutDate.toDate()).format("LL")
                   : "Invalid Date";
                 const checkIn = booking.checkInDate
-                  ? moment(booking.checkInDate.toDate()).format("LLL")
+                  ? moment(booking.checkInDate.toDate()).format("LL")
                   : "Invalid Date";
 
                 return (
