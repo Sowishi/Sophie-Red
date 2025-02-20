@@ -49,10 +49,10 @@ const PDFPreview = ({
           <Table.Body className="divide-y">
             {filteredBookings.map((booking, index) => {
               const date = booking.checkOutDate
-                ? moment(booking.checkOutDate.toDate()).format("LLL")
+                ? moment(booking.checkOutDate.toDate()).format("LL")
                 : "Invalid Date";
               const checkIn = booking.checkInDate
-                ? moment(booking.checkInDate.toDate()).format("LLL")
+                ? moment(booking.checkInDate.toDate()).format("LL")
                 : "Invalid Date";
 
               return (

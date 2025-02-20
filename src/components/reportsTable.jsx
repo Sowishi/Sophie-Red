@@ -1,7 +1,20 @@
-import { Badge, Table } from "flowbite-react";
+import { Badge, Table, TextInput } from "flowbite-react";
 import moment from "moment";
+import { useState } from "react";
 import logo from "../assets/logo.png";
-const ReportsTable = ({ filteredBookings, startDate, endDate }) => {
+
+const ReportsTable = ({ filteredBookings, startDate, endDate, preparedBy }) => {
+  const [search, setSearch] = useState("");
+
+  const filterData = filteredBookings.filter((item) => {
+    if (
+      item.currentUser.name.toLowerCase().includes(search.toLowerCase()) ||
+      item.roomDetails?.roomNumber?.includes(search)
+    ) {
+      return item;
+    }
+  });
+
   return (
     <>
       <div className="text-center border-b pb-4 mb-4">
@@ -19,13 +32,23 @@ const ReportsTable = ({ filteredBookings, startDate, endDate }) => {
       </div>
       {startDate && endDate && (
         <h2 className="text-xl font-bold mb-4">
-          Booking Report {""}{" "}
+          Booking Report{" "}
           <span className="ml-3 text-red-500 opacity-85">
             {moment(startDate.toDateString()).format("LL")} -{" "}
             {moment(endDate.toDateString()).format("LL")}
           </span>
         </h2>
       )}
+
+      <div className="mb-4 flex justify-between items-center">
+        <TextInput
+          placeholder="Search by Name, Date, Room..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="w-full md:w-1/3"
+        />
+      </div>
+
       <Table hoverable striped>
         <Table.Head>
           <Table.HeadCell>Guest Name</Table.HeadCell>
@@ -37,7 +60,7 @@ const ReportsTable = ({ filteredBookings, startDate, endDate }) => {
           <Table.HeadCell>Check-Out Date</Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
-          {filteredBookings.map((booking, index) => {
+          {filterData.map((booking, index) => {
             const date = booking.checkOutDate
               ? moment(booking.checkOutDate.toDate()).format("LL")
               : "Invalid Date";
@@ -52,13 +75,12 @@ const ReportsTable = ({ filteredBookings, startDate, endDate }) => {
               >
                 <Table.Cell className="font-bold text-lg text-red-500">
                   <div className="flex items-center justify-start">
-                    {" "}
                     <img
                       width={35}
                       className="rounded-full mr-2"
                       src={booking.currentUser?.photoURL}
                       alt=""
-                    />{" "}
+                    />
                     {booking.currentUser.name}
                   </div>
                 </Table.Cell>
@@ -89,6 +111,12 @@ const ReportsTable = ({ filteredBookings, startDate, endDate }) => {
           })}
         </Table.Body>
       </Table>
+
+      <div className="mt-6 text-right">
+        <p className="text-sm font-semibold">
+          Prepared by: {preparedBy || "___________"}
+        </p>
+      </div>
     </>
   );
 };
