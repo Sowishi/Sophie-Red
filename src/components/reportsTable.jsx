@@ -2,10 +2,11 @@ import { Badge, Table, TextInput } from "flowbite-react";
 import moment from "moment";
 import { useState } from "react";
 import logo from "../assets/logo.png";
+import useUserStore from "../utils/zustand";
 
 const ReportsTable = ({ filteredBookings, startDate, endDate, preparedBy }) => {
   const [search, setSearch] = useState("");
-
+  const { currentAdmin } = useUserStore();
   const filterData = filteredBookings.filter((item) => {
     if (
       item.currentUser.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -113,8 +114,20 @@ const ReportsTable = ({ filteredBookings, startDate, endDate, preparedBy }) => {
       </Table>
 
       <div className="mt-6 text-right">
-        <p className="text-sm font-semibold">
-          Prepared by: {preparedBy || "___________"}
+        <p className="text-sm font-semibold opacity-50">Prepared by:</p>
+        <div className="flex flex-col">
+          <h1 className="font-bold text-2xl">{currentAdmin?.fullName}</h1>
+          <h1>{currentAdmin?.role}</h1>
+        </div>
+      </div>
+
+      <div className="text-center mt-6 border-t pt-4">
+        <img className="w-[100px] mx-auto" src={logo} alt="Logo" />
+        <p className="text-sm font-semibold">Sophie Red Hotel</p>
+        <p className="text-sm">Copyright © 2025. All rights reserved.</p>
+        <p className="text-xs italic mt-2">
+          Disclaimer: This report is system-generated and does not require a
+          signature.
         </p>
       </div>
     </>
