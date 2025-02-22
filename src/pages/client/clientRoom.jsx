@@ -80,7 +80,10 @@ const ClientRoom = () => {
       {!booking && <NoData />}
       {roomDetails && booking && (
         <div className="container mx-auto h-screen p-7 lg:p-0">
-          <CompletePayment booking={booking} />
+          <CompletePayment
+            title={"You’re all checked in! 🎉 Have a wonderful stay."}
+            booking={booking}
+          />
 
           <div className="flex flex-col lg:flex-row  lg:justify-between  justify-start lg:items-center mb-10">
             {/* <Button

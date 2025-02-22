@@ -29,6 +29,7 @@ import { HiOutlineStar, HiOutlineClipboardList } from "react-icons/hi";
 import pool from "../../assets/pool.jpg";
 import pool2 from "../../assets/pool2.jpg";
 import moment from "moment";
+import CompletePayment from "../../components/completePayment";
 
 const ClientEvent = () => {
   const { currentUser, booking } = useUserStore();
@@ -73,29 +74,7 @@ const ClientEvent = () => {
       {!booking && <NoData />}
       {roomDetails && booking && (
         <div className="container mx-auto h-screen p-7 lg:p-0">
-          <div className="flex flex-col lg:flex-row lg:justify-between  justify-start lg:items-center mb-10">
-            <div className="wrapper mb-5">
-              <h1 className="text-2xl lg:text-5xl font-bold ">
-                {booking.roomDetails.eventName} - Your{" "}
-                {booking.roomDetails.eventType} will start in{" "}
-                {moment(booking.roomDetails.startTime, "HH:mm").format(
-                  "h:mm A"
-                )}{" "}
-              </h1>
-              <p className="opacity-50 text-lg mt-3">
-                A fully equipped and versatile event venue, perfect for
-                meetings, conferences, and all types of gatherings.
-              </p>
-            </div>
-
-            {/* <Button
-              className="hidden lg:flex"
-              gradientMonochrome="info"
-              onClick={() => setRatingModal(true)}
-            >
-              Leave A Review
-            </Button> */}
-          </div>
+          <CompletePayment booking={booking} event={true} />
 
           <div className="flex flex-wrap">
             <div className="basis-full lg:basis-7/12">

@@ -4,8 +4,9 @@ import { AiOutlineCreditCard, AiOutlineShop } from "react-icons/ai"; // Importin
 import { createPaymongoCheckout } from "../utils/paymongoCheckout";
 import CustomModal from "./customModal";
 import { getCheckoutPaymongo } from "../utils/getCheckout";
+import moment from "moment";
 
-const CompletePayment = ({ booking }) => {
+const CompletePayment = ({ booking, event }) => {
   const [openModal, setOpenModal] = useState(false);
   const remainingBalance = booking.totalPrice - booking.downpayment;
   const [paymongoModal, setPaymongoModal] = useState(false);
@@ -50,9 +51,20 @@ const CompletePayment = ({ booking }) => {
     <div className="flex items-center justify-between flex-col lg:flex-row p-6 bg-white shadow-md rounded-lg">
       {/* Left Section - Welcome Message */}
       <div className="wrapper space-y-4 text-center lg:text-left">
-        <h1 className="text-3xl font-bold text-gray-800">
-          You’re all checked in! 🎉 Have a wonderful stay.
-        </h1>
+        {!event && (
+          <h1 className="text-3xl font-bold text-gray-800">
+            You’re all checked in! 🎉 Have a wonderful stay.
+          </h1>
+        )}
+        {event && (
+          <>
+            <p className="text-3xl font-bold">
+              {booking.roomDetails.eventName} - Your{" "}
+              {booking.roomDetails.eventType} will start in{" "}
+              {moment(booking.roomDetails.startTime, "HH:mm").format("h:mm A")}
+            </p>
+          </>
+        )}
         <p className="text-gray-600">
           We’re delighted to welcome you. If there’s anything we can do to make
           your stay more comfortable, please don’t hesitate to let us know.
