@@ -92,6 +92,10 @@ const ClientEventBooking = () => {
                 </p>
               </Card>
               <Card>
+                <h1 className="text-lg font-semibold">Type of Event</h1>
+                {booking.roomDetails.eventType}
+              </Card>
+              <Card>
                 <h1 className="text-lg font-semibold">Balance</h1>
                 {booking?.paymentStatus === "full" ? (
                   <Badge size="lg" color="success" className="px-4 py-2">

@@ -28,6 +28,7 @@ import event1 from "../../assets/event1.jpg";
 import { HiOutlineStar, HiOutlineClipboardList } from "react-icons/hi";
 import pool from "../../assets/pool.jpg";
 import pool2 from "../../assets/pool2.jpg";
+import moment from "moment";
 
 const ClientEvent = () => {
   const { currentUser, booking } = useUserStore();
@@ -67,8 +68,6 @@ const ClientEvent = () => {
     setRatingModal(false);
   };
 
-  console.log(booking);
-
   return (
     <>
       {!booking && <NoData />}
@@ -76,14 +75,19 @@ const ClientEvent = () => {
         <div className="container mx-auto h-screen p-7 lg:p-0">
           <div className="flex flex-col lg:flex-row lg:justify-between  justify-start lg:items-center mb-10">
             <div className="wrapper mb-5">
-              <h1 className="text-3xl lg:text-5xl font-bold ">
-                {booking.roomDetails.eventName}
+              <h1 className="text-2xl lg:text-5xl font-bold ">
+                {booking.roomDetails.eventName} - Your{" "}
+                {booking.roomDetails.eventType} will start in{" "}
+                {moment(booking.roomDetails.startTime, "HH:mm").format(
+                  "h:mm A"
+                )}{" "}
               </h1>
-              <p className="opacity-50 text-lg">
+              <p className="opacity-50 text-lg mt-3">
                 A fully equipped and versatile event venue, perfect for
                 meetings, conferences, and all types of gatherings.
               </p>
             </div>
+
             {/* <Button
               className="hidden lg:flex"
               gradientMonochrome="info"
@@ -174,9 +178,10 @@ const ClientEvent = () => {
             {/* Right Section: Room Details Table */}
             {roomDetails && (
               <div className="basis-full lg:basis-5/12 flex items-start justify-center">
-                <div className="bg-white p-5 lg:p-10 w-full lg:w-9/12 rounded-lg shadow mt-5">
+                <div className="bg-white p-5 lg:p-10 w-full lg:w-9/12 rounded-lg shadow-lg mt-5">
                   <h1 className="text-2xl font-semibold mb-5">Details</h1>
                   <hr />
+
                   <div className="p-5 space-y-3">
                     <div className="p-5 space-y-3">
                       <div className="flex justify-between">
@@ -202,49 +207,6 @@ const ClientEvent = () => {
           </div>
         </div>
       )}
-
-      <CustomModal
-        title={"Request Service"}
-        open={requestModal}
-        handleClose={() => setRequestModal(false)}
-        onSubmit={handleFormSubmit}
-      >
-        <form className="container p-10 mx-auto">
-          <div className="header flex justify-between items-center mb-5">
-            <h1 className="text-3xl font-bold flex items-center justify-start">
-              Room Number: #{booking?.roomDetails?.roomNumber}{" "}
-            </h1>
-          </div>
-          <div className="space-y-4">
-            <div>
-              <Label htmlFor="serviceType" value="Select Service Type" />
-              <Select
-                id="serviceType"
-                value={serviceType}
-                onChange={(e) => setServiceType(e.target.value)}
-                required
-              >
-                <option value="" disabled>
-                  Choose service type
-                </option>
-                <option value="cleaning">Cleaning</option>
-                <option value="maintenance">Maintenance</option>
-              </Select>
-            </div>
-            <div>
-              <Label htmlFor="description" value="Description" />
-              <Textarea
-                rows={5}
-                id="description"
-                placeholder="Provide additional details..."
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                required
-              />
-            </div>
-          </div>
-        </form>
-      </CustomModal>
 
       <CustomModal
         title={"Leave Feedback"}
