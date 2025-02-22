@@ -192,11 +192,11 @@ const ClientEvent = () => {
                       </div>
                       <div className="flex justify-between items-start flex-col">
                         <h1>Description</h1>
-                        <h1 className="opacity-50">
-                          Lights & Sounds P3,500.00 (White screen projector w/
-                          microphone 4 hours usage additional P2,000/hr for the
-                          exceeding hours)
-                        </h1>
+                        <ul className="opacity-50 my-3 list-disc list-inside">
+                          <li>Lights & Sounds: ₱3,500.00</li>
+                          <li>White screen projector w/ microphone</li>
+                          <li>Minimum of 150 persons</li>
+                        </ul>
                       </div>
                     </div>
                   </div>

@@ -94,15 +94,14 @@ const EventCards = ({ handleRoomSelection, selectedRoom }) => {
                   {room.name}
                 </h5>
                 <p className="text-gray-600 dark:text-gray-300 mt-5">
-                  <strong>Rent Price</strong> ₱{room.price.toLocaleString()}
+                  <strong>Rent Price:</strong> ₱{room.price.toLocaleString()}
                 </p>
-                <div className="opacity-50 my-3">
-                  <p>Lights & Sounds ₱3,500.00</p>
-                  <p>
-                    (White screen projector w/ microphone 4 hours usage
-                    additional ₱2,000/hr for exceeding hours)
-                  </p>
-                </div>
+
+                <ul className="opacity-50 my-3 list-disc list-inside">
+                  <li>Lights & Sounds: ₱3,500.00</li>
+                  <li>White screen projector w/ microphone</li>
+                  <li>Minimum of 150 persons</li>
+                </ul>
 
                 {/* Event Type Selection */}
                 <div className="mt-3">
