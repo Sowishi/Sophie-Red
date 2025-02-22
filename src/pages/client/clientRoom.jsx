@@ -29,6 +29,7 @@ import {
   HiViewList,
 } from "react-icons/hi";
 import moment from "moment";
+import CompletePayment from "../../components/completePayment";
 
 const ClientRoom = () => {
   const { currentUser, booking } = useUserStore();
@@ -79,18 +80,7 @@ const ClientRoom = () => {
       {!booking && <NoData />}
       {roomDetails && booking && (
         <div className="container mx-auto h-screen p-7 lg:p-0">
-          <div className="flex items-center justify-start">
-            <div className="wrapper space-y-4">
-              <h1 className="text-3xl font-bold text-gray-800">
-                You’re all checked in! Have a wonderful stay.
-              </h1>
-              <p className="text-gray-600">
-                We’re delighted to welcome you. If there’s anything we can do to
-                make your stay more comfortable, please don’t hesitate to let us
-                know.
-              </p>
-            </div>
-          </div>
+          <CompletePayment booking={booking} />
 
           <div className="flex flex-col lg:flex-row  lg:justify-between  justify-start lg:items-center mb-10">
             {/* <Button
