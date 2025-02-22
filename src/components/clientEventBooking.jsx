@@ -69,9 +69,18 @@ const ClientEventBooking = () => {
             {/* Booking Information Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Card>
-                <h1 className="text-lg font-semibold">Check-In Date</h1>
+                <h1 className="text-lg font-semibold">Event Start Time</h1>
                 <p className="text-gray-500">
                   {moment(booking?.checkInDate?.toDate()).format("LL")}
+                </p>
+                <p>
+                  {moment(booking.roomDetails.startTime, "HH:mm").format(
+                    "h:mm A"
+                  )}{" "}
+                  -{" "}
+                  {moment(booking.roomDetails.endTime, "HH:mm").format(
+                    "h:mm A"
+                  )}
                 </p>
               </Card>
 
