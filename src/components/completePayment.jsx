@@ -6,6 +6,7 @@ import CustomModal from "./customModal";
 import { getCheckoutPaymongo } from "../utils/getCheckout";
 import moment from "moment";
 import useCrudBooking from "../hooks/useCrudBooking";
+import useUserStore from "../utils/zustand";
 
 const CompletePayment = ({ booking, event }) => {
   const [openModal, setOpenModal] = useState(false);
@@ -14,9 +15,15 @@ const CompletePayment = ({ booking, event }) => {
   const [paymongoURL, setPaymongoURL] = useState(null);
   const [checkoutID, setCheckoutID] = useState(null);
 
+  const { currentUser } = useUserStore();
+
   const { updateBookingPayment } = useCrudBooking();
   const handlePayment = async () => {
-    const res = await createPaymongoCheckout(remainingBalance, "full");
+    const res = await createPaymongoCheckout(
+      remainingBalance,
+      "full",
+      currentUser
+    );
     setCheckoutID(res.id);
     setPaymongoModal(true);
     setPaymongoURL(res.url);

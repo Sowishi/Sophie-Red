@@ -117,7 +117,8 @@ const ClientHeader = () => {
           : paymentTerm == "down"
           ? downpayment
           : totalPrice,
-        paymentTerm
+        paymentTerm,
+        currentUser
       );
       setCheckoutID(res.id);
       setPaymongoModal(true);

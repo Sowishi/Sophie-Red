@@ -1,4 +1,8 @@
-export const createPaymongoCheckout = async (amount, paymentTerm) => {
+export const createPaymongoCheckout = async (
+  amount,
+  paymentTerm,
+  currentUser
+) => {
   try {
     const response = await fetch(
       "https://api.paymongo.com/v1/checkout_sessions",
@@ -41,6 +45,11 @@ export const createPaymongoCheckout = async (amount, paymentTerm) => {
                 "paymaya",
               ],
               description: "Sophie Red Hotel",
+              billing: {
+                name: currentUser?.name,
+                email: currentUser?.email,
+                phone: currentUser?.phoneNumber,
+              },
             },
           },
         }),

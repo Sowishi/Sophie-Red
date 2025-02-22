@@ -107,7 +107,8 @@ const ClientHeaderEvent = () => {
           : paymentTerm == "down"
           ? 5000
           : 10000,
-        paymentTerm
+        paymentTerm,
+        currentUser
       );
       setCheckoutID(res.id);
       setPaymongoModal(true);
