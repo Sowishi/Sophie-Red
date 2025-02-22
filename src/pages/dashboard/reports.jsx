@@ -54,6 +54,13 @@ const Reports = () => {
             >
               Preview & Export
             </Button>
+            <Button
+              gradientMonochrome="info"
+              icon={FaPlus}
+              onClick={() => setIsModalOpen(true)}
+            >
+              Print
+            </Button>
           </div>
         </div>
 
