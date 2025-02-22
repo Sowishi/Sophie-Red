@@ -26,6 +26,8 @@ import NoData from "../../components/noData";
 import event from "../../assets/event.jpg";
 import event1 from "../../assets/event1.jpg";
 import { HiOutlineStar, HiOutlineClipboardList } from "react-icons/hi";
+import pool from "../../assets/pool.jpg";
+import pool2 from "../../assets/pool2.jpg";
 
 const ClientEvent = () => {
   const { currentUser, booking } = useUserStore();
@@ -93,7 +95,7 @@ const ClientEvent = () => {
 
           <div className="flex flex-wrap">
             <div className="basis-full lg:basis-7/12">
-              {roomDetails && (
+              {roomDetails.eventName == "Functional Room" && (
                 <div
                   className="w-full h-[500px] flex justify-center items-center"
                   initial={{ opacity: 0, scale: 0.9 }}
@@ -110,6 +112,31 @@ const ClientEvent = () => {
                     />
                     <img
                       src={event1}
+                      className="w-full h-full object-cover rounded-lg"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.5 }}
+                    />
+                  </Carousel>
+                </div>
+              )}
+              {roomDetails.eventName == "Pool Area" && (
+                <div
+                  className="w-full h-[500px] flex justify-center items-center"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <Carousel slideInterval={3000} indicators={true}>
+                    <img
+                      src={pool}
+                      className="w-full h-full object-cover rounded-lg"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.5 }}
+                    />
+                    <img
+                      src={pool2}
                       className="w-full h-full object-cover rounded-lg"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
