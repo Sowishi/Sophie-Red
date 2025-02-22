@@ -5,6 +5,7 @@ import { createPaymongoCheckout } from "../utils/paymongoCheckout";
 import CustomModal from "./customModal";
 import { getCheckoutPaymongo } from "../utils/getCheckout";
 import moment from "moment";
+import useCrudBooking from "../hooks/useCrudBooking";
 
 const CompletePayment = ({ booking, event }) => {
   const [openModal, setOpenModal] = useState(false);
@@ -13,6 +14,7 @@ const CompletePayment = ({ booking, event }) => {
   const [paymongoURL, setPaymongoURL] = useState(null);
   const [checkoutID, setCheckoutID] = useState(null);
 
+  const { updateBookingPayment } = useCrudBooking();
   const handlePayment = async () => {
     const res = await createPaymongoCheckout(remainingBalance, "full");
     setCheckoutID(res.id);
@@ -25,11 +27,12 @@ const CompletePayment = ({ booking, event }) => {
       const res = await getCheckoutPaymongo(checkoutID);
       console.log(res);
       if (res === "succeeded") {
-        console.log("Mahal kita MICA");
-
-        localStorage.setItem("redirectAfterReload", "true");
-
-        window.location.reload(); // Reload the page
+        await updateBookingPayment(booking.id, "full");
+        setOpenModal(false);
+        setPaymongoModal(false);
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
       }
     }
   };
