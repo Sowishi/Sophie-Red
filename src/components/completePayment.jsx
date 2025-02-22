@@ -82,6 +82,16 @@ const CompletePayment = ({ booking, event }) => {
             Complete Payment - ₱{remainingBalance}
           </Button>
         )}
+        {booking.paymentStatus == "full" && (
+          <Button
+            disabled
+            color="success"
+            className="mt-2 text-lg px-6 py-2"
+            onClick={() => setOpenModal(true)}
+          >
+            Fully Paid
+          </Button>
+        )}
       </div>
 
       {/* Payment Modal */}
@@ -100,8 +110,7 @@ const CompletePayment = ({ booking, event }) => {
 
             {/* Payment Message */}
             <p className="text-lg text-gray-700 text-center">
-              To confirm your booking, please complete your payment. Choose your
-              preferred method below.
+              To confirm your payment, please pay your remaining balance
             </p>
 
             {/* Balance Amount */}
@@ -111,17 +120,6 @@ const CompletePayment = ({ booking, event }) => {
 
             {/* Payment Buttons */}
             <div className="flex gap-4">
-              <Button
-                color="gray"
-                className="flex items-center gap-2 px-4 py-2"
-                onClick={() =>
-                  alert(
-                    "Please proceed to the counter and pay the exact amount"
-                  )
-                }
-              >
-                <AiOutlineShop size={20} /> Pay at Counter
-              </Button>
               <Button
                 color="blue"
                 className="flex items-center gap-2 px-4 py-2"
