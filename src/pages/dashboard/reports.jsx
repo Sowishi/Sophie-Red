@@ -18,6 +18,7 @@ const Reports = () => {
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
   const { fetchAllBookings } = useCrudBooking();
   const { toPDF, targetRef } = usePDF({ filename: "bookings_report.pdf" });
+  const [printMode, setPrintMode] = useState(false);
 
   useEffect(() => {
     fetchAllBookings(setBookings);
@@ -39,56 +40,65 @@ const Reports = () => {
   return (
     <DashboardLayout>
       <div className="container mx-auto lg:p-10 rounded-3xl min-h-[600px] pt-10">
-        <div className="flex flex-col lg:flex-row justify-between items-center">
-          <div className="p-5">
-            <h1 className="text-2xl lg:text-4xl font-bold">Reports</h1>
-            <p className="mt-3 text-gray-500">
-              You can manage and generate reports in this section
-            </p>
-          </div>
-          <div className="flex space-x-4">
-            <Button
-              gradientMonochrome="failure"
-              icon={FaPlus}
-              onClick={() => setIsModalOpen(true)}
-            >
-              Preview & Export
-            </Button>
-            <Button
-              gradientMonochrome="info"
-              icon={FaPlus}
-              onClick={() => setIsModalOpen(true)}
-            >
-              Print
-            </Button>
-          </div>
-        </div>
+        {!printMode && (
+          <>
+            <div className="flex flex-col lg:flex-row justify-between items-center">
+              <div className="p-5">
+                <h1 className="text-2xl lg:text-4xl font-bold">Reports</h1>
+                <p className="mt-3 text-gray-500">
+                  You can manage and generate reports in this section
+                </p>
+              </div>
+              <div className="flex space-x-4">
+                <Button
+                  gradientMonochrome="failure"
+                  icon={FaPlus}
+                  onClick={() => setIsModalOpen(true)}
+                >
+                  Preview & Export
+                </Button>
+                <Button
+                  gradientMonochrome="info"
+                  icon={FaPlus}
+                  onClick={() => {
+                    setPrintMode(true);
+                    setTimeout(() => {
+                      window.print();
+                    }, 1000);
+                  }}
+                >
+                  Print
+                </Button>
+              </div>
+            </div>
 
-        {/* Date Range Inputs */}
-        <div className="flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-4 mb-6">
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Start Date
-            </label>
-            <input
-              type="date"
-              value={moment(startDate).format("YYYY-MM-DD")}
-              onChange={(e) => setStartDate(new Date(e.target.value))}
-              className="mt-1 p-2 border rounded-lg"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              End Date
-            </label>
-            <input
-              type="date"
-              value={moment(endDate).format("YYYY-MM-DD")}
-              onChange={(e) => setEndDate(new Date(e.target.value))}
-              className="mt-1 p-2 border rounded-lg"
-            />
-          </div>
-        </div>
+            {/* Date Range Inputs */}
+            <div className="flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-4 mb-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Start Date
+                </label>
+                <input
+                  type="date"
+                  value={moment(startDate).format("YYYY-MM-DD")}
+                  onChange={(e) => setStartDate(new Date(e.target.value))}
+                  className="mt-1 p-2 border rounded-lg"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  End Date
+                </label>
+                <input
+                  type="date"
+                  value={moment(endDate).format("YYYY-MM-DD")}
+                  onChange={(e) => setEndDate(new Date(e.target.value))}
+                  className="mt-1 p-2 border rounded-lg"
+                />
+              </div>
+            </div>
+          </>
+        )}
 
         {/* Table with Title */}
         <div ref={targetRef} className="bg-white p-6 rounded-lg shadow-2xl">
