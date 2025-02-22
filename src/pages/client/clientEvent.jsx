@@ -65,6 +65,8 @@ const ClientEvent = () => {
     setRatingModal(false);
   };
 
+  console.log(booking);
+
   return (
     <>
       {!booking && <NoData />}
@@ -73,7 +75,7 @@ const ClientEvent = () => {
           <div className="flex flex-col lg:flex-row lg:justify-between  justify-start lg:items-center mb-10">
             <div className="wrapper mb-5">
               <h1 className="text-3xl lg:text-5xl font-bold ">
-                Functional Room
+                {booking.roomDetails.eventName}
               </h1>
               <p className="opacity-50 text-lg">
                 A fully equipped and versatile event venue, perfect for
