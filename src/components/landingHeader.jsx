@@ -26,6 +26,12 @@ const LandingHeader = ({
         </Navbar.Link>
         <Navbar.Link
           className="text-black lg:text-white text-lg opacity-80 hover:bg-red-500"
+          href="#promotions"
+        >
+          Promotions
+        </Navbar.Link>
+        <Navbar.Link
+          className="text-black lg:text-white text-lg opacity-80 hover:bg-red-500"
           href="#testimonials"
         >
           Testimonials

@@ -26,7 +26,7 @@ const eventTypes = [
 // Generate hourly time slots (e.g., 1:00 PM, 2:00 PM)
 const generateTimeSlots = () => {
   const times = [];
-  for (let hour = 13; hour <= 22; hour++) {
+  for (let hour = 8; hour <= 22; hour++) {
     // Convert 24-hour format to 12-hour format
     const displayHour = hour > 12 ? hour - 12 : hour;
     const ampm = hour >= 12 ? "PM" : "AM";

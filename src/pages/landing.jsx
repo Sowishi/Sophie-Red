@@ -27,6 +27,7 @@ import {
 } from "react-icons/hi";
 import ParkingAndLandmarks from "../components/parkingAndLandmarks";
 import LandingHeader from "../components/landingHeader";
+import Promotions from "../components/promotions";
 
 const Landing = () => {
   const navigation = useNavigate();
@@ -186,6 +187,10 @@ const Landing = () => {
 
       <div id="testimonials">
         <Testimonials />
+      </div>
+
+      <div id="promotions">
+        <Promotions />
       </div>
 
       <div id="Amenities" className="bg-white my-10">
