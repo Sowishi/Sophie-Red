@@ -29,6 +29,7 @@ import { getCheckoutPaymongo } from "../utils/getCheckout";
 import DisplayRoomsSelection from "./displayRoomsSelection";
 import useCrudVoucher from "../hooks/useCrudVoucher";
 import EventCards from "./eventCards";
+import emailjs from "@emailjs/browser";
 
 const ClientHeaderEvent = () => {
   const [bookNowModal, setBookNowModal] = useState(false);
@@ -149,10 +150,14 @@ const ClientHeaderEvent = () => {
         setPaymentStatus(res);
         setPaymongoModal(false);
 
-        // Store a flag in localStorage before reloading
-        localStorage.setItem("redirectAfterReload", "true");
+        sendEmail();
 
-        window.location.reload(); // Reload the page
+        setTimeout(() => {
+          // Store a flag in localStorage before reloading
+          localStorage.setItem("redirectAfterReload", "true");
+
+          window.location.reload(); // Reload the page
+        }, 1000);
       }
     }
   };
@@ -192,6 +197,36 @@ const ClientHeaderEvent = () => {
     setTimeout(() => {
       listenCheckout();
     }, 5000);
+  };
+
+  const sendEmail = () => {
+    emailjs
+      .send(
+        "service_fjfcgit", // Replace with your EmailJS Service ID
+        "template_titxznr", // Replace with your EmailJS Template ID
+        {
+          customer_name: currentUser.name,
+          to_email: currentUser.email,
+          room_number: selectedRoom.roomNumber || selectedRoom.eventName,
+          room_type: selectedRoom.roomType || selectedRoom.eventType,
+          room_description: selectedRoom.description || "Event",
+          price_per_night: selectedRoom.pricePerNight || 10000,
+          total_stay_cost: 10000,
+          paid_balance:
+            paymentTerm == "full" ? 10000 : parseInt(10000) - parseInt(5000),
+          current_balance:
+            paymentTerm == "full" ? 0 : parseInt(10000) - parseInt(5000),
+        },
+        "ypQGO_bUuL-EBv8mu" // Replace with your EmailJS Public Key
+      )
+      .then(
+        (response) => {
+          console.log("SUCCESS!", response);
+        },
+        (error) => {
+          console.error("FAILED...", error);
+        }
+      );
   };
 
   useEffect(() => {
