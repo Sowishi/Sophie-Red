@@ -27,6 +27,7 @@ import { IoReload } from "react-icons/io5";
 import { getCheckoutPaymongo } from "../utils/getCheckout";
 import DisplayRoomsSelection from "./displayRoomsSelection";
 import useCrudVoucher from "../hooks/useCrudVoucher";
+import emailjs from "@emailjs/browser";
 
 const ClientHeader = () => {
   const [bookNowModal, setBookNowModal] = useState(false);
@@ -162,6 +163,7 @@ const ClientHeader = () => {
         await handleConfirmBook();
         setPaymentStatus(res);
         setPaymongoModal(false);
+        sendEmail();
 
         // Store a flag in localStorage before reloading
         localStorage.setItem("redirectAfterReload", "true");
@@ -171,8 +173,38 @@ const ClientHeader = () => {
     }
   };
 
+  const sendEmail = () => {
+    const formData = {
+      name: "Jm Molina",
+      email: "jmmmolinathebest@gmail.com",
+      message: "test",
+    };
+
+    emailjs
+      .send(
+        "document_management_syst", // Replace with your EmailJS Service ID
+        "template_4vig146", // Replace with your EmailJS Template ID
+        {
+          from_name: formData.name,
+          from_email: formData.email,
+          message: formData.message,
+        },
+        "CC6NDqZK6hJlZZd_X" // Replace with your EmailJS Public Key
+      )
+      .then(
+        (response) => {
+          console.log("SUCCESS!", response);
+          setStatus("Email sent successfully!");
+        },
+        (error) => {
+          console.error("FAILED...", error);
+        }
+      );
+  };
   // Check for redirect flag after reload
   useEffect(() => {
+    sendEmail();
+    console.log("Fdk");
     const shouldRedirect = localStorage.getItem("redirectAfterReload");
     if (shouldRedirect) {
       localStorage.removeItem("redirectAfterReload"); // Clear flag after reading
