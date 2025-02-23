@@ -165,36 +165,42 @@ const ClientHeader = () => {
         setPaymongoModal(false);
         sendEmail();
 
-        // Store a flag in localStorage before reloading
-        localStorage.setItem("redirectAfterReload", "true");
+        setTimeout(() => {
+          localStorage.setItem("redirectAfterReload", "true");
 
-        window.location.reload(); // Reload the page
+          window.location.reload();
+        }, 1000);
       }
     }
   };
 
   const sendEmail = () => {
-    const formData = {
-      name: "Jm Molina",
-      email: "jmmmolinathebest@gmail.com",
-      message: "test",
-    };
-
     emailjs
       .send(
-        "document_management_syst", // Replace with your EmailJS Service ID
-        "template_4vig146", // Replace with your EmailJS Template ID
+        "service_fjfcgit", // Replace with your EmailJS Service ID
+        "template_titxznr", // Replace with your EmailJS Template ID
         {
-          from_name: formData.name,
-          from_email: formData.email,
-          message: formData.message,
+          customer_name: currentUser.name,
+          to_email: currentUser.email,
+          room_number: selectedRoom.roomNumber,
+          room_type: selectedRoom.roomType,
+          room_description: selectedRoom.description,
+          price_per_night: selectedRoom.pricePerNight,
+          total_stay_cost: totalPrice,
+          paid_balance:
+            paymentTerm == "full"
+              ? totalPrice
+              : parseInt(totalPrice) - parseInt(downpayment),
+          current_balance:
+            paymentTerm == "full"
+              ? 0
+              : parseInt(totalPrice) - parseInt(downpayment),
         },
-        "CC6NDqZK6hJlZZd_X" // Replace with your EmailJS Public Key
+        "ypQGO_bUuL-EBv8mu" // Replace with your EmailJS Public Key
       )
       .then(
         (response) => {
           console.log("SUCCESS!", response);
-          setStatus("Email sent successfully!");
         },
         (error) => {
           console.error("FAILED...", error);
@@ -203,8 +209,6 @@ const ClientHeader = () => {
   };
   // Check for redirect flag after reload
   useEffect(() => {
-    sendEmail();
-    console.log("Fdk");
     const shouldRedirect = localStorage.getItem("redirectAfterReload");
     if (shouldRedirect) {
       localStorage.removeItem("redirectAfterReload"); // Clear flag after reading
