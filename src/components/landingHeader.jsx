@@ -50,7 +50,7 @@ const LandingHeader = ({
           Amenities
         </Navbar.Link>
         {currentUser && (
-          <div className="relative  flex items-center justify-center">
+          <div className="relative  h-[30px] flex items-center justify-center">
             <p className="font-medium text-black lg:text-white mr-5 text-lg">
               {currentUser.name}
             </p>
