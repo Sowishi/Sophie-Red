@@ -13,9 +13,9 @@ const LandingHeader = ({
     <Navbar className="bg-white lg:bg-transparent" fluid rounded>
       <Navbar.Brand as={Link} to="/">
         <div className="flex">
-          <img className="mx-3" width={50} src={logo} alt="" />
+          <img className="mx-0 lg:mx-3" width={50} src={logo} alt="" />
         </div>
-        <h1 className="text-black lg:text-white text-2xl font-bold">
+        <h1 className="text-black lg:text-white text-sm lg:text-2xl font-bold">
           Sophie <span className="text-red-500">Red Hotel</span>
         </h1>
       </Navbar.Brand>

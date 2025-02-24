@@ -259,12 +259,12 @@ const ClientHeaderEvent = () => {
 
       <div className="dates hidden flex-1 lg:flex items-center justify-center">
         <CustomDatePicker
-          label={"Check In Date"}
+          label={"Select Date"}
           onChange={(date) => setArrivalDate(date)}
           value={arrivalDate}
         />
         <CustomDatePicker
-          label={"Check Out Date"}
+          label={"Select Date"}
           onChange={(date) => setDepartureDate(date)}
           value={departureDate}
         />
